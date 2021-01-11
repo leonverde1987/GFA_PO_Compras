@@ -1,5 +1,6 @@
 package TestCases;
 
+import com.inflectra.spiratest.addons.junitextension.*;
 import org.junit.Test;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocumentException;
@@ -14,10 +15,33 @@ import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import steps.steps_Ejemplo_Test;
+import steps.GenericSteps;
+import steps.LoginSteps;
+import steps.MenusNavegadorSteps;
+
+@SpiraTestConfiguration(
+	    url="https://testing-it.spiraservice.net",
+	    login="automationQA",
+	    password="test1234", 
+	    projectId=67,
+	    testSetId=2668
+	)
+
+public class Ejemplo_Test_Ejemplo{
+    
+    //STEPS
+    public GenericSteps genericSteps = new GenericSteps();
+    public LoginSteps loginSteps = new LoginSteps();
+    public MenusNavegadorSteps menusNavegadorSteps = new MenusNavegadorSteps();
 
 
-public class Ejemplo_Test_Ejemplo extends steps_Ejemplo_Test{
+    //UIELEMENTS
+    public Properties UILogin = null;
+    public Properties UIMenusNavegador = null;
+    public Properties UIConfigMantenimiento = null;
+    public Properties UIGestionarJuegosDistribuciones = null;
+    
+    
     public Properties Config = null;
     //public Properties Datos = null;
     public Properties Elementos = null;
@@ -33,21 +57,25 @@ public class Ejemplo_Test_Ejemplo extends steps_Ejemplo_Test{
     public String[] filaDatos=null;
     
 
+    
+    
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
-        Config = this.getPropetiesFile("configuracion\\configuracion.properties");
-        Elementos = this.getPropetiesFile("configuracion\\pagePaqueteriaBuscarGuia.properties");
-        DataDriven = this.ObtenerDatos("configuracion\\datos.csv");
+    
+        Config = genericSteps.getPropetiesFile("configuracion\\configuracion.properties");
+        UILogin = genericSteps.getPropetiesFile("configuracion\\uielements\\loginPage.properties");
+        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\dt_login.csv");
         contador = 1;
         RutaEvidencia = Config.getProperty("rutaEvidencia");
         Resultado = "Fallido";
         Navegador = Config.getProperty("Navegador");
-        driver = this.openGridBrowser(Navegador, Config);
+        driver = genericSteps.openGridBrowser(Navegador, Config);
         ResultadoGlobal = "Exitoso";
         
     }
     
     @Test
+    @SpiraTestCase(testCaseId=28895)
     public void Test_PO_Login_Oracle() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
@@ -55,32 +83,34 @@ public class Ejemplo_Test_Ejemplo extends steps_Ejemplo_Test{
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
-            String mensaje = filaDatos[2];
+            String idioma = filaDatos[2];
+            String mensaje = filaDatos[3];
             try{
 
-                    Escenario = "PO_Login_Oracle "+Repeticion;
+                    Escenario = "LGN_Login_Oracle "+Repeticion;
 
                     //Paso 1
                     Pasos.add(contador+".- Abrir navegador en la URL: "+Config.getProperty("urlOracle"));
-                    this.ingresar_A_URL(driver, contador, Config, Escenario, Navegador);
+                    genericSteps.ingresarAURL(driver, contador, Config, Escenario, Navegador);
                     
                     //Paso 2
                     contador++;
                     Pasos.add(contador+".- Ingresamos Usuario: "+usuario+" y Contraseña:"+pass);
-                    this.Login_Oracle(driver, usuario, pass, contador, Config, Elementos, Escenario, Navegador);
+                    genericSteps.loginOracle(driver, usuario, pass, idioma, contador, Config, UILogin, Escenario, Navegador);
                     
                     //Paso 3
                     contador++;
                     Pasos.add(contador+".- Válidar mensaje: Fallo de autenticación. ");
-                    Resultado=this.validar_Mensaje_Data(driver, mensaje, Config, Elementos, contador, Escenario, Navegador);
+                    Resultado=genericSteps.validarMensajeData(driver, mensaje, Config, UILogin, contador, Escenario, Navegador);
+                    
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
-                this.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
+                genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }catch(InterruptedException e){
                 Resultado = "Ejecución Fallida: "+e;
-                this.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
+                genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }finally{
-                this.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
+                genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
                     ResultadoGlobal = Resultado;
                 }
@@ -96,6 +126,6 @@ public class Ejemplo_Test_Ejemplo extends steps_Ejemplo_Test{
 
     @After
     public void cerrarTest(){
-        this.cerrar_Navegador(driver);
+        genericSteps.cerrarNavegador(driver);
     }   
 }

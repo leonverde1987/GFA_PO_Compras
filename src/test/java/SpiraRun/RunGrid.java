@@ -21,7 +21,7 @@ import org.junit.runner.JUnitCore;
 public class RunGrid {
     
     @Test
-    public void TestBuscarGoogleGrid() throws InterruptedException, FileNotFoundException, IOException {
+    public void TestRunnerGrid() throws InterruptedException, FileNotFoundException, IOException {
         Properties Config = new generic.genericGrid().getPropetiesFile("configuracion\\configuracion.properties");
         JUnitCore core = new JUnitCore();
         core.addListener(new SpiraTestListener());

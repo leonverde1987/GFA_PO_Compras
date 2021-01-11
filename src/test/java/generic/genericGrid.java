@@ -224,76 +224,53 @@ public class genericGrid extends evidenceGrid {
             System.out.println("MEnsaje Evidencia: "+e);
         }
     }
-    /*
-    ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    ASSERTS
-    ++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    */
     
-    /**
-     * En este método vamos a validar que dos mensajes sean iguales.
-     * @param driver Es el remoteWebDriver donde se ejecuta la prueba. 
-     * @param msjActual Es el valr del texto que se compara.
-     * @param Elemento Es el elemento del que se va a comparr el texto.
+    
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //METODOS ACCIONES
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //NAVEGADOR
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+    /***
+     * El método le da un tiempo de 10 segundos al webDriver.
+     * @param driver Es el RemoteWebDriver de la ejecución.
+     * @param URL Es la url que vamos abrir en el driver.
      */
-    public String AssertMsjElemento(RemoteWebDriver driver, String msjActual, String Elemento) throws InterruptedException{
-        String msj = "";
+    public void abrirURl(RemoteWebDriver driver, String URL){
         try{
-            this.dormir3seg();
-            Assert.assertEquals(this.obtenerTexto(driver, "id", Elemento), msjActual);
-            msj = "Exitoso";
-        }catch(AssertionError e){
-            System.out.println("Mensaje Assert Fail: "+e);
-            msj = "Fallido, Reusltado Esperado: "+e;
+            driver.get(URL);
+        }catch(Exception e){
+            System.out.println("Mensaje: "+e);
         }
-        
-        return msj;
     }
     
-    /**
-     * En este método vamos a validar un like en un mensaje.
-     * @param driver Es el remoteWebDriver donde se ejecuta la prueba. 
-     * @param msjActual Es el valor del texto que se compara.
-     * @param Elemento Es el elemento del que se va a comparr el texto.
-     * @param like Es el texto que vamos a buscar en el mensaje.
-     * @return Regresa un Exitoso o Fallido dependiendo de la aserción.
-     */
-    public String AssertTrueElemento(RemoteWebDriver driver, String msjActual, String Elemento, String like) throws InterruptedException{
-   	 String msj = "";
-        try{
-            this.dormir3seg();
-            Assert.assertTrue(this.obtenerTexto(driver, "id", Elemento).contains(like));
-            msj = "Exitoso";
-        }catch(AssertionError e){
-            System.out.println("Mensaje Assert Fail: "+e);
-            msj = "Fallido, Resultado Esperado: "+e;
-        }
-        
-        return msj;
-   	
-   }
-    
-    /*
-    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    METODOS
-    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    */
     
     /***
-     * El método nos ayuda a sweleccionar un texto de un cbo, select o dripdownlist.
-     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
-     * @param findby Es el tipo de selector selenium id, name o XPATH.
-     * @param Elemento Es el selector selenium del cbo, select o dropdownlist.
-     * @param Texto Es el valor del texto que se busca en el elemento.
+     * El método nos ayuda a cerrar un WebDriver.
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
      */
-    public void seleccionar_combo(RemoteWebDriver driver, String findby, String Elemento, String Texto){
-        WebElement combo = this.driverWait(driver, findby, Elemento);
-        Select cbo = new Select(combo);
-        cbo.selectByVisibleText(Texto);
+    public void cerrarDriver(WebDriver driver){
+            driver.close();
     }
     
     
-    
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //CLICK Y SEND KEYS
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+
     /***
      * El método nos ayuda a dar clic a un elemento.
      * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
@@ -301,11 +278,191 @@ public class genericGrid extends evidenceGrid {
      * @param Elemento Es el selector selenium que se le va a dar Clic.
      * @throws InterruptedException 
      */
-    public void clic_btn(RemoteWebDriver driver, String findby, String Elemento) throws InterruptedException{
-        WebElement btn = this.driverWait(driver, findby, Elemento);
-        btn.click();
+    public void click(RemoteWebDriver driver, String findby, String Elemento) throws InterruptedException{
+        WebElement el = this.driverWait(driver, findby, Elemento);
+        el.click();
+    }
+
+
+    /***
+     * El método nos ayuda a dar clic a un elemento mediante JS.
+     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium que se le va a dar Clic.
+     * @throws InterruptedException 
+     */
+    public void clickJS(RemoteWebDriver driver, String findby, String Elemento) throws InterruptedException{
+        WebElement el = this.waitUIElementPresent(driver, findby, Elemento);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click()", el);
     }
     
+
+    /***
+     * El método nos ayuda a ingresar texto a un elemento.
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium al que le vamos agregar texto.
+     * @param Texto Es el texto que se va ingresar al campo.
+     */
+    public void ingresarTexto(RemoteWebDriver driver, String findby, String Elemento, String Texto){
+        WebElement elemen = this.driverWait(driver, findby, Elemento);
+        elemen.sendKeys(Texto);
+    }
+
+    /***
+     * El método nos ayuda a enviar submit sobre un elemento.
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium al que le vamos agregar texto.
+     */
+    public void submit(RemoteWebDriver driver, String findby, String Elemento){
+        WebElement elemen = this.driverWait(driver, findby, Elemento);
+        elemen.submit();
+    }
+
+
+    /***
+     * El método nos ayuda a presionar enter sobre un elemento.
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium al que le vamos agregar texto.
+     */
+    public void enter(RemoteWebDriver driver, String findby, String Elemento){
+        WebElement el = this.driverWait(driver, findby, Elemento);
+    	Actions action = new Actions(driver);
+    	action.sendKeys(el, Keys.ENTER).build().perform();
+    }
+
+
+    /***
+     * El método obtiene el texto de un objeto.
+     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium.
+     * @return Regresa el texto del objeto o un vacio en caso de no encontrar el findby.
+     */
+    public String obtenerTexto(RemoteWebDriver driver, String findby, String Elemento){
+        String texto = "";
+        WebElement Element = this.driverWait(driver, findby, Elemento);
+        texto = Element.getText();
+        return texto;
+    }
+    
+    
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //COMBO BOX, DROPDOWN LIST
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+    
+    /***
+     * El método nos ayuda a seleccionar un texto de un cbo por su atributo text, select o dropdownlist.
+     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium del cbo, select o dropdownlist.
+     * @param Texto Es el valor del texto que se busca en el elemento.
+     */
+    public void seleccionarComboByText(RemoteWebDriver driver, String findby, String Elemento, String Texto){
+        WebElement combo = this.driverWait(driver, findby, Elemento);
+        Select cbo = new Select(combo);
+        cbo.selectByVisibleText(Texto);
+    }
+    
+    /***
+     * El método nos ayuda a seleccionar un texto de un cbo por su atributo value, select o dropdownlist.
+     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium del cbo, select o dropdownlist.
+     * @param Texto Es el valor del texto que se busca en el elemento.
+     */
+    public void seleccionarComboByValue(RemoteWebDriver driver, String findby, String Elemento, String Texto){
+        WebElement combo = this.driverWait(driver, findby, Elemento);
+        Select cbo = new Select(combo);
+        cbo.selectByValue(Texto);
+    }
+
+    /***
+     * El método nos ayuda a ingresar un texto y despues seleccionarlo de la lista.
+     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium del cbo, select o dropdownlist.
+     * @param Texto Es el valor del texto que se busca en el elemento.
+     * @throws InterruptedException 
+     */
+    public void seleccionarComboInputByValue(RemoteWebDriver driver, String findby, String Elemento, String Texto) throws InterruptedException{
+        WebElement combo = this.driverWait(driver, findby, Elemento);
+        dormirSeg(2);
+        combo.sendKeys(Texto);
+        dormirSeg(3);
+        combo.sendKeys(Keys.DOWN);
+        dormirSeg(3);
+        combo.sendKeys(Keys.ENTER);
+        dormirSeg(3);
+    }
+    
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //SCROLLS
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+    /**
+     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
+     * @param driver Es el driver de la prueba. 
+     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     */
+    public void bajarScroll(RemoteWebDriver driver) throws InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,1000)");
+    }
+    
+    /**
+     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
+     * @param driver Es el driver de la prueba. 
+     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     */
+    public void subirScroll(RemoteWebDriver driver) throws FileNotFoundException, InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,-1000)");
+    }
+    
+    /**
+     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
+     * @param driver Es el driver de la prueba. 
+     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     */
+    public void bajarTecla(RemoteWebDriver driver, int contador, Properties Config, Properties Elementos, String Escenario, String navegador) throws FileNotFoundException, InterruptedException {
+    	Actions action = new Actions(driver);
+    	action.keyDown(Keys.CONTROL).sendKeys(Keys.ENTER).perform(); 
+    }
+    
+    
+    
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //SLEEPS
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+    /***
+     * El método le da un tiempo de 3 segundos al webDriver.
+     * @exception InterruptedException Para manejar excepciones con el hilo de procesamiento que se esta deteniendo.
+     */
+    public void dormirSeg(int segundos) throws InterruptedException{
+        Thread.sleep((segundos * 1000));
+    }
+    
+
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //ASSERTION
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
     
     /***
      * El método nos ayuda obtener un elemento pero utiliza el driver wait para darle tiempo al navegador de reaccionar.
@@ -324,112 +481,86 @@ public class genericGrid extends evidenceGrid {
             	el = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.name(Elemento))));
                 break;
             case "xpath":
-                el = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath(Elemento))));
+            	el = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath(Elemento))));
                 break;
         }
         return el;
     }
     
     /***
-     * El método nos ayuda a presionar enter sobre un elemento.
+     * El método nos ayuda obtener un elemento pero utiliza el driver wait para darle tiempo al navegador de reaccionar.
      * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
      * @param findby Es el tipo de selector selenium id, name o XPATH.
      * @param Elemento Es el selector selenium al que le vamos agregar texto.
      */
-    public void enter(RemoteWebDriver driver, String findby, String Elemento){
-        WebElement Elemen = this.driverWait(driver, findby, Elemento);
-        Elemen.submit();
-    }
-    
-    /***
-     * El método nos ayuda a ingresar texto a un elemento.
-     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
-     * @param findby Es el tipo de selector selenium id, name o XPATH.
-     * @param Elemento Es el selector selenium al que le vamos agregar texto.
-     * @param Texto Es el texto que se va ingresar al campo.
-     */
-    public void ingresar_texto(RemoteWebDriver driver, String findby, String Elemento, String Texto){
-        WebElement Elemen = this.driverWait(driver, findby, Elemento);
-        Elemen.sendKeys(Texto);
-    }
-
-    /***
-     * El método nos ayuda a cerrar un WebDriver.
-     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
-     */
-    public void cerrar_driver(WebDriver driver){
-            driver.close();
-    }
-
-    /***
-     * El método le da un tiempo de 3 segundos al webDriver.
-     * @exception InterruptedException Para manejar excepciones con el hilo de procesamiento que se esta deteniendo.
-     */
-    public void dormir3seg() throws InterruptedException{
-        Thread.sleep(3000);
-    }
-    /***
-     * El método le da un tiempo de 10 segundos al webDriver.
-     * @exception InterruptedException Para manejar excepciones con el hilo de procesamiento que se esta deteniendo.
-     */
-    public void dormir10seg() throws InterruptedException{
-        Thread.sleep(10000);
-    }
-    /***
-     * El método le da un tiempo de 10 segundos al webDriver.
-     * @param driver Es el RemoteWebDriver de la ejecución.
-     * @param URL Es la url que vamos abrir en el driver.
-     */
-    public void abrirURl(RemoteWebDriver driver, String URL){
-        try{
-            driver.get(URL);
-        }catch(Exception e){
-            System.out.println("Mensaje: "+e);
+    public WebElement waitUIElementPresent(WebDriver driver, String findby, String Elemento){
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebElement el = null;
+        switch(findby) {
+            case "id":
+                el = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(Elemento)));
+                break;
+            case "name":
+                el = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(Elemento)));
+                break;
+            case "xpath":
+                el = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Elemento)));
+                break;
         }
+        return el;
     }
     
-    /***
-     * El método obtiene el texto de un objeto.
-     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+
+    /*
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    ASSERTS
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    */
+    
+    /**
+     * En este método vamos a validar que dos mensajes sean iguales.
+     * @param driver Es el remoteWebDriver donde se ejecuta la prueba. 
      * @param findby Es el tipo de selector selenium id, name o XPATH.
-     * @param Elemento Es el selector selenium.
-     * @return Regresa el texto del objeto o un vacio en caso de no encontrar el findby.
+     * @param msjActual Es el valr del texto que se compara.
+     * @param Elemento Es el elemento del que se va a comparr el texto.
      */
-    public String obtenerTexto(RemoteWebDriver driver, String findby, String Elemento){
-        String texto = "";
-        WebElement Element = this.driverWait(driver, findby, Elemento);
-        texto = Element.getText();
-        return texto;
+    public String AssertMsjElemento(RemoteWebDriver driver, String findby, String msjActual, String Elemento) throws InterruptedException{
+        String msj = "";
+        try{
+            this.dormirSeg(1);
+            Assert.assertEquals(this.obtenerTexto(driver, findby, Elemento), msjActual);
+            msj = "Exitoso";
+        }catch(AssertionError e){
+            System.out.println("Mensaje Assert Fail: "+e);
+            msj = "Fallido, Reusltado Esperado: "+e;
+        }
+        
+        return msj;
     }
     
     /**
-     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
-     * @param driver Es el driver de la prueba. 
-     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     * En este método vamos a validar un like en un mensaje.
+     * @param driver Es el remoteWebDriver donde se ejecuta la prueba. 
+     * @param findby Es el valor del texto que se compara.
+     * @param msjActual Es el valor del texto que se compara.
+     * @param Elemento Es el elemento del que se va a comparr el texto.
+     * @param like Es el texto que vamos a buscar en el mensaje.
+     * @return Regresa un Exitoso o Fallido dependiendo de la aserción.
      */
-    public void Bajar_Scroll(RemoteWebDriver driver) throws InterruptedException {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0,1000)");
-    }
+    public String AssertTrueElemento(RemoteWebDriver driver, String findby, String Elemento, String like) throws InterruptedException{
+   	 String msj = "";
+        try{
+            this.dormirSeg(1);
+            Assert.assertTrue(this.obtenerTexto(driver, findby, Elemento).contains(like));
+            msj = "Exitoso";
+        }catch(AssertionError e){
+            System.out.println("Mensaje Assert Fail: "+e);
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        
+        return msj;
+   	
+   }
     
-    /**
-     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
-     * @param driver Es el driver de la prueba. 
-     * @throws InterruptedException Cuando no se puede interactuar con el driver.
-     */
-    public void Subir_Scroll(RemoteWebDriver driver) throws FileNotFoundException, InterruptedException {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0,-1000)");
-    }
-    
-    /**
-     * Es el método que nos sirve para bajar el scroll en un remoteWebDriver.
-     * @param driver Es el driver de la prueba. 
-     * @throws InterruptedException Cuando no se puede interactuar con el driver.
-     */
-    public void Bajar_Tecla(RemoteWebDriver driver, int contador, Properties Config, Properties Elementos, String Escenario, String navegador) throws FileNotFoundException, InterruptedException {
-    	Actions action = new Actions(driver);
-    	action.keyDown(Keys.CONTROL).sendKeys(Keys.ENTER).perform(); 
-    }
     
 }	
