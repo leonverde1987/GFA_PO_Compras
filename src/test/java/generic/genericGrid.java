@@ -562,5 +562,92 @@ public class genericGrid extends evidenceGrid {
    	
    }
     
+   /**
+     * En este método vamos a validar el texto de dos variables tipo string.
+     * @param Resultado Es el resultado que arrojo la busqueda en la tabla. 
+     * @param msjActual Es el valor que vamos a comparar.
+     * @return Regresa un Exitoso o Fallido dependiendo de la aserción.
+     */
+    public String AssertComparaMensajes(String Resultado, String msjActual) throws InterruptedException{
+   	 String msj = "";
+        try{
+            this.dormirSeg(1);
+            Assert.assertEquals(Resultado, msjActual);
+            msj = "Exitoso";
+        }catch(AssertionError e){
+            System.out.println("Mensaje Assert Fail: "+e);
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        
+        return msj;
+   	
+   }
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //TABLE
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+    /***
+     * El método buscar un texto en una objeto.
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param texto Es el texto que vamos a buscar en la tabla.
+     * @param tagName Es tipo de componente en donde queremos buscar el texto, Ejemplo DIV, TD, TR, SPAN, etc.
+     * @param xpath Es el selector selenium donde queremos buscar el texto y es solo en tipo XPATH.
+     * @exception InterruptedException Para manejar excepciones con el hilo de procesamiento que se esta deteniendo.
+     * @return Retorna Exitoso si encuentra el texto o Fallido si no lo encuntra.
+     */
+    public String buscarTextoTabla(RemoteWebDriver driver, String texto, String tagName, String xpath) throws InterruptedException{
+        WebElement table = driver.findElement(By.xpath(xpath));
+        List<WebElement> buscarTexto = table.findElements(By.tagName(tagName));
+        String Resultado = "Fallido";
+        for(int a=0; buscarTexto.size() > a; a++){
+            WebElement b = buscarTexto.get(a);
+            String txt = buscarTexto.get(a).getText();
+            txt.trim();
+            System.out.println("Texto = "+txt);
+            if(txt.equals(texto)){
+                Resultado = "Exitoso";
+                System.out.println(txt);
+                a = buscarTexto.size()+2;
+            }
+        }
+        return Resultado;
+    }
     
+    /***
+     * El método presiona un texto en una tabla.
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param texto Es el texto que vamos a presionar en la tabla.
+     * @param tagName Es tipo de componente en donde queremos presionar el texto, Ejemplo DIV, TD, TR, SPAN, etc.
+     * @param xpath Es el selector selenium donde queremos presionar el texto y es solo en tipo XPATH.
+     * @exception InterruptedException Para manejar excepciones con el hilo de procesamiento que se esta deteniendo.
+     */
+    public void presionarLkTabla(RemoteWebDriver driver, String texto, String tagName, String xpath) throws InterruptedException{
+        WebElement table = driver.findElement(By.xpath(xpath));
+        List<WebElement> buscarTexto = table.findElements(By.tagName(tagName));
+        for(int a=0; buscarTexto.size() > a; a++){
+            WebElement b = buscarTexto.get(a);
+            String txt = buscarTexto.get(a).getText();
+            if(txt.equals(texto)){
+                System.out.println(txt);
+                buscarTexto.get(a).click();
+                a = buscarTexto.size()+2;
+            }
+        }
+    }
+    
+    /***
+     * El método nos ayuda a seleccionar una posisión de un, select o dropdownlist.
+     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium del cbo, select o dropdownlist.
+     * @param Index Es el valor del texto que se busca en el elemento.
+     */
+    public void seleccionarComboByIndex(RemoteWebDriver driver, String findby, String Elemento, int Index){
+        WebElement combo = this.driverWait(driver, findby, Elemento);
+        Select cbo = new Select(combo);
+        cbo.selectByIndex(Index);
+    } 
 }	

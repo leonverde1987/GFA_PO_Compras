@@ -208,4 +208,71 @@ public class GenericSteps extends genericGrid{
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
         return msj;
     }
+    
+    /**
+     * Esté método valida la cuenta de compenzación de costos. 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es el texto que vamos a buscar en el objeto.
+     * @param contador Es el controlador de pasos ejecutados.
+     * @param Config Es el archivo de configuración de la prueba.
+     * @param Escenario Es el nombre del caso de prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param navegador Es el navegador donde se ejecuto la prueba.
+     * @return Regresa el resultado Exitoso o Fallido y su detalle. 
+     * @throws InterruptedException 
+     */
+    public String validarTextoEnObjeto(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        String text = this.buscarTextoTabla(driver, texto, "td", Elementos.getProperty("div_tabla_resultados"));
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
+        public String ValidarTextoEnObjetoResponse(RemoteWebDriver driver, String tagName, String texto, String atributo, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        String text = this.buscarTextoTabla(driver, texto, tagName, atributo);
+        //String msj = "";
+        /*try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }*/
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return text;
+    }
+    /**
+     * Esté método valida la cuenta de compenzación de costos. 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es el texto que vamos a buscar en el objeto.
+     * @param contador Es el controlador de pasos ejecutados.
+     * @param Config Es el archivo de configuración de la prueba.
+     * @param Escenario Es el nombre del caso de prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param navegador Es el navegador donde se ejecuto la prueba.
+     * @throws InterruptedException 
+     */
+    public void presionarTextoEnTabla(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        this.presionarLkTabla(driver, texto, "div", Elementos.getProperty("div_seleccionar_proveedor"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Esté método valida la cuenta de compenzación de costos. 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es el texto que vamos a buscar en el objeto.
+     * @param contador Es el controlador de pasos ejecutados.
+     * @param Config Es el archivo de configuración de la prueba.
+     * @param Escenario Es el nombre del caso de prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param navegador Es el navegador donde se ejecuto la prueba.
+     * @throws InterruptedException 
+     */
+    public void presionarTextoEnTablaResponse(RemoteWebDriver driver, String tagName, String texto, String atributo, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        this.presionarLkTabla(driver, texto, tagName, atributo);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
 }

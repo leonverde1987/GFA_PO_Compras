@@ -66,6 +66,13 @@ public class MenusNavegadorSteps extends genericGrid{
             clickJS(driver, "xpath", Elementos.getProperty("ap_factura"));
     }
     
-    
-    
+    /**
+     * Este método abre el menú COMPRAS - SOLICITUDES DE COMPRA 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @throws InterruptedException 
+     */
+    public void abrirMenuComprasSolicitudesCompra(RemoteWebDriver driver, Properties Elementos) throws InterruptedException{
+        clickJS(driver, "xpath", Elementos.getProperty("solicitudes_compra"));
+    }
 }
