@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Properties;
 import org.junit.ComparisonFailure;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class GenericSteps extends genericGrid{
@@ -273,6 +274,73 @@ public class GenericSteps extends genericGrid{
      */
     public void presionarTextoEnTablaResponse(RemoteWebDriver driver, String tagName, String texto, String atributo, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
         this.presionarLkTabla(driver, texto, tagName, atributo);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /* El método permite hacer switch a otra ventana por parte del contenido de su nombre
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param windowsTitle String parte del titulo de la entana
+     */
+    public boolean switchWindowByTitle(WebDriver driver, String windowsTitle) throws Exception{
+    	try {
+    		Boolean result = false;
+    		for (String handle: driver.getWindowHandles()) {
+    			driver.switchTo().window(handle);
+		    	if (driver.getTitle().toString().contains(windowsTitle)) {
+		    		result = true;
+		    		break;
+		    	}
+    		}
+    		
+    		return result;
+    	}
+    	catch(Exception ex) {
+    		throw new Exception("Error al hacer switch a la ventana: " + windowsTitle);
+    	}	
+    }
+
+     /* El método permite hacer switch a otra ventana por el index de la ventana
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param windowsTitle String parte del titulo de la entana
+     */
+    public boolean switchWindowByIndex(WebDriver driver, int windowsIndex) throws Exception{
+    	try {
+    		Boolean result = false;
+    		int index = 0;
+    		for (String handle: driver.getWindowHandles()) {
+    			driver.switchTo().window(handle);
+		    	if (index == windowsIndex) {
+		    		result = true;
+		    		break;
+		    	}
+		    	index++;
+    		}
+    		
+    		return result;
+    	}
+    	catch(Exception ex) {
+    		throw new Exception("Error al hacer switch a la ventana con index: " + windowsIndex);
+    	}	
+    }
+    
+    /**
+     * Esté método cierra la sesión del usuario.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param contador Es el controlador de pasos ejecutados.
+     * @param Config Es el archivo de configuración de la prueba.
+     * @param Elementos Es el archivo con los elementos del aplicativo. 
+     * @param Escenario Nombre del caso de prueba a ejecutar.
+     * @param navegador Es el navegador a utilizar.
+     * @throws FileNotFoundException Cacha cualquier excepción en la ejecución.
+     * @throws InterruptedException Cacha si el archivo Config no existe. 
+     */
+    public void cerrarSesion(RemoteWebDriver driver, int contador, Properties Config, Properties Elementos, String Escenario, String navegador) throws FileNotFoundException, InterruptedException {
+        this.dormirSeg(2);
+        this.clickJS(driver, "xpath", Elementos.getProperty("lk_usuario"));
+        this.dormirSeg(2);
+        this.clickJS(driver, "xpath", Elementos.getProperty("lk_cerrar_sesion"));
+        this.dormirSeg(2);
+        this.clickJS(driver, "xpath", Elementos.getProperty("btn_confirmar_cierre"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
 }

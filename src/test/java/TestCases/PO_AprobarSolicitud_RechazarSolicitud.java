@@ -28,7 +28,7 @@ import steps.AprobacionSteps;
 	    testSetId=2668
 	)
 
-public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99{
+public class PO_AprobarSolicitud_RechazarSolicitud{
     
     //STEPS
     public GenericSteps genericSteps = new GenericSteps();
@@ -41,7 +41,8 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
     public Properties UILogin = null;
     public Properties UIMenusNavegador = null;
     public Properties UIConfigMantenimiento = null;
-    public Properties UIAprobacionAcuerdo = null;
+    public Properties UIAutoaprobacion = null;
+    public Properties UIAprobacion = null;
     
     
     public Properties Config = null;
@@ -61,8 +62,9 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
     
         Config = genericSteps.getPropetiesFile("configuracion\\configuracion.properties");
         UILogin = genericSteps.getPropetiesFile("configuracion\\uielements\\loginPage.properties");
-        UIAprobacionAcuerdo = genericSteps.getPropetiesFile("configuracion\\uielements\\autoaprobacion.properties");
-        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\aprobar_acuerdo_proveedor\\dt_25637.csv");
+        UIAutoaprobacion = genericSteps.getPropetiesFile("configuracion\\uielements\\autoaprobacion.properties");
+        UIAprobacion = genericSteps.getPropetiesFile("configuracion\\uielements\\aprobacion.properties");
+        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\aprobar_solicitud\\dt_20159.csv");
         contador = 1;
         RutaEvidencia = Config.getProperty("rutaEvidencia");
         Resultado = "Fallido";
@@ -73,8 +75,8 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
     }
     
     @Test
-    @SpiraTestCase(testCaseId=25637)
-    public void Test_PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
+    @SpiraTestCase(testCaseId=20159)
+    public void Test_PO_AprobarSolicitud_RechazarSolicitud() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
         
@@ -82,11 +84,12 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String tipoAcuerdo = filaDatos[3];
-            String numeroAcuerdo = filaDatos[4];
+            String numeroSolicitud = filaDatos[3];
+            String comentario = filaDatos[4];
+            String solicitante = filaDatos[5];
             try{
 
-                    Escenario = "PO_Aprobar Acuerdo de Proveedor_Validar notificación de autoaprobación por hasta 1999 coma 99 "+Repeticion;
+                    Escenario = "PO_Aprobar Solicitud_Rechazar solicitud "+Repeticion;
 
                     //Paso 1
                     Pasos.add(contador+".- Ingresar a la URL: "+Config.getProperty("urlOracle"));
@@ -100,8 +103,35 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
                     //Paso 3
                     contador++;
                     Pasos.add(contador+".- Presionar sobre la campana de Notificaciones.");
-                    aprobacionSteps.clickCampanaNotificaciones(driver, UIAprobacionAcuerdo, contador, Config, Escenario, Navegador);
-                    Resultado = aprobacionSteps.validarFacturaAutoaprobada(driver, "Mensaje Informativo: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" implantado", Config, UIAprobacionAcuerdo, contador, Escenario, Navegador);
+                    aprobacionSteps.clickCampanaNotificaciones(driver, UIAutoaprobacion, contador, Config, Escenario, Navegador);
+                    
+                    //Paso 4
+                    contador++;
+                    Pasos.add(contador+".- Presionar sobre la notificación para aprobación de la Solicitud de Compra: "+numeroSolicitud);
+                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Aprobar solicitud "+numeroSolicitud, contador, Config, Escenario, Navegador);
+                    
+                    //Paso 5
+                    contador++;
+                    Pasos.add(contador+".- Presionar el botón Rechazar.");
+                    aprobacionSteps.clickBtnRechazarSolicitud(driver, UIAprobacion, contador, Config, Escenario, Navegador);
+                    
+                    //Paso 6
+                    contador++;
+                    Pasos.add(contador+".- Ingresar el Comentario.");
+                    aprobacionSteps.ingresarComentarioSolicitud(driver, UIAprobacion, comentario, contador, Config, Escenario, Navegador);
+                    
+                    //Paso 7
+                    contador++;
+                    Pasos.add(contador+".- Presionar el botón Ejecutar.");
+                    aprobacionSteps.clickBtnEjecutarRechazoSolicitud(driver, UIAprobacion, contador, Config, Escenario, Navegador);
+                    
+                    //Paso 8
+                    contador++;
+                    Pasos.add(contador+".- Validar que se haya rechazado la Solicitud de compra.");
+                    genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
+                    genericSteps.loginOracle(driver, solicitante, pass, idioma, contador, Config, UILogin, Escenario, Navegador);
+                    aprobacionSteps.clickCampanaNotificaciones(driver, UIAutoaprobacion, contador, Config, Escenario, Navegador);
+                    Resultado = aprobacionSteps.validarFacturaAutoaprobada(driver, "Mensaje Informativo: Solicitud "+numeroSolicitud+" rechazada", Config, UIAutoaprobacion, contador, Escenario, Navegador);
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;

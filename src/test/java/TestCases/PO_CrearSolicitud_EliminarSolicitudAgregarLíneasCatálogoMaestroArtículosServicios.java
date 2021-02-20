@@ -19,6 +19,7 @@ import steps.GenericSteps;
 import steps.LoginSteps;
 import steps.MenusNavegadorSteps;
 import steps.AprobacionSteps;
+import steps.GestionarSolicitudesSteps;
 
 @SpiraTestConfiguration(
 	    url="https://testing-it.spiraservice.net",
@@ -35,6 +36,7 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
     public LoginSteps loginSteps = new LoginSteps();
     public MenusNavegadorSteps menusNavegadorSteps = new MenusNavegadorSteps();
     public AprobacionSteps aprobacionSteps = new AprobacionSteps();
+    public GestionarSolicitudesSteps gestionarSolicitudesSteps = new GestionarSolicitudesSteps();
 
 
     //UIELEMENTS
@@ -63,7 +65,7 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
         UILogin = genericSteps.getPropetiesFile("configuracion\\uielements\\loginPage.properties");
         UIMenusNavegador = genericSteps.getPropetiesFile("configuracion\\uielements\\menusNavegador.properties");
         UIGestionarSolicitudes = genericSteps.getPropetiesFile("configuracion\\uielements\\gestionarSolicitudes.properties");
-        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\aprobar_acuerdo_proveedor\\15337.csv");
+        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\crear_solicitud\\dt_15337.csv");
         contador = 1;
         RutaEvidencia = Config.getProperty("rutaEvidencia");
         Resultado = "Fallido";
@@ -83,8 +85,8 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String solicitud = filaDatos[3];
-            String estadoSolicitud = filaDatos[4];
+            String numeroSolicitud = filaDatos[3];
+            String mensajeAdvertencia = filaDatos[4];
             try{
 
                     Escenario = "PO_Crear Solicitud_Eliminar solicitud de agregar líneas en catálogo maestro de artículos y servicios "+Repeticion;
@@ -101,27 +103,33 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
                     //Paso 3
                     contador++;
                     Pasos.add(contador+".- Ir al menú Navegador: Compras - Solicitudes de compra.");
-                    menusNavegadorSteps.abrirMenuComprasSolicitudesCompra(driver, UIMenusNavegador);
+                    menusNavegadorSteps.clickMenuHamburguesa(driver, UIMenusNavegador);
+                    menusNavegadorSteps.abrirMenuComprasSolicitudesCompra(driver, contador, Config, Escenario, Navegador, UIMenusNavegador);
                     
                     //Paso 4
                     contador++;
                     Pasos.add(contador+".- Presionar sobre la opción Gestionar Solicitudes.");
-                    
+                    gestionarSolicitudesSteps.menuGestionarSolicitudes(driver, UIGestionarSolicitudes, contador, Config, Escenario, Navegador);
                     
                     //Paso 5
                     contador++;
-                    Pasos.add(contador+".- Seleccionar el registro de la Solicitud: "+solicitud);
-                    
+                    Pasos.add(contador+".- Seleccionar el registro de la Solicitud: "+numeroSolicitud);
+                    gestionarSolicitudesSteps.seleccionarRegistroSolicitud(driver, UIGestionarSolicitudes, numeroSolicitud, contador, Config, Escenario, Navegador);
                     
                     //Paso 6
                     contador++;
                     Pasos.add(contador+".- Presionar sobre la opción Acciones - Suprimir.");
-                    
+                    gestionarSolicitudesSteps.presionarSuprimirSolicitud(driver, mensajeAdvertencia, UIGestionarSolicitudes, contador, Config, Escenario, Navegador);
                     
                     //Paso 7
                     contador++;
                     Pasos.add(contador+".- Presionar sobre el botón Sí.");
-                    //Resultado = 
+                    gestionarSolicitudesSteps.confirmarSuprimirSolicitud(driver, Config, UIGestionarSolicitudes, contador, Escenario, Navegador);
+                    
+                    //Paso 8
+                    contador++;
+                    Pasos.add(contador+".- Validar que ya no exista la Solicitud.");
+                    Resultado = gestionarSolicitudesSteps.validarSolicitudEliminada(driver, numeroSolicitud, Config, UIGestionarSolicitudes, contador, Escenario, Navegador);
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
@@ -130,12 +138,14 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
                 Resultado = "Ejecución Fallida: "+e;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }finally{
+                genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
                 genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
                     ResultadoGlobal = Resultado;
                 }
                 Resultado="Fallido";
                 contador=0;
+                Pasos.clear();
             }
             Repeticion++;
         }

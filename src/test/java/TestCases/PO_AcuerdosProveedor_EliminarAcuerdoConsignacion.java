@@ -19,6 +19,7 @@ import steps.GenericSteps;
 import steps.LoginSteps;
 import steps.MenusNavegadorSteps;
 import steps.AprobacionSteps;
+import steps.GestionarAcuerdosSteps;
 
 @SpiraTestConfiguration(
 	    url="https://testing-it.spiraservice.net",
@@ -28,20 +29,21 @@ import steps.AprobacionSteps;
 	    testSetId=2668
 	)
 
-public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99{
+public class PO_AcuerdosProveedor_EliminarAcuerdoConsignacion{
     
     //STEPS
     public GenericSteps genericSteps = new GenericSteps();
     public LoginSteps loginSteps = new LoginSteps();
     public MenusNavegadorSteps menusNavegadorSteps = new MenusNavegadorSteps();
     public AprobacionSteps aprobacionSteps = new AprobacionSteps();
+    public GestionarAcuerdosSteps gestionarAcuerdosSteps = new GestionarAcuerdosSteps();
 
 
     //UIELEMENTS
     public Properties UILogin = null;
     public Properties UIMenusNavegador = null;
     public Properties UIConfigMantenimiento = null;
-    public Properties UIAprobacionAcuerdo = null;
+    public Properties UIGestionarAcuerdos = null;
     
     
     public Properties Config = null;
@@ -61,8 +63,9 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
     
         Config = genericSteps.getPropetiesFile("configuracion\\configuracion.properties");
         UILogin = genericSteps.getPropetiesFile("configuracion\\uielements\\loginPage.properties");
-        UIAprobacionAcuerdo = genericSteps.getPropetiesFile("configuracion\\uielements\\autoaprobacion.properties");
-        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\aprobar_acuerdo_proveedor\\dt_25637.csv");
+        UIMenusNavegador = genericSteps.getPropetiesFile("configuracion\\uielements\\menusNavegador.properties");
+        UIGestionarAcuerdos = genericSteps.getPropetiesFile("configuracion\\uielements\\gestionarAcuerdos.properties");
+        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\acuerdos_proveedor\\dt_15382.csv");
         contador = 1;
         RutaEvidencia = Config.getProperty("rutaEvidencia");
         Resultado = "Fallido";
@@ -73,8 +76,8 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
     }
     
     @Test
-    @SpiraTestCase(testCaseId=25637)
-    public void Test_PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
+    @SpiraTestCase(testCaseId=15382)
+    public void Test_PO_AcuerdosProveedor_EliminarAcuerdoConsignacion() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
         
@@ -82,11 +85,11 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String tipoAcuerdo = filaDatos[3];
-            String numeroAcuerdo = filaDatos[4];
+            String numeroAcuerdo = filaDatos[3];
+            String mensajeAdvertencia = filaDatos[4];
             try{
 
-                    Escenario = "PO_Aprobar Acuerdo de Proveedor_Validar notificación de autoaprobación por hasta 1999 coma 99 "+Repeticion;
+                    Escenario = "PO_Acuerdos de Proveedor_Eliminar acuerdo de consignación "+Repeticion;
 
                     //Paso 1
                     Pasos.add(contador+".- Ingresar a la URL: "+Config.getProperty("urlOracle"));
@@ -99,9 +102,44 @@ public class PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta
                     
                     //Paso 3
                     contador++;
-                    Pasos.add(contador+".- Presionar sobre la campana de Notificaciones.");
-                    aprobacionSteps.clickCampanaNotificaciones(driver, UIAprobacionAcuerdo, contador, Config, Escenario, Navegador);
-                    Resultado = aprobacionSteps.validarFacturaAutoaprobada(driver, "Mensaje Informativo: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" implantado", Config, UIAprobacionAcuerdo, contador, Escenario, Navegador);
+                    Pasos.add(contador+".- Ir al menú Navegador: Compras - Acuerdos de compra.");
+                    menusNavegadorSteps.clickMenuHamburguesa(driver, UIMenusNavegador);
+                    menusNavegadorSteps.abrirMenuComprasAcuerdosCompra(driver, contador, Config, Escenario, Navegador, UIMenusNavegador);
+                    
+                    //Paso 4
+                    contador++;
+                    Pasos.add(contador+".- Ir al menú Tareas: Acuerdos - Gestionar acuerdos.");
+                    gestionarAcuerdosSteps.menuGestionarAcuerdos(driver, UIGestionarAcuerdos, contador, Config, Escenario, Navegador);
+                    
+                    //Paso 5
+                    contador++;
+                    Pasos.add(contador+".- Ingresar el número de Acuerdo: "+numeroAcuerdo);
+                    gestionarAcuerdosSteps.ingresarAcuerdo(driver, UIGestionarAcuerdos, numeroAcuerdo, contador, Config, Escenario, Navegador);
+
+                    //Paso 6
+                    contador++;
+                    Pasos.add(contador+".- Presionar el botón Buscar.");
+                    gestionarAcuerdosSteps.buscarAcuerdo(driver, UIGestionarAcuerdos, contador, Config, Escenario, Navegador);
+
+                    //Paso 7
+                    contador++;
+                    Pasos.add(contador+".- Seleccionar el registro de la Solicitud: "+numeroAcuerdo);
+                    gestionarAcuerdosSteps.seleccionarRegistroAcuerdo(driver, UIGestionarAcuerdos, numeroAcuerdo, contador, Config, Escenario, Navegador);
+                    
+                    //Paso 8
+                    contador++;
+                    Pasos.add(contador+".- Presionar sobre la opción Acciones - Suprimir.");
+                    gestionarAcuerdosSteps.presionarSuprimirAcuerdo(driver, mensajeAdvertencia, UIGestionarAcuerdos, contador, Config, Escenario, Navegador);
+                    
+                    //Paso 9
+                    contador++;
+                    Pasos.add(contador+".- Presionar sobre el botón Sí.");
+                    gestionarAcuerdosSteps.confirmarSuprimirAcuerdo(driver, Config, UIGestionarAcuerdos, contador, Escenario, Navegador);
+                    
+                    //Paso 10
+                    contador++;
+                    Pasos.add(contador+".- Validar que ya no exista el Acuerdo.");
+                    Resultado = gestionarAcuerdosSteps.validarAcuerdoEliminado(driver, numeroAcuerdo, Config, UIGestionarAcuerdos, contador, Escenario, Navegador);
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;

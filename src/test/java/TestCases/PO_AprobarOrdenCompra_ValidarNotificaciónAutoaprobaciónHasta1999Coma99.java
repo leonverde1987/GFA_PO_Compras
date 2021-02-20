@@ -114,12 +114,14 @@ public class PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999C
                 Resultado = "Ejecución Fallida: "+e;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }finally{
+                genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
                 genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
                     ResultadoGlobal = Resultado;
                 }
                 Resultado="Fallido";
                 contador=0;
+                Pasos.clear();
             }
             Repeticion++;
         }

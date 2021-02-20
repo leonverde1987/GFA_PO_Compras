@@ -89,7 +89,7 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
             String comprador = filaDatos[5];
             String importe = filaDatos[6];
             String monedaAcuerdo = filaDatos[7];
-            String estadoAcuerdo = filaDatos[8];
+            String personaAsignada = filaDatos[8];
             try{
 
                     Escenario = "PO_Aprobar Acuerdo de Proveedor_Aprobar un acuerdo de proveedor mayor a 100000 coma 00 dueño de centro de costos "+Repeticion;
@@ -111,23 +111,25 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
                     //Paso 4
                     contador++;
                     Pasos.add(contador+".- Presionar sobre la notificación para aprobación del Acuerdo de Proveedor: "+numeroAcuerdo);
-                    aprobacionSteps.clickNotificacionFacturaAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" enviado por "+comprador+" ("+importe+" "+monedaAcuerdo+")", contador, Config, Escenario, Navegador);
+                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" enviado por "+comprador+" ("+importe+" "+monedaAcuerdo+")", contador, Config, Escenario, Navegador);
                     
                     //Paso 5
                     contador++;
                     Pasos.add(contador+".- Presionar sobre el botón Aprobar.");
                     aprobacionSteps.clickBtnAprobar(driver, UIAprobacion, contador, Config, Escenario, Navegador);
                     
-                    //Paso 6
+                    /*//Paso 6
                     contador++;
                     Pasos.add(contador+".- Presionar sobre el botón Ejecutar.");
                     aprobacionSteps.clickBtnEjecutar(driver, UIAprobacion, contador, Config, Escenario, Navegador);
+                    genericSteps.switchWindowByIndex(driver, 0);*/
                     
                     //Paso 7
                     contador++;
                     Pasos.add(contador+".- Validar que se haya aprobado el acuerdo con el Dueño CECO.");
-                    aprobacionSteps.clickNotificacionFacturaAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" enviado por "+comprador+" ("+importe+" "+monedaAcuerdo+")", contador, Config, Escenario, Navegador);
-                    Resultado = aprobacionSteps.validarAcuerdoAprobadoDueñoCECO(driver, estadoAcuerdo, Config, UIAprobacion, contador, Escenario, Navegador);
+                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" enviado por "+comprador+" ("+importe+" "+monedaAcuerdo+")", contador, Config, Escenario, Navegador);
+                    genericSteps.switchWindowByIndex(driver, 1);
+                    Resultado = aprobacionSteps.validarDocumentoAprobadoAprobador(driver, personaAsignada, Config, UIAprobacion, contador, Escenario, Navegador);
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
@@ -136,12 +138,14 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
                 Resultado = "Ejecución Fallida: "+e;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }finally{
+                genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
                 genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
                     ResultadoGlobal = Resultado;
                 }
                 Resultado="Fallido";
                 contador=0;
+                Pasos.clear();
             }
             Repeticion++;
         }

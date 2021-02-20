@@ -30,7 +30,7 @@ public class AprobacionSteps extends genericGrid {
     }
        
     /**
-     * Este metodo hace clic en la notificación del Anticipo a aprobar
+     * Este metodo valida el documento de Compra autoaprobado.
      * @param driver Elemento WebDriver de la prueba.
      * @param Elementos Es el archivo properties de los elementos.
      * @param contador Es el contador.
@@ -54,7 +54,7 @@ public class AprobacionSteps extends genericGrid {
     }
     
      /**
-     * Este metodo hace clic en la notificación del Anticipo a aprobar
+     * Este metodo hace clic en la notificación del documento a aprobar
      * @param driver Elemento WebDriver de la prueba.
      * @param Elementos Es el archivo properties de los elementos.
      * @param texto Es la leyenda a validar para la notificación.
@@ -64,33 +64,19 @@ public class AprobacionSteps extends genericGrid {
      * @param navegador Es el navegador a usar en la prueba.
      * @throws InterruptedException 
      */
-    public void clickNotificacionFacturaAprobacion(RemoteWebDriver driver, Properties Elementos, 
+    public void clickNotificacionAcuerdoAprobacion(RemoteWebDriver driver, Properties Elementos, 
     		String texto, int contador, Properties Config, String Escenario, String navegador
-    		) throws InterruptedException{
+    		) throws InterruptedException, Exception{
     	dormirSeg(3);
         String elem = Elementos.getProperty("div_lista_notificaciones");
-        //genericSteps.presionarTextoEnTablaResponse(driver, "a", texto, elem, Config, Elementos, contador, Escenario, navegador);
-        System.out.println(driver.getWindowHandle());
-        driver.getWindowHandle();
-        String ventanaOriginal = driver.getWindowHandle();
-        assert driver.getWindowHandles().size() == 1;
-        driver.findElement(By.linkText(texto)).click();
-        System.out.println(driver.getWindowHandle());
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(numberOfWindowsToBe(2));
-        for (String windowHandle : driver.getWindowHandles()) {
-            if (!ventanaOriginal.contentEquals(windowHandle)) {
-                driver.switchTo().window(windowHandle);
-                break;
-            }
-        }
-        //driver.switchTo().newWindow(WindowType.WINDOW);
+        genericSteps.presionarTextoEnTablaResponse(driver, "a", texto, elem, Config, Elementos, contador, Escenario, navegador);
+        genericSteps.switchWindowByIndex(driver, 1);
         dormirSeg(5);
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
     /**
-     * Este método hace clic en la Campana de Notificaciones
+     * Este método hace clic en el botón Aprobar.
      * @param driver Elemento WebDriver de la prueba.
      * @param Elementos Es el archivo properties de los elementos.
      * @param contador Es el contador.
@@ -99,14 +85,15 @@ public class AprobacionSteps extends genericGrid {
      * @param navegador Es el navegador a usar en la prueba.
      * @throws InterruptedException 
      */
-    public void clickBtnAprobar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
-            clickJS(driver, "xpath", Elementos.getProperty("btn_aprobar"));
-            dormirSeg(3);
-            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    public void clickBtnAprobar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_aprobar"));
+        genericSteps.switchWindowByIndex(driver, 0);
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
     /**
-     * Este método hace clic en la Campana de Notificaciones
+     * Este método hace clic en el botón Aprobar.
      * @param driver Elemento WebDriver de la prueba.
      * @param Elementos Es el archivo properties de los elementos.
      * @param contador Es el contador.
@@ -115,14 +102,31 @@ public class AprobacionSteps extends genericGrid {
      * @param navegador Es el navegador a usar en la prueba.
      * @throws InterruptedException 
      */
-    public void clickBtnEjecutar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
-            clickJS(driver, "xpath", Elementos.getProperty("btn_ejecutar"));
-            dormirSeg(3);
-            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    public void clickBtnAprobarSolicitud(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_aprobar_solicitud"));
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
     /**
-     * Este metodo valida que se haya aprobado el Acuerdo por el Dueño CECO
+     * Este método hace clic en el botón Ejecutar.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void clickBtnEjecutar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_ejecutar_aprobacion"));
+        genericSteps.switchWindowByIndex(driver, 0);
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este metodo valida que se haya aprobado el Documento por el Aprobador
      * @param driver Elemento WebDriver de la prueba.
      * @param texto Es la leyenda a validar en la notificación.
      * @param Elementos Es el archivo properties de los elementos.
@@ -132,10 +136,289 @@ public class AprobacionSteps extends genericGrid {
      * @param navegador Es el navegador a usar en la prueba.
      * @throws InterruptedException 
      */
-    public String validarAcuerdoAprobadoDueñoCECO(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+    public String validarDocumentoAprobadoAprobador(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
         dormirSeg(3);
-        String elem = Elementos.getProperty("tab_acuerdo_aprobado");
-        String text = this.buscarTextoTabla(driver, texto, "span", elem);
+        String elem = Elementos.getProperty("div_documento_aprobado");
+        String text = this.buscarTextoTabla(driver, texto, "td", elem);
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
+    /**
+     * Este metodo valida que se haya aprobado el Documento por el Aprobador
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es la leyenda a validar en la notificación.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public String validarSolicitudAprobadaAprobador(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        dormirSeg(3);
+        String elem = Elementos.getProperty("div_solicitud_aprobada");
+        String text = this.buscarTextoTabla(driver, texto, "strong", elem);
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
+    /**
+     * Este metodo valida que se haya aprobado el Documento por el Aprobador
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es la leyenda a validar en la notificación.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public String validarSolicitudAprobadaLiderTecnico(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        dormirSeg(3);
+        String elem = Elementos.getProperty("tab_solicitud_aprobada");
+        String text = this.buscarTextoTabla(driver, texto, "strong", elem);
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
+    /**
+     * Este metodo valida que se haya aprobado el Documento por el Aprobador
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es la leyenda a validar en la notificación.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public String validarOrdenAprobadaAprobador(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        dormirSeg(3);
+        String elem = Elementos.getProperty("tab_orden_aprobada");
+        String text = this.buscarTextoTabla(driver, texto, "strong", elem);
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
+    /**
+     * Este metodo valida que se haya aprobado el Documento por el Aprobador
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es la leyenda a validar en la notificación.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public String validarOrdenAprobadaLiderTecnico(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        dormirSeg(3);
+        String elem = Elementos.getProperty("tab_orden_aprobada_lider");
+        String text = this.buscarTextoTabla(driver, texto, "strong", elem);
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
+    public String validarDocumentoAprobadoFinal(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        dormirSeg(2);
+        String elem = Elementos.getProperty("div_lista_notificaciones");
+        String text = this.buscarTextoTabla(driver, texto, "a", elem);
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Fallido");
+        }catch(ComparisonFailure e){
+            msj = "Exitoso, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
+    /************************** RECHAZAR **************************/
+    
+    /**
+     * Este método hace clic en el icono Agregar Comentario.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void clickIcnAgregarComentario(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("icon_agregar_comentario"));
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método permite ingresar el Comentario.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param comentario Es la solicitud a buscar.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void ingresarComentario(RemoteWebDriver driver, Properties Elementos, 
+    		String comentario, int contador, Properties Config, String Escenario, String navegador
+    		) throws InterruptedException{
+    	dormirSeg(3);
+        this.ingresarTexto(driver, "xpath", Elementos.getProperty("txa_comentario"), comentario);
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método hace clic en el botón Aceptar del Comentario.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void clickBtnAceptarComentario(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_ok_comentario"));
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método hace clic en el botón Rechazar para el Acuerdo.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void clickBtnRechazar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_rechazar"));
+        genericSteps.switchWindowByIndex(driver, 0);
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método hace clic en el botón Rechazar para la Solicitud.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void clickBtnRechazarSolicitud(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_rechazar_solicitud"));
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método permite ingresar el Comentario.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param comentario Es la solicitud a buscar.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void ingresarComentarioSolicitud(RemoteWebDriver driver, Properties Elementos, 
+    		String comentario, int contador, Properties Config, String Escenario, String navegador
+    		) throws InterruptedException{
+    	dormirSeg(3);
+        this.ingresarTexto(driver, "xpath", Elementos.getProperty("txa_comentario_solicitud"), comentario);
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método hace clic en el botón Ejecutar para rechazar la Solicitud.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void clickBtnEjecutarRechazoSinMotivoSolicitud(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_ejecutar_rechazo"));
+        //genericSteps.switchWindowByIndex(driver, 0);
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método hace clic en el botón Ejecutar para rechazar la Solicitud.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void clickBtnEjecutarRechazoSolicitud(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_ejecutar_rechazo"));
+        genericSteps.switchWindowByIndex(driver, 0);
+        dormirSeg(3);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método valida que se muestra mensaje de Error al rechazar sin motivo.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public String validarMensajeErrorRechazoSolicitud(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        dormirSeg(3);
+        String elem = Elementos.getProperty("tab_mensaje_error");
+        String text = this.buscarTextoTabla(driver, texto, "td", elem);
         String msj = "";
         try{
             msj = this.AssertComparaMensajes(text, "Exitoso");
