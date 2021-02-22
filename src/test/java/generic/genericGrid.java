@@ -132,7 +132,7 @@ public class genericGrid extends evidenceGrid {
         }catch(Exception e){
             System.out.println(e);
         }
-
+            driver.manage().window().maximize();
             return driver;
         }
     

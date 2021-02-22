@@ -29,18 +29,20 @@ public class RunGrid {
         String ruta = new generic.evidenceGrid().creaCarpetaRepeticion();
         Config.setProperty("rutaEvidencia",ruta);
         //new generic.genericGrid().leventarNodosGrid();
-//        Config.setProperty("Navegador","motorolaOneVision");
-//        Config.store(new FileWriter("configuracion\\configuracion.properties"),"Cambio de Navegador a motorolaOneVision");
-//        core.run (TestCases.Test_Paqueteria_Buscar_Guia.class);
-//        
+        
         Config.setProperty("Navegador","chrome");
         Config.store(new FileWriter("configuracion\\configuracion.properties"),"Cambio de Navegador a Chrome");
-        core.run (TestCases.PO_GestionarCicloVidaAcuerdoProveedor_ActualizarEstadoCongelacionAcuerdoProveedor.class);
-//        
-//        Config.setProperty("Navegador","firefox");
-//        Config.store(new FileWriter("configuracion\\configuracion.properties"),"Cambio de Navegador a firefox");
-//        core.run (TestCases.PO_Solicitudes_Compra_Leo.class);
-//////        //new generic.genericGrid().cierraNodosGrid();
+        core.run (TestCases.PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99.class);
+        //core.run (TestCases.PO_ModificarSolicitud_CancelarSolicitud.class);
+        
 
+        //Para firefox 
+        Config.setProperty("Navegador","firefox");
+        Config.store(new FileWriter("configuracion\\configuracion.properties"),"Cambio de Navegador a firefox");
+
+        // Para edge
+        /*Config.setProperty("Navegador","edge");
+        Config.store(new FileWriter("configuracion\\configuracion.properties"),"Cambio de Navegador a EDGE");*/
+    
     }
 }

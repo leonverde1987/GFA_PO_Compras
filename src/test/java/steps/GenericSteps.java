@@ -341,6 +341,5 @@ public class GenericSteps extends genericGrid{
         this.clickJS(driver, "xpath", Elementos.getProperty("lk_cerrar_sesion"));
         this.dormirSeg(2);
         this.clickJS(driver, "xpath", Elementos.getProperty("btn_confirmar_cierre"));
-        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
 }

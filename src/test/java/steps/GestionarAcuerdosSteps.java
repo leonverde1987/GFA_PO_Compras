@@ -188,7 +188,7 @@ public class GestionarAcuerdosSteps extends genericGrid {
     }
     
      /**
-     * Este método permite retener el Acuerdo.
+     * Este método permite congelar el Acuerdo.
      * @param driver Elemento WebDriver de la prueba.
      * @param Elementos Es el archivo properties de los elementos.
      * @param contador Es el contador.
@@ -202,6 +202,45 @@ public class GestionarAcuerdosSteps extends genericGrid {
             dormirSeg(2);
             clickJS(driver,"xpath", Elementos.getProperty("lk_congelar"));
             dormirSeg(3);
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método permite cerrar definitivamente el Acuerdo.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param advertencia Es el mensaje de Advertencia a validar.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void presionarCerrarDefinitivamenteAcuerdo(RemoteWebDriver driver, String advertencia, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("lk_acciones"));
+            dormirSeg(2);
+            clickJS(driver,"xpath", Elementos.getProperty("lk_cerrar_definitivamente"));
+            dormirSeg(3);
+            String mensaje = Elementos.getProperty("div_msj_advertencia_cerrar");
+            genericSteps.ValidarTextoEnObjetoResponse(driver, "td", advertencia, mensaje, Config, Elementos, contador, Escenario, navegador);
+            dormirSeg(3);
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método permite cerrar definitivamente el Acuerdo.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param advertencia Es el mensaje de Advertencia a validar.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void confirmarCierreDefinitivoAcuerdo(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("btn_confirmar_cierre_definitivo"));
+            dormirSeg(2);
             this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     

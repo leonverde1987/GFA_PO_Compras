@@ -165,8 +165,8 @@ public class GestionarSolicitudesSteps extends genericGrid {
     public void presionarAceptarMotivoCancelacion(RemoteWebDriver driver, String confirmacion, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
             clickJS(driver, "xpath", Elementos.getProperty("btn_aceptar_cancelacion"));
             dormirSeg(4);
-            String mensaje = Elementos.getProperty("div_mensaje_cancelacion");
-            genericSteps.ValidarTextoEnObjetoResponse(driver, "div", confirmacion, mensaje, Config, Elementos, contador, Escenario, navegador);
+            String mensaje = Elementos.getProperty("div_msj_confirmacion");
+            genericSteps.ValidarTextoEnObjetoResponse(driver, "td", confirmacion, mensaje, Config, Elementos, contador, Escenario, navegador);
             dormirSeg(3);
             this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
@@ -214,7 +214,7 @@ public class GestionarSolicitudesSteps extends genericGrid {
      * @param navegador Es el navegador a usar en la prueba.
      * @throws InterruptedException 
      */
-    public String validarSolicitudCancelada(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+    public String validarEstadoSolicitud(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
         dormirSeg(3);
         String elem = Elementos.getProperty("div_solicitud");
         String text = this.buscarTextoTabla(driver, texto, "td", elem);
