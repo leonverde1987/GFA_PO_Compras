@@ -307,6 +307,7 @@ public class genericGrid extends evidenceGrid {
      */
     public void ingresarTexto(RemoteWebDriver driver, String findby, String Elemento, String Texto){
         WebElement elemen = this.driverWait(driver, findby, Elemento);
+        elemen.clear();
         elemen.sendKeys(Texto);
     }
 

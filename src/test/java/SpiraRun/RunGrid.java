@@ -32,17 +32,41 @@ public class RunGrid {
         
         Config.setProperty("Navegador","chrome");
         Config.store(new FileWriter("configuracion\\configuracion.properties"),"Cambio de Navegador a Chrome");
-        core.run (TestCases.PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99.class);
-        //core.run (TestCases.PO_ModificarSolicitud_CancelarSolicitud.class);
+        //core.run (TestCases.PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99.class);
+        //core.run (TestCases.PO_AprobarAcuerdoProveedor_RevisarSolicitudAcuerdoProveedor.class);
+//        core.run (TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00DueñoCentroCostos.class);
+//        core.run (TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00LiderTecnico.class);
+//        core.run (TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00DirectorAdministracionFinanzas.class);
+//        core.run (TestCases.PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor.class);
+//        core.run (TestCases.PO_GestionarCicloVidaAcuerdoProveedor_ActualizarEstadoCongelacionAcuerdoProveedor.class);
+        //core.run(TestCases.PO_AcuerdosProveedor_CancelarAcuerdoConsignacion.class);        
+//        core.run (TestCases.PO_GestionarCicloVidaAcuerdoProveedor_ActualizarEstadoRetencionAcuerdoProveedor.class);
+//        core.run (TestCases.PO_GestionarCicloVidaAcuerdoProveedor_RetirarAcuerdoProveedor.class);
+//        core.run (TestCases.PO_AcuerdosProveedor_EliminarAcuerdoConsignacion.class);
+//        core.run(TestCases.PO_AprobarSolicitud_ValidarNotificaciónAutoaprobaciónHasta1999Coma99.class);
+//        core.run(TestCases.PO_AprobarSolicitud_AprobarSolicitudCompraMayor100000Coma00DueñoCentroCostos.class);
+//        core.run(TestCases.PO_AprobarSolicitud_AprobarSolicitudCompraMayor100000Coma00LiderTecnico.class);
+//        core.run(TestCases.PO_AprobarSolicitud_AprobarSolicitudCompraMayor100000Coma00DirectorAdministracionFinanzas.class);
+//        core.run(TestCases.PO_AprobarSolicitud_RechazarSolicitudSinMotivo.class);
+//        core.run(TestCases.PO_AprobarSolicitud_RechazarSolicitud.class);
+          core.run(TestCases.PO_ProcesarLineasSolicitud_DevolverLineasSolicitud.class);
         
-
         //Para firefox 
         Config.setProperty("Navegador","firefox");
         Config.store(new FileWriter("configuracion\\configuracion.properties"),"Cambio de Navegador a firefox");
+//        core.run (TestCases.PO_CrearSolicitud_CancelarSolicitudSinOrdenBotonCancelar.class);
+//        core.run (TestCases.PO_CrearSolicitud_CancelarSolicitudConOrdenBotonCancelar.class);
+//        core.run (TestCases.PO_ModificarSolicitud_CancelarSolicitud.class);
+//        core.run (TestCases.PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroArtículosServicios.class);
+//        core.run(TestCases.PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999Coma99.class);
+//        core.run (TestCases.PO_AprobarOrdenCompra_RevisarDetalleSolicitudAprobacion.class);
+//        core.run(TestCases.PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DueñoCentroCostos.class);
+//        core.run(TestCases.PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00LiderTecnico.class);
+//        core.run(TestCases.PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DirectorAdministracionFinanzas.class);
+//        core.run(TestCases.PO_CrearOrdenCompra_EliminarOrdenCompraAPartirSolicitud.class);
 
-        // Para edge
+// Para edge
         /*Config.setProperty("Navegador","edge");
         Config.store(new FileWriter("configuracion\\configuracion.properties"),"Cambio de Navegador a EDGE");*/
-    
     }
 }

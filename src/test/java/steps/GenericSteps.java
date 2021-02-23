@@ -264,7 +264,9 @@ public class GenericSteps extends genericGrid{
     /**
      * Esté método valida la cuenta de compenzación de costos. 
      * @param driver Elemento WebDriver de la prueba.
+     * @param tagName Es el findBy del elemento.
      * @param texto Es el texto que vamos a buscar en el objeto.
+     * @param atributo Es el elemento a buscar.
      * @param contador Es el controlador de pasos ejecutados.
      * @param Config Es el archivo de configuración de la prueba.
      * @param Escenario Es el nombre del caso de prueba.

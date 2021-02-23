@@ -206,6 +206,60 @@ public class GestionarAcuerdosSteps extends genericGrid {
     }
     
     /**
+     * Este método permite cancelar el Acuerdo.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param advertencia Es el mensaje de Advertencia a validar.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void presionarCancelarAcuerdo(RemoteWebDriver driver, String advertencia, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("lk_acciones"));
+            dormirSeg(2);
+            clickJS(driver,"xpath", Elementos.getProperty("lk_cancelar"));
+            dormirSeg(3);
+            String mensaje = Elementos.getProperty("div_mensaje_advertencia_cancelar");
+            genericSteps.ValidarTextoEnObjetoResponse(driver, "td", advertencia, mensaje, Config, Elementos, contador, Escenario, navegador);
+            dormirSeg(3);
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método hace clic en el botón Sí.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void confirmarCancelarAcuerdo(RemoteWebDriver driver, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        dormirSeg(3);
+        clickJS(driver, "xpath", Elementos.getProperty("btn_si_cancelar"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método permite dar clic en Aceptar para el Motivo Cancelación.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void presionarAceptarMotivoCancelacion(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("btn_aceptar_motivo_retencion"));
+            dormirSeg(3);    
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
      * Este método permite cerrar definitivamente el Acuerdo.
      * @param driver Elemento WebDriver de la prueba.
      * @param advertencia Es el mensaje de Advertencia a validar.
@@ -323,5 +377,21 @@ public class GestionarAcuerdosSteps extends genericGrid {
         }
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
         return msj;
+    }
+    
+    /**
+     * Este método permite dar clic en Listo.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public void presionarListo(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("btn_listo"));
+            dormirSeg(3);    
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
 }
