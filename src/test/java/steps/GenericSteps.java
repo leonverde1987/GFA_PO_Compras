@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Properties;
 import org.junit.ComparisonFailure;
+
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class GenericSteps extends genericGrid{
@@ -176,7 +178,16 @@ public class GenericSteps extends genericGrid{
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
-
+    /**
+     * Esté método nos ayuda a presionar el botón tareas menú izquierda
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo con los elementos del aplicativo.
+     * @throws InterruptedException Cacha si el archivo Config no existe. 
+     */
+    public void clickBtnTareas(RemoteWebDriver driver, Properties Elementos) throws InterruptedException{
+        this.click(driver, "xpath", Elementos.getProperty("btn_tareas"));
+        
+    }
     
     /**
      * Est´s método nos ayuda a validar el mensaje del resultado esperado. 
@@ -200,6 +211,141 @@ public class GenericSteps extends genericGrid{
         return msj;
     }
     
+    /**
+     * Esté método valida la cuenta de compenzación de costos. 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es el texto que vamos a buscar en el objeto.
+     * @param contador Es el controlador de pasos ejecutados.
+     * @param Config Es el archivo de configuración de la prueba.
+     * @param Escenario Es el nombre del caso de prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param navegador Es el navegador donde se ejecuto la prueba.
+     * @return Regresa el resultado Exitoso o Fallido y su detalle. 
+     * @throws InterruptedException 
+     */
+    public String validarTextoEnObjeto(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        String text = this.buscarTextoTabla(driver, texto, "td", Elementos.getProperty("div_tabla_resultados"));
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
+        public String ValidarTextoEnObjetoResponse(RemoteWebDriver driver, String tagName, String texto, String atributo, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        String text = this.buscarTextoTabla(driver, texto, tagName, atributo);
+        //String msj = "";
+        /*try{
+            msj = this.AssertComparaMensajes(text, "Exitoso");
+        }catch(ComparisonFailure e){
+            msj = "Fallido, Resultado Esperado: "+e;
+        }*/
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return text;
+    }
+    /**
+     * Esté método valida la cuenta de compenzación de costos. 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es el texto que vamos a buscar en el objeto.
+     * @param contador Es el controlador de pasos ejecutados.
+     * @param Config Es el archivo de configuración de la prueba.
+     * @param Escenario Es el nombre del caso de prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param navegador Es el navegador donde se ejecuto la prueba.
+     * @throws InterruptedException 
+     */
+    public void presionarTextoEnTabla(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        this.presionarLkTabla(driver, texto, "div", Elementos.getProperty("div_seleccionar_proveedor"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Esté método valida la cuenta de compenzación de costos. 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param tagName Es el findBy del elemento.
+     * @param texto Es el texto que vamos a buscar en el objeto.
+     * @param atributo Es el elemento a buscar.
+     * @param contador Es el controlador de pasos ejecutados.
+     * @param Config Es el archivo de configuración de la prueba.
+     * @param Escenario Es el nombre del caso de prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param navegador Es el navegador donde se ejecuto la prueba.
+     * @throws InterruptedException 
+     */
+    public void presionarTextoEnTablaResponse(RemoteWebDriver driver, String tagName, String texto, String atributo, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        this.presionarLkTabla(driver, texto, tagName, atributo);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /* El método permite hacer switch a otra ventana por parte del contenido de su nombre
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param windowsTitle String parte del titulo de la entana
+     */
+    public boolean switchWindowByTitle(WebDriver driver, String windowsTitle) throws Exception{
+    	try {
+    		Boolean result = false;
+    		for (String handle: driver.getWindowHandles()) {
+    			driver.switchTo().window(handle);
+		    	if (driver.getTitle().toString().contains(windowsTitle)) {
+		    		result = true;
+		    		break;
+		    	}
+    		}
+    		
+    		return result;
+    	}
+    	catch(Exception ex) {
+    		throw new Exception("Error al hacer switch a la ventana: " + windowsTitle);
+    	}	
+    }
+
+     /* El método permite hacer switch a otra ventana por el index de la ventana
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param windowsTitle String parte del titulo de la entana
+     */
+    public boolean switchWindowByIndex(WebDriver driver, int windowsIndex) throws Exception{
+    	try {
+    		Boolean result = false;
+    		int index = 0;
+    		for (String handle: driver.getWindowHandles()) {
+    			driver.switchTo().window(handle);
+		    	if (index == windowsIndex) {
+		    		result = true;
+		    		break;
+		    	}
+		    	index++;
+    		}
+    		
+    		return result;
+    	}
+    	catch(Exception ex) {
+    		throw new Exception("Error al hacer switch a la ventana con index: " + windowsIndex);
+    	}	
+    }
+    
+    /**
+     * Esté método cierra la sesión del usuario.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param contador Es el controlador de pasos ejecutados.
+     * @param Config Es el archivo de configuración de la prueba.
+     * @param Elementos Es el archivo con los elementos del aplicativo. 
+     * @param Escenario Nombre del caso de prueba a ejecutar.
+     * @param navegador Es el navegador a utilizar.
+     * @throws FileNotFoundException Cacha cualquier excepción en la ejecución.
+     * @throws InterruptedException Cacha si el archivo Config no existe. 
+     */
+    public void cerrarSesion(RemoteWebDriver driver, int contador, Properties Config, Properties Elementos, String Escenario, String navegador) throws FileNotFoundException, InterruptedException {
+        this.dormirSeg(2);
+        this.clickJS(driver, "xpath", Elementos.getProperty("lk_usuario"));
+        this.dormirSeg(2);
+        this.clickJS(driver, "xpath", Elementos.getProperty("lk_cerrar_sesion"));
+        this.dormirSeg(2);
+        this.clickJS(driver, "xpath", Elementos.getProperty("btn_confirmar_cierre"));
+    }
+
     
     /**
      * Esté método selecciona el boton guardar de la cabecera. 
@@ -210,7 +356,5 @@ public class GenericSteps extends genericGrid{
         clickJS(driver, "xpath", Elementos.getProperty("btn_guardar_cabecera"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
-    
 
-    
 }

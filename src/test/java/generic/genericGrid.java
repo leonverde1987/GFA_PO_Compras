@@ -132,7 +132,7 @@ public class genericGrid extends evidenceGrid {
         }catch(Exception e){
             System.out.println(e);
         }
-
+            driver.manage().window().maximize();
             return driver;
         }
     
@@ -263,55 +263,8 @@ public class genericGrid extends evidenceGrid {
             driver.close();
     }
     
-    /***
-     * El método permite hacer switch a otra ventana por parte del contenido de su nombre
-     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
-     * @param windowsTitle String parte del titulo de la entana
-     */
-    public boolean switchWindowByTitle(WebDriver driver, String windowsTitle) throws Exception{
-    	try {
-    		Boolean result = false;
-    		for (String handle: driver.getWindowHandles()) {
-    			driver.switchTo().window(handle);
-		    	if (driver.getTitle().toString().contains(windowsTitle)) {
-		    		result = true;
-		    		break;
-		    	}
-    		}
-    		
-    		return result;
-    	}
-    	catch(Exception ex) {
-    		throw new Exception("Error al hacer switch a la ventana: " + windowsTitle);
-    	}	
-    }
-
     
-    /***
-     * El método permite hacer switch a otra ventana por el index de la ventana
-     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
-     * @param windowsTitle String parte del titulo de la entana
-     */
-    public boolean switchWindowByIndex(WebDriver driver, int windowsIndex) throws Exception{
-    	try {
-    		Boolean result = false;
-    		int index = 0;
-    		for (String handle: driver.getWindowHandles()) {
-    			driver.switchTo().window(handle);
-		    	if (index == windowsIndex) {
-		    		result = true;
-		    		break;
-		    	}
-		    	index++;
-    		}
-    		
-    		return result;
-    	}
-    	catch(Exception ex) {
-    		throw new Exception("Error al hacer switch a la ventana con index: " + windowsIndex);
-    	}	
-    }
-
+    //*********************************************************************************************************************************
     //*********************************************************************************************************************************
     //CLICK Y SEND KEYS
     //*********************************************************************************************************************************
@@ -354,19 +307,8 @@ public class genericGrid extends evidenceGrid {
      */
     public void ingresarTexto(RemoteWebDriver driver, String findby, String Elemento, String Texto){
         WebElement elemen = this.driverWait(driver, findby, Elemento);
-        elemen.sendKeys(Texto);
-    }
-    
-    /***
-     * El método nos ayuda a borrar lo que traiga precargado un campo de texto
-     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
-     * @param findby Es el tipo de selector selenium id, name o XPATH.
-     * @param Elemento Es el selector selenium al que le vamos agregar texto.
-     * @param Texto Es el texto que se va ingresar al campo.
-     */
-    public void borrarTextoPrecargado(RemoteWebDriver driver, String findby, String Elemento){
-        WebElement elemen = this.driverWait(driver, findby, Elemento);
         elemen.clear();
+        elemen.sendKeys(Texto);
     }
 
     /***
@@ -486,16 +428,6 @@ public class genericGrid extends evidenceGrid {
     public void subirScroll(RemoteWebDriver driver) throws FileNotFoundException, InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,-1000)");
-    }
-    
-    /**
-     * Es el metodo hace scroll a un elemento para hacerlo visible a la pantalla
-     * @param driver Es el driver de la prueba. 
-     * @throws InterruptedException Cuando no se puede interactuar con el driver.
-     */
-    public void JSscrollToElement(RemoteWebDriver driver, WebElement element) throws FileNotFoundException, InterruptedException {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView(true);", element);
     }
     
     /**
@@ -631,7 +563,179 @@ public class genericGrid extends evidenceGrid {
    	
    }
     
+   /**
+     * En este método vamos a validar el texto de dos variables tipo string.
+     * @param Resultado Es el resultado que arrojo la busqueda en la tabla. 
+     * @param msjActual Es el valor que vamos a comparar.
+     * @return Regresa un Exitoso o Fallido dependiendo de la aserción.
+     */
+    public String AssertComparaMensajes(String Resultado, String msjActual) throws InterruptedException{
+   	 String msj = "";
+        try{
+            this.dormirSeg(1);
+            Assert.assertEquals(Resultado, msjActual);
+            msj = "Exitoso";
+        }catch(AssertionError e){
+            System.out.println("Mensaje Assert Fail: "+e);
+            msj = "Fallido, Resultado Esperado: "+e;
+        }
+        
+        return msj;
+   	
+   }
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //TABLE
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+    /***
+     * El método buscar un texto en una objeto.
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param texto Es el texto que vamos a buscar en la tabla.
+     * @param tagName Es tipo de componente en donde queremos buscar el texto, Ejemplo DIV, TD, TR, SPAN, etc.
+     * @param xpath Es el selector selenium donde queremos buscar el texto y es solo en tipo XPATH.
+     * @exception InterruptedException Para manejar excepciones con el hilo de procesamiento que se esta deteniendo.
+     * @return Retorna Exitoso si encuentra el texto o Fallido si no lo encuntra.
+     */
+    public String buscarTextoTabla(RemoteWebDriver driver, String texto, String tagName, String xpath) throws InterruptedException{
+        WebElement table = driver.findElement(By.xpath(xpath));
+        List<WebElement> buscarTexto = table.findElements(By.tagName(tagName));
+        String Resultado = "Fallido";
+        for(int a=0; buscarTexto.size() > a; a++){
+            WebElement b = buscarTexto.get(a);
+            String txt = buscarTexto.get(a).getText();
+            txt.trim();
+            System.out.println("Texto = "+txt);
+            if(txt.equals(texto)){
+                Resultado = "Exitoso";
+                System.out.println(txt);
+                a = buscarTexto.size()+2;
+            }
+        }
+        return Resultado;
+    }
     
+    /***
+     * El método presiona un texto en una tabla.
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param texto Es el texto que vamos a presionar en la tabla.
+     * @param tagName Es tipo de componente en donde queremos presionar el texto, Ejemplo DIV, TD, TR, SPAN, etc.
+     * @param xpath Es el selector selenium donde queremos presionar el texto y es solo en tipo XPATH.
+     * @exception InterruptedException Para manejar excepciones con el hilo de procesamiento que se esta deteniendo.
+     */
+    public void presionarLkTabla(RemoteWebDriver driver, String texto, String tagName, String xpath) throws InterruptedException{
+        WebElement table = driver.findElement(By.xpath(xpath));
+        List<WebElement> buscarTexto = table.findElements(By.tagName(tagName));
+        for(int a=0; buscarTexto.size() > a; a++){
+            WebElement b = buscarTexto.get(a);
+            String txt = buscarTexto.get(a).getText();
+            if(txt.equals(texto)){
+                System.out.println(txt);
+                buscarTexto.get(a).click();
+                a = buscarTexto.size()+2;
+            }
+        }
+    }
+    
+    /***
+     * El método nos ayuda a seleccionar una posisión de un, select o dropdownlist.
+     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium del cbo, select o dropdownlist.
+     * @param Index Es el valor del texto que se busca en el elemento.
+     */
+    public void seleccionarComboByIndex(RemoteWebDriver driver, String findby, String Elemento, int Index){
+        WebElement combo = this.driverWait(driver, findby, Elemento);
+        Select cbo = new Select(combo);
+        cbo.selectByIndex(Index);
+    } 
+	
+    
+    /***
+     * El método permite hacer switch a otra ventana por parte del contenido de su nombre
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param windowsTitle String parte del titulo de la entana
+     */
+    public boolean switchWindowByTitle(WebDriver driver, String windowsTitle) throws Exception{
+    	try {
+    		Boolean result = false;
+    		for (String handle: driver.getWindowHandles()) {
+    			driver.switchTo().window(handle);
+		    	if (driver.getTitle().toString().contains(windowsTitle)) {
+		    		result = true;
+		    		break;
+		    	}
+    		}
+    		
+    		return result;
+    	}
+    	catch(Exception ex) {
+    		throw new Exception("Error al hacer switch a la ventana: " + windowsTitle);
+    	}	
+    }
+
+    
+    /***
+     * El método permite hacer switch a otra ventana por el index de la ventana
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param windowsTitle String parte del titulo de la entana
+     */
+    public boolean switchWindowByIndex(WebDriver driver, int windowsIndex) throws Exception{
+    	try {
+    		Boolean result = false;
+    		int index = 0;
+    		for (String handle: driver.getWindowHandles()) {
+    			driver.switchTo().window(handle);
+		    	if (index == windowsIndex) {
+		    		result = true;
+		    		break;
+		    	}
+		    	index++;
+    		}
+    		
+    		return result;
+    	}
+    	catch(Exception ex) {
+    		throw new Exception("Error al hacer switch a la ventana con index: " + windowsIndex);
+    	}	
+    }
+
+      
+    /***
+     * El método nos ayuda a borrar lo que traiga precargado un campo de texto
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium al que le vamos agregar texto.
+     * @param Texto Es el texto que se va ingresar al campo.
+     */
+    public void borrarTextoPrecargado(RemoteWebDriver driver, String findby, String Elemento){
+        WebElement elemen = this.driverWait(driver, findby, Elemento);
+        elemen.clear();
+    }
+
+    
+    
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //SCROLLS
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+    
+    
+    /**
+     * Es el metodo hace scroll a un elemento para hacerlo visible a la pantalla
+     * @param driver Es el driver de la prueba. 
+     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     */
+    public void JSscrollToElement(RemoteWebDriver driver, WebElement element) throws FileNotFoundException, InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
     /*
     ++++++++++++++++++++++++++++++++++++++++++++++++++++++
     UTILERIAS
@@ -653,6 +757,6 @@ public class genericGrid extends evidenceGrid {
     	return locator.replace("${DT_VALUE}", newLocator);
     	
     }
-    
-    
+
 }	
+

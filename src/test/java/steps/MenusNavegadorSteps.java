@@ -8,18 +8,16 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MenusNavegadorSteps extends genericGrid{
 
-   
+
     /**
-     * Este método abre el menú hamburguesa 
+     * Est´s método abre el menu COMPRAS - PROVEEDORES 
      * @param driver Elemento WebDriver de la prueba.
      * @param Elementos Es el archivo properties de los elementos.
      * @return VOID
      * @throws InterruptedException 
      */
-    public void clickMenuHamburguesa(RemoteWebDriver driver, Properties Elementos,
-    		int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+    public void clickMenuHamburguesa(RemoteWebDriver driver, Properties Elementos) throws InterruptedException{
             clickJS(driver, "xpath", Elementos.getProperty("menu_hamburguesa"));
-            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
     /**
@@ -68,6 +66,67 @@ public class MenusNavegadorSteps extends genericGrid{
     public void abrirMenuFacturas(RemoteWebDriver driver, Properties Elementos) throws InterruptedException{
             clickJS(driver, "xpath", Elementos.getProperty("ap_factura"));
     }
+    
+    /**
+     * Este método abre el menú COMPRAS - SOLICITUDES DE COMPRA 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @throws InterruptedException 
+     */
+    public void abrirMenuComprasSolicitudesCompra(RemoteWebDriver driver, int contador, Properties Config, String Escenario, String navegador, Properties Elementos) throws InterruptedException{
+        clickJS(driver, "xpath", Elementos.getProperty("solicitudes_compra"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método abre el menú COMPRAS - ACUERDOS DE COMPRA 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @throws InterruptedException 
+     */
+    public void abrirMenuComprasAcuerdosCompra(RemoteWebDriver driver, int contador, Properties Config, String Escenario, String navegador, Properties Elementos) throws InterruptedException{
+        clickJS(driver, "xpath", Elementos.getProperty("acuerdos_compra"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Este método abre el menú COMPRAS - ÓRDENES DE COMPRA 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @throws InterruptedException 
+     */
+    public void abrirMenuComprasOrdenesCompra(RemoteWebDriver driver, int contador, Properties Config, String Escenario, String navegador, Properties Elementos) throws InterruptedException{
+        clickJS(driver, "xpath", Elementos.getProperty("ordenes_compra"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+
+   
+    /**
+     * Este método abre el menú hamburguesa 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @return VOID
+     * @throws InterruptedException 
+     */
+    public void clickMenuHamburguesa(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("menu_hamburguesa"));
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    
     
     //*
     public void abrirMenuInformacionProductos(RemoteWebDriver driver, Properties Elementos,
@@ -135,7 +194,5 @@ public class MenusNavegadorSteps extends genericGrid{
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
 
-    
-    
-    
+
 }

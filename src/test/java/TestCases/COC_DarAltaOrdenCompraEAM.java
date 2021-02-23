@@ -284,14 +284,6 @@ public class COC_DarAltaOrdenCompraEAM{
                    Pasos.add("Aceptar mensaje");
                    cabeceraSteps.clickBtnAceptarmsj(driver, UICabecera,
                 		   contador, Config, Escenario, Navegador);
-                   
-                   
-                   
-                
-                   
-                   
-                   
-                    
              
                     
             }catch(NoSuchElementException s){

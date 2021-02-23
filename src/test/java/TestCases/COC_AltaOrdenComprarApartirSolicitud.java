@@ -15,7 +15,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
 import steps.CabeceraSteps;
 import steps.CrearAcuerdoSteps;
 import steps.CrearArticuloSteps;
@@ -216,7 +215,6 @@ public class COC_AltaOrdenComprarApartirSolicitud{
                     editarDocumentoOC.llenarFormEditarDocOC(driver, UIEditarDocumentoOC,
                     		contador, Config, Escenario, Navegador, editDocDescripcion, editDocGfaSupervisor, editDocGfaLiderCatego);
                     
-                    
                     //Paso16
                     contador++;
                     Pasos.add(contador+".-Presionar el boton crear");
@@ -224,9 +222,6 @@ public class COC_AltaOrdenComprarApartirSolicitud{
                     		contador, Config, Escenario, Navegador);
                     Resultado = "Exitoso";
                     
-          
-     
-                   
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
