@@ -651,4 +651,112 @@ public class genericGrid extends evidenceGrid {
         Select cbo = new Select(combo);
         cbo.selectByIndex(Index);
     } 
+	
+    
+    /***
+     * El método permite hacer switch a otra ventana por parte del contenido de su nombre
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param windowsTitle String parte del titulo de la entana
+     */
+    public boolean switchWindowByTitle(WebDriver driver, String windowsTitle) throws Exception{
+    	try {
+    		Boolean result = false;
+    		for (String handle: driver.getWindowHandles()) {
+    			driver.switchTo().window(handle);
+		    	if (driver.getTitle().toString().contains(windowsTitle)) {
+		    		result = true;
+		    		break;
+		    	}
+    		}
+    		
+    		return result;
+    	}
+    	catch(Exception ex) {
+    		throw new Exception("Error al hacer switch a la ventana: " + windowsTitle);
+    	}	
+    }
+
+    
+    /***
+     * El método permite hacer switch a otra ventana por el index de la ventana
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param windowsTitle String parte del titulo de la entana
+     */
+    public boolean switchWindowByIndex(WebDriver driver, int windowsIndex) throws Exception{
+    	try {
+    		Boolean result = false;
+    		int index = 0;
+    		for (String handle: driver.getWindowHandles()) {
+    			driver.switchTo().window(handle);
+		    	if (index == windowsIndex) {
+		    		result = true;
+		    		break;
+		    	}
+		    	index++;
+    		}
+    		
+    		return result;
+    	}
+    	catch(Exception ex) {
+    		throw new Exception("Error al hacer switch a la ventana con index: " + windowsIndex);
+    	}	
+    }
+
+      
+    /***
+     * El método nos ayuda a borrar lo que traiga precargado un campo de texto
+     * @param driver Es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium al que le vamos agregar texto.
+     * @param Texto Es el texto que se va ingresar al campo.
+     */
+    public void borrarTextoPrecargado(RemoteWebDriver driver, String findby, String Elemento){
+        WebElement elemen = this.driverWait(driver, findby, Elemento);
+        elemen.clear();
+    }
+
+    
+    
+
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+    //SCROLLS
+    //*********************************************************************************************************************************
+    //*********************************************************************************************************************************
+
+    
+    
+    /**
+     * Es el metodo hace scroll a un elemento para hacerlo visible a la pantalla
+     * @param driver Es el driver de la prueba. 
+     * @throws InterruptedException Cuando no se puede interactuar con el driver.
+     */
+    public void JSscrollToElement(RemoteWebDriver driver, WebElement element) throws FileNotFoundException, InterruptedException {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView(true);", element);
+    }
+
+    /*
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    UTILERIAS
+    ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    */
+    
+    /**
+     * En este método genera un numero random
+     */
+    public String numeroRandomString() throws InterruptedException{
+    	return String.valueOf(System.currentTimeMillis());
+    }
+    
+    /**
+     * En este método remplaza el texto para un xpath dinamico
+     * dt_value es la palabra que se reservo para mapear el xpath e identificar el texto dinamico
+     */
+    public String sobreEscribirLocator(String locator, String newLocator) throws InterruptedException{
+    	return locator.replace("${DT_VALUE}", newLocator);
+    	
+    }
+
 }	
+

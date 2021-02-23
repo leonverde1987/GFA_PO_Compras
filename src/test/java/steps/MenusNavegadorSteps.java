@@ -8,6 +8,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MenusNavegadorSteps extends genericGrid{
 
+
     /**
      * Est´s método abre el menu COMPRAS - PROVEEDORES 
      * @param driver Elemento WebDriver de la prueba.
@@ -110,4 +111,88 @@ public class MenusNavegadorSteps extends genericGrid{
         clickJS(driver, "xpath", Elementos.getProperty("ordenes_compra"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
+
+   
+    /**
+     * Este método abre el menú hamburguesa 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @return VOID
+     * @throws InterruptedException 
+     */
+    public void clickMenuHamburguesa(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("menu_hamburguesa"));
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    
+    
+    //*
+    public void abrirMenuInformacionProductos(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("menu_info_productos"));
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    //*
+    public void abrirMenuSolicitudesCompra(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("menu_solicitudes_compra"));
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    //*
+    public void abrirMenuOrdenesCompra(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("menu_ordenes_compra"));
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    //*
+    public void abrirMenuAcuerdosCompra(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("menu_acuerdos_compra"));
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    //*
+    public void abrirMenuMisRecepciones(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
+            clickJS(driver, "xpath", Elementos.getProperty("menu_mis_recepciones"));
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Esté método la campana de notificaciones
+     */
+    public void presionarCampanaNotificaciones(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) 
+    		throws InterruptedException{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_guardar_cabecera"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Esté método texto de busqueda en notificaciones
+     */
+    public void ingresarFiltroNotificacion(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador, String filtroBusqueda) 
+    		throws InterruptedException{
+    	ingresarTexto(driver, "xpath", Elementos.getProperty("txt_filtro_notificacion"), filtroBusqueda);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Esté método selecciona la primera opcion del filtro aplicado al buscador de notificaciones
+     */
+    public void selectFiltroNotificacion(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador, String filtroBusqueda) 
+    		throws InterruptedException{
+    	String locator = sobreEscribirLocator(Elementos.getProperty("txt_opc_uno_filtro_noti"), filtroBusqueda);
+    	clickJS(driver, "xpath", locator);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+
+
 }

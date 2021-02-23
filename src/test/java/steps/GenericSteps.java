@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Properties;
 import org.junit.ComparisonFailure;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -344,4 +345,16 @@ public class GenericSteps extends genericGrid{
         this.dormirSeg(2);
         this.clickJS(driver, "xpath", Elementos.getProperty("btn_confirmar_cierre"));
     }
+
+    
+    /**
+     * Esté método selecciona el boton guardar de la cabecera. 
+     */
+    public void presionarBtnGuardarCabecera(RemoteWebDriver driver, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador) 
+    		throws InterruptedException{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_guardar_cabecera"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+
 }
