@@ -1,0 +1,2 @@
+nombre,contrasena,idioma,msj_confirmacion,estilo,udNegocioCompras,udNegocioSolicitante,sitioProveedor,ubicacion,moneda,comprador,editDocDescripcion,editDocGfaSupervisor,editDocGfaLiderCatego,lineaArticulo,lineaCantidad,fechaSolicitada,fechaPrometida,acuerdo
+gu.gonzalez.s@flecha-amarilla.com,Oracle123,es-es,,Orden de compra,CD UN API,CD UN API,COORDINADOS,MEXICO NTE PLANTAS,MXN,"GONZALEZ, GUSTAVO",test,CEREZO HERNANDEZ ALFREDO,01 REFACCIONES P/AUTOBUSES,2001MGRU0001,1,23/03/21,24/03/21,XPA-API-10
