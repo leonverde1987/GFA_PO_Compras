@@ -72,6 +72,7 @@ public class AP_DarAltaAcuerdoCompraAbierto{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String acuerdoCompra="";
   
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -104,7 +105,7 @@ public class AP_DarAltaAcuerdoCompraAbierto{
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String mensaje = filaDatos[3];
+            String empresa = filaDatos[3];
             String estilo = filaDatos[4];
             String udNegocioCompras = filaDatos[5];
             String proveedor = filaDatos[6];
@@ -172,8 +173,9 @@ public class AP_DarAltaAcuerdoCompraAbierto{
                     
                     //Paso 8
                     contador++;
-                    Pasos.add(contador+".- Presionar el boton crear");
-                    crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador);
+                    Pasos.add(contador+".- Presionar el botón crear");
+                    acuerdoCompra = crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, empresa, UICrearAcuerdos, contador, Config, Escenario, Navegador);
+                    
                     
                     //Paso 9
                     contador++;
@@ -236,7 +238,7 @@ public class AP_DarAltaAcuerdoCompraAbierto{
                     
                     //Paso 20
                     contador++;
-                    Pasos.add(contador+"Validar mensaje de confirmacion"); 
+                    Pasos.add(contador+"Validar mensaje de confirmación"); 
                     crearAcuerdosSteps.clickBtnAceptarConfirmacion(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador);
                     Resultado = "Exitoso";
                     

@@ -79,6 +79,7 @@ public class AP_ModificarAcuerdoCompraAbierto{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String acuerdoCompra = "";
   
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -113,12 +114,11 @@ public class AP_ModificarAcuerdoCompraAbierto{
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String mensaje = filaDatos[3];
-            String acuerdo = filaDatos[4];
-            String editDocDescripcion = filaDatos[5];
-            String editDocGfaSupervisor = filaDatos[6];
-            String editDocGfaLiderCatego = filaDatos[7];
-            
+            String empresa = filaDatos[3];
+            String editDocDescripcion = filaDatos[4];
+            String editDocGfaSupervisor = filaDatos[5];
+            String editDocGfaLiderCatego = filaDatos[6];
+            acuerdoCompra = crearAcuerdosSteps.getGuardarAcuerdoCompra(empresa);
          
          
            
@@ -159,9 +159,9 @@ public class AP_ModificarAcuerdoCompraAbierto{
                  
                     //Paso 7
                     contador++;
-                    Pasos.add(contador+".- Ingresar un numero de acuerdo");
+                    Pasos.add(contador+".- Ingresar un número de acuerdo");
                     gestionarAcuerdosSteps.ingresarAcuerdo(driver, UIGestionarAcuerdos, 
-                    		contador, Config, Escenario, Navegador, acuerdo);
+                    		contador, Config, Escenario, Navegador, acuerdoCompra);
                     
                     //Paso 8
                     contador++;

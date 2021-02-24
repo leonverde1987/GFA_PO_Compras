@@ -4,6 +4,8 @@ package steps;
 import generic.genericGrid;
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Properties;
 import org.junit.ComparisonFailure;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -35,11 +37,12 @@ public class CrearAcuerdoSteps extends genericGrid{
     /**
      * Esté método selecciona el boton crear en el dialogo de crear acuerdos
     */
-    public void clickBtnCrearDialogAcuerdos(RemoteWebDriver driver, Properties Elementos,
+    public String clickBtnCrearDialogAcuerdos(RemoteWebDriver driver, String empresa, Properties Elementos,
     		int contador, Properties Config, String Escenario, String navegador)
-    				throws InterruptedException{
+    				throws InterruptedException, IOException{
        click(driver, "xpath", Elementos.getProperty("btn_crear"));        
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return this.obtenerAcuerdoCompra(driver, Elementos, empresa);
     } 
     
     /**
@@ -165,7 +168,41 @@ public class CrearAcuerdoSteps extends genericGrid{
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
+    /**
+     * Este método nos ayuda actualizar un valor en properties de acuerdo de compra.
+     * @param porpiedad Es el número del acuerdo de compra.
+     * @throws InterruptedException 
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public void setGuardarAcuerdoCompra(String propiedad, String elemento) throws InterruptedException, FileNotFoundException, IOException{
+        Properties ac = new generic.genericGrid().getPropetiesFile("configuracion\\acuerdoCompra.properties");
+        ac.setProperty(propiedad, elemento);
+        ac.store(new FileWriter("configuracion\\acuerdoCompra.properties"),"Actualización de Acuerdo de Compra");
+    }
     
-   
+    /**
+     * Este método nos ayuda a obtener un valor en properties de acuerdo de compra. 
+     * @return El acuerdo de compra que recien se agregó.
+     * @throws InterruptedException 
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public String getGuardarAcuerdoCompra(String empresa) throws InterruptedException, FileNotFoundException, IOException{
+        Properties ac = new generic.genericGrid().getPropetiesFile("configuracion\\acuerdoCompra.properties");      
+        return ac.getProperty(empresa);
+    }
+    
+    /**
+     * Este método nos ayuda a obtener un valor en properties de acuerdo de compra. 
+     * @return El acuerdo de compra que recien se agregó.
+     * @throws InterruptedException 
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public String obtenerAcuerdoCompra(RemoteWebDriver driver, Properties Elementos, String propiedad) throws InterruptedException, IOException {
+        this.setGuardarAcuerdoCompra(propiedad,this.obtenerTexto(driver, "xpath", Elementos.getProperty("h1_numero_acuerdo")).substring(46, 56));
+        return Elementos.getProperty("h1_numero_acuerdo");
+    }
     
 }
