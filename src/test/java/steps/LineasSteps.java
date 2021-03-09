@@ -2,6 +2,8 @@ package steps;
 
 
 import generic.genericGrid;
+
+import java.io.FileNotFoundException;
 import java.util.Properties;
 import org.junit.ComparisonFailure;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -14,6 +16,15 @@ public class LineasSteps extends genericGrid{
     public void selectBtnEditar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador) throws InterruptedException{
         clickJS(driver, "xpath", Elementos.getProperty("btn_editar"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Método para seleccionar el numero de acuerdo en la linea
+     */
+    public void selectNumeroAcuerdo(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException{
+        clickJS(driver, "xpath", Elementos.getProperty("numero_acuerdo"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
@@ -198,11 +209,19 @@ public class LineasSteps extends genericGrid{
     
     /**
      * Método para llenar un registro de lineas
+     * @throws FileNotFoundException 
      */
     public void llenarRegLinea(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
-    		String Escenario, String navegador, String lineaArticulo, String lineaCantidad) throws InterruptedException{
+    		String Escenario, String navegador, String lineaArticulo, String lineaCantidad) throws InterruptedException, FileNotFoundException{
+    	dormirSeg(3);
     	ingresarTexto(driver, "xpath", Elementos.getProperty("articulo"), lineaArticulo);
     	ingresarTexto(driver, "xpath", Elementos.getProperty("cantidad"), lineaCantidad);
+    	dormirSeg(3);
+    	ingresarTexto(driver, "xpath", Elementos.getProperty("cantidad"), lineaCantidad);
+    	dormirSeg(1);
+    	JSscrollToElement(driver, waitUIElementPresent(driver, "xpath", 
+         		Elementos.getProperty("ubicacion")));    	
+    	ingresarTexto(driver, "xpath", Elementos.getProperty("ubicacion"), "LEON CORPORATIVO");
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
   
@@ -212,6 +231,7 @@ public class LineasSteps extends genericGrid{
     public void clickPestaniaProgramas(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador) throws InterruptedException{
     	clickJS(driver, "xpath", Elementos.getProperty("pestania_programas"));
+    	dormirSeg(2);
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     

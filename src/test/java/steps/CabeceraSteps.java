@@ -32,6 +32,7 @@ public class CabeceraSteps extends genericGrid{
     public void clickBtnGuardarCerrarG(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador) throws InterruptedException{
     	click(driver, "xpath", Elementos.getProperty("btn_guardar"));
+    	dormirSeg(2);
         clickJS(driver, "xpath", Elementos.getProperty("btn_guardar_guardar_cerrar"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
@@ -78,7 +79,17 @@ public class CabeceraSteps extends genericGrid{
      */
     public void clickBtnAcciones(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador) throws InterruptedException{
+    	dormirSeg(2);
     	click(driver, "xpath", Elementos.getProperty("menu_btn_acciones"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Método para seleccionar el boton acciones => Editar
+     */
+    public void clickBtnAccionesEditar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException{
+    	click(driver, "xpath", Elementos.getProperty("menu_btn_acciones_editar"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
@@ -91,12 +102,42 @@ public class CabeceraSteps extends genericGrid{
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
+    /**
+     * Método para seleccionar el boton acciones => retirar
+     */
+    public void clickBtnAccionesRetirar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException{
+    	click(driver, "xpath", Elementos.getProperty("menu_btn_acciones_retirar"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Método para seleccionar ingresar motivo
+     */
+    public void ingresarMotivoRetiro(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException{
+    	//click(driver, "xpath", Elementos.getProperty("txt_motivo_retirar"));
+    	ingresarTexto(driver, "xpath", Elementos.getProperty("txt_motivo_retirar"), "text");
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
+     * Método para seleccionar ingresar motivo
+     */
+    public void clickAceptarMotivoRetiro(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException{
+    	clickJS(driver, "xpath", Elementos.getProperty("aceptar_motivo_retirar"));
+    	//ingresarTexto(driver, "xpath", Elementos.getProperty("txt_motivo_retirar"), "text");
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
     
     /**
      * Método para seleccionar el boton acepatr
      */
     public void clickBtnAceptar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador) throws InterruptedException{
+    	dormirSeg(2);
     	click(driver, "xpath", Elementos.getProperty("btn_aceptar"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
@@ -121,6 +162,15 @@ public class CabeceraSteps extends genericGrid{
     }
     
     /**
+     * Método para seleccionar el si del mensahe
+     *      */
+    public void clickBtnSiMsj_1(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException{
+    	click(driver, "xpath", Elementos.getProperty("btn_si_mensaje_1"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    /**
      * Método para seleccionar el boton agregar mas lineas
      */
     public void clickBtnAddLineas(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
@@ -134,7 +184,7 @@ public class CabeceraSteps extends genericGrid{
      */
     public void clickBtnValidar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador) throws InterruptedException{
-    	click(driver, "xpath", Elementos.getProperty("btn_validar"));
+    	click(driver, "xpath", Elementos.getProperty("td_validar"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
@@ -182,7 +232,8 @@ public class CabeceraSteps extends genericGrid{
     public void clickBtnAceptarConfirmacion2(RemoteWebDriver driver, Properties Elementos,
     		int contador, Properties Config, String Escenario, String navegador)
     				throws InterruptedException{
-         clickJS(driver, "xpath", Elementos.getProperty("btn_aceptar_confirmacion_2"));         
+        dormirSeg(2); 
+    	clickJS(driver, "xpath", Elementos.getProperty("btn_aceptar_confirmacion_2"));         
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     

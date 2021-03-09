@@ -120,11 +120,11 @@ public class COC_DarAltaOrdenCompraDisel{
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String mensaje = filaDatos[3];
+            String libro = filaDatos[3];
             String estilo = filaDatos[4];
             String udNegocioCompras = filaDatos[5];
             String udNegocioSolicitante = filaDatos[6];
-            String sitioProveedor = filaDatos[7];
+            String proveedor = filaDatos[7];
             String ubicacion = filaDatos[8];
             String moneda = filaDatos[9];
             String comprador = filaDatos[10];
@@ -180,12 +180,12 @@ public class COC_DarAltaOrdenCompraDisel{
                     Pasos.add(contador+".-llenar formulario de crear orden");
                     crearOrden.llenarDialogoCrearOrden(driver, UICrearOrden,
                     		contador, Config, Escenario, Navegador, estilo, udNegocioCompras, udNegocioSolicitante, 
-                    		sitioProveedor, ubicacion, moneda, comprador);
+                    		proveedor, ubicacion, moneda, comprador);
                     
                     //Paso 7
                     contador++;
                     Pasos.add(contador+".-Seleccionar el boton Crear");
-                    crearOrden.clickBtnCrear(driver, UICrearOrden,
+                    crearOrden.clickBtnCrear(driver, libro,  UICrearOrden,
                     		contador, Config, Escenario, Navegador);
                     
                     //Paso 8
@@ -220,7 +220,7 @@ public class COC_DarAltaOrdenCompraDisel{
                    //Paso 13
                     contador++;
                     Pasos.add(contador+".-Seleccionar la pestaña lineas");
-                    lineasSteps.clickPestaniaProgramas(driver, UILineas,
+                    lineasSteps.clickPestaniaLineas(driver, UILineas,
                     		contador, Config, Escenario, Navegador);
                     
                     //Paso 14
@@ -230,19 +230,33 @@ public class COC_DarAltaOrdenCompraDisel{
                     		contador, Config, Escenario, Navegador);
                     
                     //Paso 15
-                    contador++;
-                    Pasos.add(contador+".-Ingresar acuerdo de origen");
-                    editarLineaSteps.ingresarAcuerdo(driver, Elementos, 
-                    		contador, Config, Escenario, Navegador, acuerdo);
+                    //contador++;
+                    //Pasos.add(contador+".-Ingresar acuerdo de origen");
+                    //editarLineaSteps.ingresarAcuerdo(driver, UIEditarDocumentoOC, 
+                    //		contador, Config, Escenario, Navegador, acuerdo);
                     
                     
                   //Paso 16
                     contador++;
                     Pasos.add(contador+".-Presionar sobre el boton aceptar");
+                    
                     cabeceraSteps.clickBtnAceptar(driver, UICabecera, contador, Config, Escenario, Navegador);
                     
+                    //Paso 17
+                    contador++;
+                    Pasos.add(contador+".-Llenar formulario editar doc");
+                    editarDocumentoOC.llenarFormEditarDocOC(driver, UIEditarDocumentoOC, 
+                    		contador, Config, Escenario, Navegador, editDocDescripcion, editDocGfaSupervisor, editDocGfaLiderCatego);
                     
-                  //Paso 17
+                   
+                  
+                    //Paso 18
+                    contador++;
+                    Pasos.add(contador+".-Presionar sobre el boton validar");
+                    cabeceraSteps.clickBtnAcciones(driver, UICabecera, contador, Config, Escenario, Navegador); 
+                    
+                    
+                    //Paso 18
                     contador++;
                     Pasos.add(contador+".-Presionar sobre el boton validar");
                     cabeceraSteps.clickBtnValidar(driver, UICabecera, contador, Config, Escenario, Navegador);
@@ -263,31 +277,7 @@ public class COC_DarAltaOrdenCompraDisel{
                     cabeceraSteps.clickBtnAceptarmsj(driver, UICabecera, contador, Config, Escenario, Navegador);
                     Resultado = "Exitoso";
                     
-                    
-                    
-                    
-                      
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-                    
-          
-     
-                   
+                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);

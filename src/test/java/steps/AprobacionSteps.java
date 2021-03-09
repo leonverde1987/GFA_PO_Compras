@@ -3,10 +3,16 @@ package steps;
 
 import generic.genericGrid;
 import steps.GenericSteps;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 import org.junit.ComparisonFailure;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfWindowsToBe;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -53,6 +59,19 @@ public class AprobacionSteps extends genericGrid {
         return msj;
     }
     
+    public String validarNotificacionRechazada(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador, String numeroAcuerdo) throws InterruptedException{
+    	String msj = "Exitoso";
+        try{
+        	String locator = sobreEscribirLocator(Elementos.getProperty("noti_rechazada"), numeroAcuerdo);
+        	this.waitUIElementPresent(driver, "xpath", locator);
+        }catch(Exception e){
+            msj = "Fallido, Resultado Esperado: " + e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
+    
      /**
      * Este metodo hace clic en la notificación del documento a aprobar
      * @param driver Elemento WebDriver de la prueba.
@@ -70,10 +89,36 @@ public class AprobacionSteps extends genericGrid {
     	dormirSeg(3);
         String elem = Elementos.getProperty("div_lista_notificaciones");
         genericSteps.presionarTextoEnTablaResponse(driver, "a", texto, elem, Config, Elementos, contador, Escenario, navegador);
-        genericSteps.switchWindowByIndex(driver, 1);
+        //genericSteps.switchWindowByIndex(driver, 1);
         dormirSeg(5);
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
+    
+    public void clickNotificacionAcuerdoAprobacion_1(RemoteWebDriver driver, Properties Elementos, 
+    		int contador, Properties Config, String Escenario, String navegador, String numeroAcuerdo
+    		) throws InterruptedException, Exception{
+    	dormirSeg(3);
+        String locator = sobreEscribirLocator(Elementos.getProperty("noti"), numeroAcuerdo);
+    	clickJS(driver, "xpath", locator);
+    	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    public void validar_que_no_exista_btn_aprobar(RemoteWebDriver driver, Properties Elementos, 
+    		int contador, Properties Config, String Escenario, String navegador)
+    				throws InterruptedException, Exception{
+    	dormirSeg(3);
+    	try{
+    		boolean btn_exist = genericSteps.AssertExistElement(driver, "xpath", Elementos.getProperty("btn_aprobar"));
+        	assertFalse(btn_exist, "El boton aprobar existe");
+        } catch(AssertionError e){
+            System.out.println("El elemento existe"+e);
+            
+        } catch(Exception ex){
+            System.out.println("El elemento existe"+ex);            
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+
     
     /**
      * Este método hace clic en el botón Aprobar.
@@ -86,10 +131,12 @@ public class AprobacionSteps extends genericGrid {
      * @throws InterruptedException 
      */
     public void clickBtnAprobar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
-        clickJS(driver, "xpath", Elementos.getProperty("btn_aprobar"));
-        genericSteps.switchWindowByIndex(driver, 0);
-        dormirSeg(3);
-        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+      
+        	dormirSeg(2);
+        	click(driver, "xpath", Elementos.getProperty("btn_aprobar"));
+        	dormirSeg(5);
+            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+       
     }
     
     /**
@@ -216,13 +263,15 @@ public class AprobacionSteps extends genericGrid {
         String elem = Elementos.getProperty("tab_orden_aprobada");
         String text = this.buscarTextoTabla(driver, texto, "strong", elem);
         String msj = "";
-        try{
-            msj = this.AssertComparaMensajes(text, "Exitoso");
-        }catch(ComparisonFailure e){
-            msj = "Fallido, Resultado Esperado: "+e;
-        }
-        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
-        return msj;
+        String resultado = this.AssertComparaMensajes(text, "Exitoso");
+       if (this.AssertComparaMensajes1(text, "Exitoso")){
+        	resultado = "Exitoso";
+		} 
+        else {
+			resultado = "Fallido";
+		} 
+        return resultado;
+        
     }
     
     /**
@@ -277,6 +326,11 @@ public class AprobacionSteps extends genericGrid {
      * @throws InterruptedException 
      */
     public void clickIcnAgregarComentario(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
+        
+        genericSteps.switchWindowByIndex(driver, 1);
+    	dormirSeg(5);
+    	bajarScroll(driver);
+    	dormirSeg(1);
         clickJS(driver, "xpath", Elementos.getProperty("icon_agregar_comentario"));
         dormirSeg(3);
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
@@ -428,4 +482,18 @@ public class AprobacionSteps extends genericGrid {
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
         return msj;
     }
+    
+    
+    /**
+     * Este mÃ©todo nos ayuda a obtener un valor en properties de orden de trabajo. 
+     * @return La orden de trabajo que recien se agregÃ³.
+     * @throws InterruptedException 
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public String getDato(String empresa, String tipoAcuerdo) throws InterruptedException, FileNotFoundException, IOException{
+        Properties dato = new generic.genericGrid().getPropetiesFile("C:\\ambiente\\precondiciones\\"+tipoAcuerdo+".properties");      
+        return dato.getProperty(empresa);
+    }
+    
 }

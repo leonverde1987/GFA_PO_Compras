@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import steps.AprobacionSteps;
 import steps.CabeceraSteps;
 import steps.CrearAcuerdoSteps;
 import steps.CrearArticuloSteps;
@@ -50,6 +51,7 @@ public class AP_ModificarAcuerdoConsignacion{
     public EditarLineaSteps editarLineaSteps = new EditarLineaSteps();
     public GestionarAcuerdosSteps gestionarAcuerdosSteps = new GestionarAcuerdosSteps();
     public EditarDocumentoOC editarDocumentoOC = new EditarDocumentoOC();
+    public AprobacionSteps aprobacionSteps = new AprobacionSteps();
    
     
     //UIELEMENTS
@@ -79,6 +81,7 @@ public class AP_ModificarAcuerdoConsignacion{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String acuerdo="";
   
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -108,19 +111,18 @@ public class AP_ModificarAcuerdoConsignacion{
     public void AP_ModificarAcuerdoConsignacion_17304() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdo = "acuerdoCompraConsignacion";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String mensaje = filaDatos[3];
-            String acuerdo = filaDatos[4];
+            String libro = filaDatos[3];
+            //String acuerdo = filaDatos[4];
             String editDocDescripcion = filaDatos[5];
             String editDocGfaSupervisor = filaDatos[6];
             String editDocGfaLiderCatego = filaDatos[7];
-            
-         
-         
+            acuerdo = aprobacionSteps.getDato(libro, tipoAcuerdo);
            
             try{
 
@@ -169,16 +171,34 @@ public class AP_ModificarAcuerdoConsignacion{
                     gestionarAcuerdosSteps.clickBtnBuscar(driver, UIGestionarAcuerdos, 
                     		contador, Config, Escenario, Navegador);
                     
+                   
+                    //paso 8.1
+                    contador++;
+                    Pasos.add(contador+".-Seleccionar el numero de acuerdo en la linea");
+                    lineasSteps.selectNumeroAcuerdo(driver, UILineas, 
+                    		contador, Config, Escenario, Navegador);
+                    cabeceraSteps.clickBtnAcciones(driver, UICabecera,
+                    		contador, Config, Escenario, Navegador);
+                    cabeceraSteps.clickBtnAccionesRetirar(driver, UICabecera,
+                    		contador, Config, Escenario, Navegador);
+                    cabeceraSteps.ingresarMotivoRetiro(driver, UICabecera,
+                    		contador, Config, Escenario, Navegador);
+                    cabeceraSteps.clickAceptarMotivoRetiro(driver, UICabecera,
+                    		contador, Config, Escenario, Navegador);
+                    cabeceraSteps.clickBtnAceptarConfirmacion2(driver, UICabecera,
+                    		contador, Config, Escenario, Navegador);
+                    
+                      
                     //Paso 9
                     contador++;
                     Pasos.add(contador+".- Seleccionar el menu acciones");
-                    lineasSteps.menuAcciones(driver, UILineas,
+                    cabeceraSteps.clickBtnAcciones(driver, UICabecera,
                     		contador, Config, Escenario, Navegador);
                     
                     //Paso 10
                     contador++;
                     Pasos.add(contador+".- Seleccionar el menu editar dentro de acciones");
-                    lineasSteps.menuAccionesEditar(driver, UILineas,
+                    cabeceraSteps.clickBtnAccionesEditar(driver, UICabecera,
                     		contador, Config, Escenario, Navegador);
                     
                     //Paso 11
@@ -196,14 +216,24 @@ public class AP_ModificarAcuerdoConsignacion{
                     
                     //Paso 13
                     contador++;
-                    Pasos.add(contador+".- Aceptar mensaje");
-                    cabeceraSteps.clickBtnAceptarConfirmacion2(driver, UICabecera,
+                    Pasos.add(contador+".- Seleccionar el boton guardar y cerrar");
+                    cabeceraSteps.clickBtnListo(driver, UICabecera,
+                    		contador, Config, Escenario, Navegador);
+                      
+                    //Paso 14
+                    contador++;
+                    Pasos.add(contador+".- Seleccionar el boton guardar y cerrar");
+                    cabeceraSteps.clickBtnListo(driver, UICabecera,
                     		contador, Config, Escenario, Navegador);
                     Resultado = "Exitoso";
                     
-                    
-                   
-                    
+                    //Paso 13
+                    //contador++;
+                    //Pasos.add(contador+".- Aceptar mensaje");
+                    //cabeceraSteps.clickBtnAceptarConfirmacion2(driver, UICabecera,
+                    //		contador, Config, Escenario, Navegador);
+                    //Resultado = "Exitoso";
+                      
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);

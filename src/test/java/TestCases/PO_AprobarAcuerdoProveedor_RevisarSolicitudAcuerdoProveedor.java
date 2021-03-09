@@ -56,6 +56,7 @@ public class PO_AprobarAcuerdoProveedor_RevisarSolicitudAcuerdoProveedor{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String acuerdo="";
         
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -79,16 +80,18 @@ public class PO_AprobarAcuerdoProveedor_RevisarSolicitudAcuerdoProveedor{
     public void Test_PO_AprobarAcuerdoProveedor_RevisarSolicitudAcuerdoProveedor() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String numeroAcuerdo = "acuerdoCompraContrato";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
             String tipoAcuerdo = filaDatos[3];
-            String numeroAcuerdo = filaDatos[4];
+            String libro = filaDatos[4];
             String comprador = filaDatos[5];
             String importe = filaDatos[6];
             String monedaAcuerdo = filaDatos[7];
+            numeroAcuerdo = aprobacionSteps.getDato(libro, numeroAcuerdo);
             try{
 
                     Escenario = "PO_Aprobar Acuerdo de Proveedor_Revisar solicitud de acuerdo de proveedor "+Repeticion;

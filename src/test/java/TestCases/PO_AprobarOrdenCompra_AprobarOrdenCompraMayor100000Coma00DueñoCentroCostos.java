@@ -56,6 +56,7 @@ public class PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DueñoCent
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String ordenCompra="";
         
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -79,14 +80,17 @@ public class PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DueñoCent
     public void Test_PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DueñoCentroCostos() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdo = "ordenCompraDisel";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
             String tipoOrden = filaDatos[3];
-            String numeroOrden = filaDatos[4];
+            String libro = filaDatos[4];
             String personaAsignada = filaDatos[5];
+            ordenCompra = aprobacionSteps.getDato(libro, tipoAcuerdo);
+            
             try{
 
                     Escenario = "PO_Aprobar Orden de Compra_Aprobar una orden de compra mayor a 100000 coma 00 dueño de centro de costos "+Repeticion;
@@ -107,8 +111,8 @@ public class PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DueñoCent
                     
                     //Paso 4
                     contador++;
-                    Pasos.add(contador+".- Presionar sobre la notificación para aprobación de la Orden de Compra: "+numeroOrden);
-                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Aprobar "+tipoOrden+" "+numeroOrden, contador, Config, Escenario, Navegador);
+                    Pasos.add(contador+".- Presionar sobre la notificación para aprobación de la Orden de Compra: "+ordenCompra);
+                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Aprobar "+tipoOrden+" "+ordenCompra, contador, Config, Escenario, Navegador);
                     
                     //Paso 5
                     contador++;
@@ -124,7 +128,7 @@ public class PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DueñoCent
                     //Paso 7
                     contador++;
                     Pasos.add(contador+".- Validar que se haya aprobado la Orden con el Dueño CECO.");
-                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Aprobar "+tipoOrden+" "+numeroOrden, contador, Config, Escenario, Navegador);
+                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Aprobar "+tipoOrden+" "+ordenCompra, contador, Config, Escenario, Navegador);
                     genericSteps.switchWindowByIndex(driver, 1);
                     Resultado = aprobacionSteps.validarOrdenAprobadaAprobador(driver, personaAsignada, Config, UIAprobacion, contador, Escenario, Navegador);
                     
@@ -135,7 +139,7 @@ public class PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DueñoCent
                 Resultado = "Ejecución Fallida: "+e;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }finally{
-                genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
+                //genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
                 genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
                     ResultadoGlobal = Resultado;

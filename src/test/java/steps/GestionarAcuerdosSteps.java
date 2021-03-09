@@ -64,7 +64,9 @@ public class GestionarAcuerdosSteps extends genericGrid {
     		String acuerdo, int contador, Properties Config, String Escenario, String navegador
     		) throws InterruptedException{
     	dormirSeg(3);
-        this.ingresarTexto(driver, "xpath", Elementos.getProperty("txt_acuerdo"), acuerdo);
+    	this.borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("txt_comprador"));
+    	dormirSeg(3);
+    	this.ingresarTexto(driver, "xpath", Elementos.getProperty("txt_acuerdo"), acuerdo);
         dormirSeg(3);
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
@@ -221,9 +223,9 @@ public class GestionarAcuerdosSteps extends genericGrid {
             dormirSeg(2);
             clickJS(driver,"xpath", Elementos.getProperty("lk_cancelar"));
             dormirSeg(3);
-            String mensaje = Elementos.getProperty("div_mensaje_advertencia_cancelar");
-            genericSteps.ValidarTextoEnObjetoResponse(driver, "td", advertencia, mensaje, Config, Elementos, contador, Escenario, navegador);
-            dormirSeg(3);
+            //String mensaje = Elementos.getProperty("div_mensaje_advertencia_cancelar");
+            //genericSteps.ValidarTextoEnObjetoResponse(driver, "td", advertencia, mensaje, Config, Elementos, contador, Escenario, navegador);
+            //dormirSeg(3);
             this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
@@ -401,8 +403,11 @@ public class GestionarAcuerdosSteps extends genericGrid {
     public void ingresarAcuerdo(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador, String acuerdo)
     				throws InterruptedException{
-       borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("txt_acuerdo"));
-       ingresarTexto(driver, "xpath", Elementos.getProperty("txt_acuerdo"), acuerdo);
+    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("txt_comprador"));
+    	dormirSeg(1);
+    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("txt_acuerdo"));
+    	dormirSeg(2);
+    	ingresarTexto(driver, "xpath", Elementos.getProperty("txt_acuerdo"), acuerdo);
       
         
     }
@@ -413,7 +418,7 @@ public class GestionarAcuerdosSteps extends genericGrid {
     public void clickBtnBuscar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador)
     				throws InterruptedException{
-      clickJS(driver, "xpath", Elementos.getProperty("btn_buscar"));
+      click(driver, "xpath", Elementos.getProperty("btn_buscar_1"));
       
         
     }

@@ -12,10 +12,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -264,6 +268,8 @@ public class genericGrid extends evidenceGrid {
     }
     
     
+    
+    
     //*********************************************************************************************************************************
     //*********************************************************************************************************************************
     //CLICK Y SEND KEYS
@@ -347,6 +353,20 @@ public class genericGrid extends evidenceGrid {
         String texto = "";
         WebElement Element = this.driverWait(driver, findby, Elemento);
         texto = Element.getText();
+        return texto;
+    }
+    
+    /***
+     * El método obtiene el value de un objeto.
+     * @param driver es el webDriver en el que se ejecuta la pruebas automatizada.
+     * @param findby Es el tipo de selector selenium id, name o XPATH.
+     * @param Elemento Es el selector selenium.
+     * @return Regresa el texto del objeto o un vacio en caso de no encontrar el findby.
+     */
+    public String obtenerValue(RemoteWebDriver driver, String findby, String Elemento){
+        String texto = "";
+        WebElement Element = this.driverWait(driver, findby, Elemento);
+        texto = Element.getAttribute("value");
         return texto;
     }
     
@@ -495,7 +515,7 @@ public class genericGrid extends evidenceGrid {
      * @param Elemento Es el selector selenium al que le vamos agregar texto.
      */
     public WebElement waitUIElementPresent(WebDriver driver, String findby, String Elemento){
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, 5000);
         WebElement el = null;
         switch(findby) {
             case "id":
@@ -583,6 +603,35 @@ public class genericGrid extends evidenceGrid {
         return msj;
    	
    }
+    
+    public boolean AssertComparaMensajes1(String text, String msjActual) throws InterruptedException{
+    	String msj = "";
+           boolean result;
+		try{
+               this.dormirSeg(1);
+               Assert.assertEquals(text, msjActual);
+               result = true;
+           }catch(AssertionError e){
+               System.out.println("Mensaje Assert Fail: "+e);
+               result = false;
+           }
+           
+           return result;
+      	
+      }
+    
+    public boolean AssertExistElement(RemoteWebDriver driver, String findby, String Elemento) throws InterruptedException, NoSuchElementException{
+    	boolean result = false;
+		try{
+               this.waitUIElementPresent(driver, findby, Elemento);
+               result = true;
+           }catch(Exception e){
+               System.out.println("No Existe el elemento"+e);
+               result = false;
+           }
+           return result;
+      	
+      }
 
     //*********************************************************************************************************************************
     //*********************************************************************************************************************************

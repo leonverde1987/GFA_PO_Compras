@@ -57,6 +57,7 @@ public class PO_GestionarCicloVidaAcuerdoProveedor_ActualizarEstadoRetencionAcue
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String numeroAcuerdo="";
         
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -80,16 +81,18 @@ public class PO_GestionarCicloVidaAcuerdoProveedor_ActualizarEstadoRetencionAcue
     public void Test_PO_GestionarCicloVidaAcuerdoProveedor_ActualizarEstadoRetencionAcuerdoProveedor() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdo = "acuerdoCompraContrato";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
             String BU = filaDatos[3];
-            String numeroAcuerdo = filaDatos[4];
+            String libro = filaDatos[4];
             String motivo = filaDatos[5];
             String mensajeConfirmacion = filaDatos[6];
             String estado = filaDatos[7];
+            numeroAcuerdo = aprobacionSteps.getDato(libro, tipoAcuerdo);
             try{
 
                     Escenario = "PO_Gestionar el Ciclo de Vida de Acuerdo de Proveedor_Actualizar estado de retención de acuerdo de proveedor "+Repeticion;

@@ -105,7 +105,7 @@ public class AP_DarAltaAcuerdoCompraAbierto{
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String empresa = filaDatos[3];
+            String libro = filaDatos[3];
             String estilo = filaDatos[4];
             String udNegocioCompras = filaDatos[5];
             String proveedor = filaDatos[6];
@@ -124,11 +124,11 @@ public class AP_DarAltaAcuerdoCompraAbierto{
             String articulo = filaDatos[19];
             String unidadMedida = filaDatos[20];
             String precio = filaDatos[21];
-            String udNegocioSolicitante = filaDatos[22];
-            String sitioCompras = filaDatos[23];
-            String ubicacionEnvio = filaDatos[24];
-            String udNegocioFactura = filaDatos[25];
-            String ubicacionFactura = filaDatos[26];
+            //String udNegocioSolicitante = filaDatos[22];
+            //String sitioCompras = filaDatos[23];
+            //String ubicacionEnvio = filaDatos[24];
+            //String udNegocioFactura = filaDatos[25];
+            //String ubicacionFactura = filaDatos[26];
          
            
             try{
@@ -174,7 +174,10 @@ public class AP_DarAltaAcuerdoCompraAbierto{
                     //Paso 8
                     contador++;
                     Pasos.add(contador+".- Presionar el botón crear");
-                    acuerdoCompra = crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, empresa, UICrearAcuerdos, contador, Config, Escenario, Navegador);
+                    //acuerdoCompra = crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, libro, UICrearAcuerdos, contador, Config, Escenario, Navegador);
+                    String empresa = "API";
+                    String tipoAcuerdo = "acuerdoCompraAbierto";
+                    crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, libro, UICrearAcuerdos, contador, Config, Escenario, Navegador, tipoAcuerdo);
                     
                     
                     //Paso 9

@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import steps.AprobacionSteps;
 import steps.CabeceraSteps;
 import steps.CrearAcuerdoSteps;
 import steps.CrearArticuloSteps;
@@ -51,6 +52,7 @@ public class AAP_ReasignarAcuerdoProveedor{
     public SolicitarInformacionSteps solicitarInformacionSteps = new SolicitarInformacionSteps();
     public EnviarInformacionSteps enviarInformacionSteps = new EnviarInformacionSteps();
     public ReasignarTareaSteps reasignarTareaSteps = new ReasignarTareaSteps();
+    public AprobacionSteps aprobacionSteps = new AprobacionSteps();
     
     //UIELEMENTS
     public Properties UILogin = null;
@@ -75,6 +77,7 @@ public class AAP_ReasignarAcuerdoProveedor{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String filtroBusqueda="";
   
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -102,13 +105,15 @@ public class AAP_ReasignarAcuerdoProveedor{
     public void AAP_ReasignarAcuerdoProveedor_17325() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdo = "acuerdoCompraContrato";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String mensaje = filaDatos[3];
-            String filtroBusqueda = filaDatos[4];
+            String libro = filaDatos[3];
+           // String filtroBusqueda = filaDatos[4];
+            filtroBusqueda = aprobacionSteps.getDato(libro, tipoAcuerdo);
              
     
             try{

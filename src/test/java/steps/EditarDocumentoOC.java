@@ -15,7 +15,9 @@ public class EditarDocumentoOC extends genericGrid{
     		String Escenario, String navegador, String editDocDescripcion, String editDocGfaSupervisor, String editDocGfaLiderCatego) throws InterruptedException{
     	
     	ingresarTexto(driver, "xpath", Elementos.getProperty("descripcion"), editDocDescripcion);
+    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("gfa_supervisor"));
     	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("gfa_supervisor"), editDocGfaSupervisor);
+    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("gfa_lider_categoria"));
     	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("gfa_lider_categoria"), editDocGfaLiderCatego);
     	
     	
