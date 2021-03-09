@@ -57,7 +57,8 @@ public class PO_AcuerdosProveedor_EliminarAcuerdoConsignacion{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
-        
+    public String numeroAcuerdo="";
+    
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
     
@@ -80,13 +81,16 @@ public class PO_AcuerdosProveedor_EliminarAcuerdoConsignacion{
     public void Test_PO_AcuerdosProveedor_EliminarAcuerdoConsignacion() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdos = "acuerdoCompraConsignacion";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String numeroAcuerdo = filaDatos[3];
+            //String numeroAcuerdo = filaDatos[3];
             String mensajeAdvertencia = filaDatos[4];
+            String libro = filaDatos[5];
+            numeroAcuerdo = aprobacionSteps.getDato(libro, tipoAcuerdos);
             try{
 
                     Escenario = "PO_Acuerdos de Proveedor_Eliminar acuerdo de consignación "+Repeticion;
@@ -135,11 +139,9 @@ public class PO_AcuerdosProveedor_EliminarAcuerdoConsignacion{
                     contador++;
                     Pasos.add(contador+".- Presionar sobre el botón Sí.");
                     gestionarAcuerdosSteps.confirmarSuprimirAcuerdo(driver, Config, UIGestionarAcuerdos, contador, Escenario, Navegador);
+                    Resultado = "Exitoso";
+                   
                     
-                    //Paso 10
-                    contador++;
-                    Pasos.add(contador+".- Validar que ya no exista el Acuerdo.");
-                    Resultado = gestionarAcuerdosSteps.validarAcuerdoEliminado(driver, numeroAcuerdo, Config, UIGestionarAcuerdos, contador, Escenario, Navegador);
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;

@@ -1,2 +1,2 @@
-nombre,contrasena,idioma,tipoAcuerdo,numeroAcuerdo,comprador,monto,monedaAcuerdo,comentario,solicitante
-a.dorantes@gfauat.com,Oracle123,es-es,Acuerdo de compra de contrato,XPA-API-76,TERESA RANGEL,"5,000.00",MXN,No procede,teresa.rangel@gfauat.com
+nombre,contrasena,idioma,tipoAcuerdo,numeroAcuerdo,comprador,monto,monedaAcuerdo,comentario,solicitante,libro
+gu.gonzalez.s@flecha-amarilla.com,Oracle123,es-es,Acuerdo de compra de consignación,XPA-API-76,TERESA RANGEL,"5,000.00",MXN,No procede,teresa.rangel@gfauat.com,API

@@ -25,11 +25,11 @@ public class CrearAcuerdoSteps extends genericGrid{
         dormirSeg(1);
         ingresarTexto(driver, "xpath", Elementos.getProperty("proveedor"), proveedor);
         dormirSeg(1);
-        borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("moneda"));
-        seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("moneda"), moneda);
-        dormirSeg(1);
-        borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("comprador"));
-        seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("comprador"), comprador);
+        //borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("moneda"));
+        //seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("moneda"), moneda);
+        //dormirSeg(1);
+        //borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("comprador"));
+        //seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("comprador"), comprador);
         
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     } 
@@ -37,13 +37,65 @@ public class CrearAcuerdoSteps extends genericGrid{
     /**
      * Esté método selecciona el boton crear en el dialogo de crear acuerdos
     */
-    public String clickBtnCrearDialogAcuerdos(RemoteWebDriver driver, String empresa, Properties Elementos,
-    		int contador, Properties Config, String Escenario, String navegador)
+    public void clickBtnCrearDialogAcuerdos(RemoteWebDriver driver, String libro, Properties Elementos,
+    		int contador, Properties Config, String Escenario, String navegador, String tipoAcuerdo)
     				throws InterruptedException, IOException{
+    	dormirSeg(3);
        click(driver, "xpath", Elementos.getProperty("btn_crear"));        
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
-        return this.obtenerAcuerdoCompra(driver, Elementos, empresa);
+        //return this.obtenerAcuerdoCompra(driver, Elementos, empresa);
+    	dormirSeg(6);
+        this.obtenerDatoyGuradarArchivo(driver, Elementos, libro, tipoAcuerdo);
     } 
+    
+    /**
+     * Este mÃ©todo obtiene el nÃºmero de la orden de trabajo. 
+     * @param driver Elemento WebDriver de la prueba.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param propiedad es el valor de la propiedad que se va actualizar en el archivo.
+     * @return El nÃºmero de la orden de trabajo.
+     * @throws InterruptedException
+     * @throws IOException 
+     */
+    public String obtenerDatoyGuradarArchivo(RemoteWebDriver driver, Properties Elementos, String propiedad, String tipoAcuerdo) 
+    		throws InterruptedException, IOException{
+        //System.out.println(this.obtenerTexto(driver, "xpath", Elementos.getProperty("eam_lbl_orden_trabajo")).substring(25, 47));
+    	String[] num_acuerdo = this.obtenerTexto(driver, "xpath", Elementos.getProperty("var_retorno_acuerdo_compra_abierto")).split(":");
+    	this.setDato(propiedad, num_acuerdo[1].trim(), tipoAcuerdo);
+    	return num_acuerdo[1].trim();
+        //return this.obtenerTexto(driver, "xpath", Elementos.getProperty("var_retorno_acuerdo_compra_abierto")).substring(46, 56);
+    }
+
+
+     /**
+     * Este mÃ©todo nos ayuda actualizar un valor en properties de orden de trabajo.
+     * @param Propiedad Es el dato que vamos a guardar.
+     * @throws InterruptedException 
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public void setDato(String propiedad, String elemento, String tipoAcuerdo) throws InterruptedException, FileNotFoundException, IOException{
+        Properties ots = new generic.genericGrid().getPropetiesFile("C:\\ambiente\\precondiciones\\"+tipoAcuerdo+".properties");
+        ots.setProperty(propiedad, elemento);
+        ots.store(new FileWriter("C:\\ambiente\\precondiciones\\"+tipoAcuerdo+".properties"),"Actualizacion acuerdo de compra OK");
+    }
+    
+    
+    /**
+    * Este mÃ©todo nos ayuda actualizar un valor en properties de orden de trabajo.
+    * @param Propiedad Es el dato que vamos a guardar.
+    * @throws InterruptedException 
+    * @throws FileNotFoundException
+    * @throws IOException
+    */
+   public void setDatoAcuerdoContrato(String propiedad, String elemento) throws InterruptedException, FileNotFoundException, IOException{
+       Properties ots = new generic.genericGrid().getPropetiesFile("C:\\ambiente\\precondiciones\\acuerdoCompraContrato.properties");
+       ots.setProperty(propiedad, elemento);
+       ots.store(new FileWriter("C:\\ambiente\\precondiciones\\acuerdoCompraContrato.properties"),"Actualizacion acuerdo de compra contrato OK");
+   }
+
+     
+     
     
     /**
      * Esté método llena formulario de acuerdo de compra de contrato 
@@ -188,9 +240,21 @@ public class CrearAcuerdoSteps extends genericGrid{
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public String getGuardarAcuerdoCompra(String empresa) throws InterruptedException, FileNotFoundException, IOException{
-        Properties ac = new generic.genericGrid().getPropetiesFile("configuracion\\acuerdoCompra.properties");      
-        return ac.getProperty(empresa);
+    public String getGuardarAcuerdoCompra(String libro) throws InterruptedException, FileNotFoundException, IOException{
+        Properties ac = new generic.genericGrid().getPropetiesFile("configuracion\\acuerdoCompraAbierto.properties");      
+        return ac.getProperty(libro);
+    }
+    
+    /**
+     * Este mÃ©todo nos ayuda a obtener un valor en properties de orden de trabajo. 
+     * @return La orden de trabajo que recien se agregÃ³.
+     * @throws InterruptedException 
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public String getDato(String empresa) throws InterruptedException, FileNotFoundException, IOException{
+        Properties dato = new generic.genericGrid().getPropetiesFile("C:\\ambiente\\precondiciones\\acuerdoCompraAbierto.properties");      
+        return dato.getProperty(empresa);
     }
     
     /**

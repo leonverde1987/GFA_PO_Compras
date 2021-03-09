@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import steps.AprobacionSteps;
 import steps.CabeceraSteps;
 import steps.CrearAcuerdoSteps;
 import steps.CrearArticuloSteps;
@@ -50,6 +51,7 @@ public class AP_EnviarAcuerdoModificacion{
     public EditarLineaSteps editarLineaSteps = new EditarLineaSteps();
     public GestionarAcuerdosSteps gestionarAcuerdosSteps = new GestionarAcuerdosSteps();
     public EditarDocumentoOC editarDocumentoOC = new EditarDocumentoOC();
+    public AprobacionSteps aprobacionSteps = new AprobacionSteps();
    
     
     //UIELEMENTS
@@ -79,7 +81,8 @@ public class AP_EnviarAcuerdoModificacion{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
-  
+    public String acuerdo="";
+    
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
     
@@ -108,20 +111,20 @@ public class AP_EnviarAcuerdoModificacion{
     public void AP_EnviarAcuerdoModificacion_17305() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdo = "acuerdoCompraContrato";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String mensaje = filaDatos[3];
-            String acuerdo = filaDatos[4];
-            String editDocDescripcion = filaDatos[5];
-            String editDocGfaSupervisor = filaDatos[6];
-            String editDocGfaLiderCatego = filaDatos[7];
+            String libro = filaDatos[3];
+            //String acuerdo = filaDatos[4];
+            String editDocDescripcion = filaDatos[4];
+            String editDocGfaSupervisor = filaDatos[5];
+            String editDocGfaLiderCatego = filaDatos[6];
+            acuerdo = aprobacionSteps.getDato(libro, tipoAcuerdo);
+    
             
-         
-         
-           
             try{
 
                     Escenario = "AP_EnviarAcuerdoModificacion "+Repeticion;

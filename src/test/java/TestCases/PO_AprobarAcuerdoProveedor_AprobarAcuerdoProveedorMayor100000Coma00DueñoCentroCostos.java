@@ -56,7 +56,8 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
-        
+    public String numeroAcuerdo="";
+    
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
     
@@ -79,17 +80,20 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
     public void Test_PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00DueñoCentroCostos() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdos = "ordenCompraDisel";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
             String tipoAcuerdo = filaDatos[3];
-            String numeroAcuerdo = filaDatos[4];
+            String libro = filaDatos[4];
             String comprador = filaDatos[5];
             String importe = filaDatos[6];
             String monedaAcuerdo = filaDatos[7];
             String personaAsignada = filaDatos[8];
+            numeroAcuerdo = aprobacionSteps.getDato(libro, tipoAcuerdos);
+            
             try{
 
                     Escenario = "PO_Aprobar Acuerdo de Proveedor_Aprobar un acuerdo de proveedor mayor a 100000 coma 00 dueño de centro de costos "+Repeticion;
@@ -111,25 +115,23 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
                     //Paso 4
                     contador++;
                     Pasos.add(contador+".- Presionar sobre la notificación para aprobación del Acuerdo de Proveedor: "+numeroAcuerdo);
-                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" enviado por "+comprador+" ("+importe+" "+monedaAcuerdo+")", contador, Config, Escenario, Navegador);
+                    aprobacionSteps.clickNotificacionAcuerdoAprobacion_1(driver, UIAprobacion, contador, Config, Escenario, Navegador, numeroAcuerdo);
+                    genericSteps.switchWindowByIndex(driver, 1);
                     
                     //Paso 5
                     contador++;
                     Pasos.add(contador+".- Presionar sobre el botón Aprobar.");
                     aprobacionSteps.clickBtnAprobar(driver, UIAprobacion, contador, Config, Escenario, Navegador);
-                    
-                    /*//Paso 6
-                    contador++;
-                    Pasos.add(contador+".- Presionar sobre el botón Ejecutar.");
-                    aprobacionSteps.clickBtnEjecutar(driver, UIAprobacion, contador, Config, Escenario, Navegador);
-                    genericSteps.switchWindowByIndex(driver, 0);*/
+                    genericSteps.switchWindowByIndex(driver, 0); 
                     
                     //Paso 7
                     contador++;
                     Pasos.add(contador+".- Validar que se haya aprobado el acuerdo con el Dueño CECO.");
-                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" enviado por "+comprador+" ("+importe+" "+monedaAcuerdo+")", contador, Config, Escenario, Navegador);
+                    aprobacionSteps.clickNotificacionAcuerdoAprobacion_1(driver, UIAprobacion, contador, Config, Escenario, Navegador, numeroAcuerdo);
                     genericSteps.switchWindowByIndex(driver, 1);
-                    Resultado = aprobacionSteps.validarDocumentoAprobadoAprobador(driver, personaAsignada, Config, UIAprobacion, contador, Escenario, Navegador);
+                    aprobacionSteps.validar_que_no_exista_btn_aprobar(driver, UIAprobacion,
+                    		contador, Config, Escenario, Navegador);
+                    Resultado = "Exitoso";
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;

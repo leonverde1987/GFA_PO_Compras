@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import steps.AprobacionSteps;
 import steps.CabeceraSteps;
 import steps.CrearAcuerdoSteps;
 import steps.CrearArticuloSteps;
@@ -50,6 +51,7 @@ public class AP_EnviarAcuerdoProveedorImportado{
     public EditarLineaSteps editarLineaSteps = new EditarLineaSteps();
     public GestionarAcuerdosSteps gestionarAcuerdosSteps = new GestionarAcuerdosSteps();
     public EditarDocumentoOC editarDocumentoOC = new EditarDocumentoOC();
+    public AprobacionSteps aprobacionSteps = new AprobacionSteps();
    
     
     //UIELEMENTS
@@ -79,6 +81,7 @@ public class AP_EnviarAcuerdoProveedorImportado{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String acuerdo="";
   
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -108,17 +111,18 @@ public class AP_EnviarAcuerdoProveedorImportado{
     public void AP_EnviarAcuerdoProveedorImportado_17323() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdo = "acuerdoCompraConsignacion";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String mensaje = filaDatos[3];
-            String acuerdo = filaDatos[4];
+            String libro = filaDatos[3];
+            //String acuerdo = filaDatos[4];
             String editDocDescripcion = filaDatos[5];
             String editDocGfaSupervisor = filaDatos[6];
             String editDocGfaLiderCatego = filaDatos[7];
-            
+            acuerdo = aprobacionSteps.getDato(libro, tipoAcuerdo);
          
          
            
@@ -180,6 +184,12 @@ public class AP_EnviarAcuerdoProveedorImportado{
                     Pasos.add(contador+".- Seleccionar el menu editar dentro de acciones");
                     lineasSteps.menuAccionesEditar(driver, UILineas,
                     		contador, Config, Escenario, Navegador);
+                    
+                    //paso 10.1
+                    //contador++;
+                    //Pasos.add(contador+".- click aceptar");
+                    //cabeceraSteps.clickBtnSiMsj_1(driver, UICabecera, contador, Config, Escenario, Navegador);
+                    
                     
                     //Paso 11
                     contador++;

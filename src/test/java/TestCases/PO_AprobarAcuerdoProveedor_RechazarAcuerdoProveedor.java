@@ -35,6 +35,7 @@ public class PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor{
     public LoginSteps loginSteps = new LoginSteps();
     public MenusNavegadorSteps menusNavegadorSteps = new MenusNavegadorSteps();
     public AprobacionSteps aprobacionSteps = new AprobacionSteps();
+    
 
 
     //UIELEMENTS
@@ -56,6 +57,7 @@ public class PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor{
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String numeroAcuerdo="";
         
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -79,18 +81,22 @@ public class PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor{
     public void Test_PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdos = "acuerdoCompraConsignacion";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
             String tipoAcuerdo = filaDatos[3];
-            String numeroAcuerdo = filaDatos[4];
+            //String numeroAcuerdo = filaDatos[4];
             String comprador = filaDatos[5];
             String importe = filaDatos[6];
             String monedaAcuerdo = filaDatos[7];
             String comentario = filaDatos[8];
             String solicitante = filaDatos[9];
+            String libro = filaDatos[10];
+            numeroAcuerdo = aprobacionSteps.getDato(libro, tipoAcuerdos);
+            
             try{
 
                     Escenario = "PO_Aprobar Acuerdo de Proveedor_Rechazar acuerdo de proveedor "+Repeticion;
@@ -98,6 +104,7 @@ public class PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor{
                     //Paso 1
                     Pasos.add(contador+".- Ingresar a la URL: "+Config.getProperty("urlOracle"));
                     genericSteps.ingresarAURL(driver, contador, Config, Escenario, Navegador);
+                    
                     
                     //Paso 2
                     contador++;
@@ -112,7 +119,9 @@ public class PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor{
                     //Paso 4
                     contador++;
                     Pasos.add(contador+".- Presionar sobre la notificación para aprobación del Acuerdo de Proveedor: "+numeroAcuerdo);
-                    aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" enviado por "+comprador+" ("+importe+" "+monedaAcuerdo+")", contador, Config, Escenario, Navegador);
+                    //aprobacionSteps.clickNotificacionAcuerdoAprobacion(driver, UIAutoaprobacion, "Acción Necesaria: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" enviado por "+comprador+" ("+importe+" "+monedaAcuerdo+")", contador, Config, Escenario, Navegador);
+                    aprobacionSteps.clickNotificacionAcuerdoAprobacion_1(driver, UIAprobacion, 
+                    		contador, Config, Escenario, Navegador, numeroAcuerdo);
                     
                     //Paso 5
                     contador++;
@@ -140,8 +149,10 @@ public class PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor{
                     genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
                     genericSteps.loginOracle(driver, solicitante, pass, idioma, contador, Config, UILogin, Escenario, Navegador);
                     aprobacionSteps.clickCampanaNotificaciones(driver, UIAutoaprobacion, contador, Config, Escenario, Navegador);
-                    Resultado = aprobacionSteps.validarFacturaAutoaprobada(driver, "Mensaje Informativo: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" rechazado", Config, UIAutoaprobacion, contador, Escenario, Navegador);
-                    
+                    Resultado = aprobacionSteps.validarNotificacionRechazada(driver, UIAprobacion,
+                    		contador, Config, Escenario, Navegador, numeroAcuerdo);
+                    		
+                    		
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);

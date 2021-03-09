@@ -166,7 +166,9 @@ public class AP_DarAltaAcuerdoCompraContrato{
                     //Paso 8
                     contador++;
                     Pasos.add(contador+".- Presionar el boton crear");
-                    crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador);
+                    String empresa = "API";
+                    String tipoAcuerdo = "AcuerdoCompraContrato";
+                    crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, empresa ,UICrearAcuerdos, contador, Config, Escenario, Navegador, tipoAcuerdo);
                     
                     //Paso 9
                     contador++;
@@ -184,17 +186,26 @@ public class AP_DarAltaAcuerdoCompraContrato{
                     Pasos.add(contador+".- LLenar formulario de controles");
                     crearAcuerdosSteps.LlenarFormControles(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador, 
                     		udNegocioSolicitante, sitioCompras, ubicacionEnvio, udNegocioFactura, ubicacionFactura);
+                    
+                    
+                  //Paso 11
+                    contador++;
+                    Pasos.add(contador+".- LLenar formulario de controles");
+                    cabeceraSteps.clickBtnGuardarCerrarG(driver, UICabecera, contador, Config, Escenario, Navegador);
+                    Resultado = "Exitoso";
+                    
+                    
                   
                     //Paso 12
-                    contador++;
-                    Pasos.add(contador+".- Presionar sobre el boton enviar de la cabecera");
-                    cabeceraSteps.clickBtnEnviar(driver, UICabecera, contador, Config, Escenario, Navegador);
+                    //contador++;
+                    //Pasos.add(contador+".- Presionar sobre el boton enviar de la cabecera");
+                    //cabeceraSteps.clickBtnEnviar(driver, UICabecera, contador, Config, Escenario, Navegador);
                     
                     //Paso 13
-                    contador++;
-                    Pasos.add(contador+"Validar mensaje de confirmacion"); 
-                    crearAcuerdosSteps.clickBtnAceptarConfirmacion(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador);
-                    Resultado = "Exitoso";
+                    //contador++;
+                    //Pasos.add(contador+"Validar mensaje de confirmacion"); 
+                    //crearAcuerdosSteps.clickBtnAceptarConfirmacion(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador);
+                    
                     
                    
                     

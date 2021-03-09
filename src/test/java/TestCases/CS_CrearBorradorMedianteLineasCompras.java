@@ -119,6 +119,7 @@ public class CS_CrearBorradorMedianteLineasCompras{
                     Pasos.add(contador+".- Seleccionar menú: Compras => Solicitudes de compra ");
                     menusNavegadorSteps.abrirMenuSolicitudesCompra(driver, UIMenusNavegador, contador, 
                     		Config, Escenario, Navegador);
+                    Resultado = "Exitoso";
                     
                     
                     

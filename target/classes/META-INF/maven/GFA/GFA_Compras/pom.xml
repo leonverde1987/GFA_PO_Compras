@@ -80,6 +80,7 @@
             <version>3.7</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>javax.xml.ws</groupId>
             <artifactId>jaxws-api</artifactId>

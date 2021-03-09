@@ -168,7 +168,9 @@ public class AP_DarAltaAcuerdoConsignacion{
                     //Paso 8
                     contador++;
                     Pasos.add(contador+".- Presionar el boton crear");
-                    crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador);
+                    String empresa = "API";
+                    String tipoAcuerdo = "acuerdoCompraConsignacion";
+                    crearAcuerdosSteps.clickBtnCrearDialogAcuerdos(driver, empresa,  UICrearAcuerdos, contador, Config, Escenario, Navegador,tipoAcuerdo);
                     
                     //Paso 9
                     contador++;
