@@ -78,7 +78,7 @@ public class evidenceGrid {
     }
     
     public String creaCarpetaRepeticion(){
-        File carpeta = new File("C://Evidencia\\"+this.fechaFormato()+"\\"+this.totalArchivosMasUno(new File("C://Evidencia//"+fechaFormato())));
+        File carpeta = new File("C://Evidencia\\PO\\"+this.fechaFormato()+"\\"+this.totalArchivosMasUno(new File("C://Evidencia//PO//"+fechaFormato())));
         if (!carpeta.exists()) {
             if (carpeta.mkdirs()) {
                 System.out.println("Directorio creado");
@@ -87,7 +87,7 @@ public class evidenceGrid {
                 
             }
         }
-        return "C://Evidencia//"+this.fechaFormato()+"//"+this.totalArchivos(new File("C://Evidencia//"+fechaFormato()));
+        return "C://Evidencia//PO//"+this.fechaFormato()+"//"+this.totalArchivos(new File("C://Evidencia//PO//"+fechaFormato()));
     }
     
     public String fechaFormato(){
@@ -513,12 +513,12 @@ public class evidenceGrid {
             printw.println("<table id=\"encabezado\">");
             printw.println("<tr>");
             printw.println("<td>");
-            printw.println("<img src=\""+rutaEvidencia+"\\gfa.png\" width=\"115\" height=\"30\">");
+            printw.println("<img src=C:\\ambiente\\imagenes\\GFA.png\" width=\"115\" height=\"30\">");
             printw.println("</td>");
             printw.println("<td>");
             printw.println("</td>");
             printw.println("<td>");
-            printw.println("<p align=\"right\"><img src=\""+rutaEvidencia+"\\testingit.png\" width=\"115\" height=\"30\"></p>");
+            printw.println("<p align=\"right\"><img src=C:\\ambiente\\imagenes\\TestingIT.png\" width=\"115\" height=\"30\"></p>");
             printw.println("</td>");
             printw.println("</tr>");
             
