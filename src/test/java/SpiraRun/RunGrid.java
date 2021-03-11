@@ -26,7 +26,7 @@ import org.junit.runners.Suite;
 public class RunGrid {
     
     @BeforeClass
-    public void TestRunnerGrid() throws InterruptedException, FileNotFoundException, IOException {
+    public static void TestRunnerGrid() throws InterruptedException, FileNotFoundException, IOException {
         Properties Config = new generic.genericGrid().getPropetiesFile("configuracion\\configuracion.properties");
         
         String ruta = new generic.evidenceGrid().creaCarpetaRepeticion();
