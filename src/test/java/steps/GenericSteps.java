@@ -307,6 +307,7 @@ public class GenericSteps extends genericGrid{
      * @param windowsTitle String parte del titulo de la entana
      */
     public boolean switchWindowByIndex(WebDriver driver, int windowsIndex) throws Exception{
+    	dormirSeg(2);
     	try {
     		Boolean result = false;
     		int index = 0;

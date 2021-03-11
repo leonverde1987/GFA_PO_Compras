@@ -56,6 +56,7 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
     public String Navegador="";
     public CSVReader DataDriven=null;
     public String[] filaDatos=null;
+    public String numeroAcuerdo="";
         
     @Before
     public void PrepararEjecucion() throws FileNotFoundException, MalformedURLException, InterruptedException{
@@ -71,6 +72,7 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
         Navegador = Config.getProperty("Navegador");
         driver = genericSteps.openGridBrowser(Navegador, Config);
         ResultadoGlobal = "Exitoso";
+      
         
     }
     
@@ -79,17 +81,19 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
     public void Test_PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00LiderTecnico() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
+        String tipoAcuerdos = "ordenCompraDisel";
         
         while((filaDatos = DataDriven.readNext()) != null){
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
             String tipoAcuerdo = filaDatos[3];
-            String numeroAcuerdo = filaDatos[4];
+            String libro = filaDatos[4];
             String comprador = filaDatos[5];
             String importe = filaDatos[6];
             String monedaAcuerdo = filaDatos[7];
             String personaAsignada = filaDatos[8];
+            numeroAcuerdo = aprobacionSteps.getDato(libro, tipoAcuerdos);
             try{
 
                     Escenario = "PO_Aprobar Acuerdo de Proveedor_Aprobar un acuerdo de proveedor mayor a 100000 coma 00 líder técnico "+Repeticion;

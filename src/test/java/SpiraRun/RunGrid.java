@@ -39,9 +39,9 @@ public class RunGrid {
         //core.run(TestCases.AP_EnviarAcuerdoProveedorImportado.class);
         //core.run(TestCases.PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor.class);
         //core.run(TestCases.PO_AcuerdosProveedor_CancelarAcuerdoConsignacion.class);
-        core.run(TestCases.AP_DarAltaAcuerdosDiesel.class);
-        core.run(TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00DueñoCentroCostos.class);
-      
+        //core.run(TestCases.AP_DarAltaAcuerdosDiesel.class);
+        //core.run(TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00DueñoCentroCostos.class);
+        //core.run(TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00LiderTecnico.class);
         
         
 /**
