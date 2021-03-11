@@ -623,8 +623,9 @@ public class genericGrid extends evidenceGrid {
     public boolean AssertExistElement(RemoteWebDriver driver, String findby, String Elemento) throws InterruptedException, NoSuchElementException{
     	boolean result = false;
 		try{
-               this.waitUIElementPresent(driver, findby, Elemento);
-               result = true;
+               //this.waitUIElementPresent(driver, findby, Elemento);
+            driver.findElement(By.xpath(Elemento));   
+			result = true;
            }catch(Exception e){
                System.out.println("No Existe el elemento"+e);
                result = false;

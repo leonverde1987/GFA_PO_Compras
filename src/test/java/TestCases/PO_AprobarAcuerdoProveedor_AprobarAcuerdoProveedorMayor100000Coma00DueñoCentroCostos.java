@@ -116,14 +116,13 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
                     contador++;
                     Pasos.add(contador+".- Presionar sobre la notificación para aprobación del Acuerdo de Proveedor: "+numeroAcuerdo);
                     aprobacionSteps.clickNotificacionAcuerdoAprobacion_1(driver, UIAprobacion, contador, Config, Escenario, Navegador, numeroAcuerdo);
-                    genericSteps.switchWindowByIndex(driver, 1);
-                    
+                                        
                     //Paso 5
                     contador++;
                     Pasos.add(contador+".- Presionar sobre el botón Aprobar.");
+                    genericSteps.switchWindowByIndex(driver, 1);
                     aprobacionSteps.clickBtnAprobar(driver, UIAprobacion, contador, Config, Escenario, Navegador);
-                    genericSteps.switchWindowByIndex(driver, 0); 
-                    
+              
                     //Paso 7
                     contador++;
                     Pasos.add(contador+".- Validar que se haya aprobado el acuerdo con el Dueño CECO.");
@@ -131,6 +130,9 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
                     genericSteps.switchWindowByIndex(driver, 1);
                     aprobacionSteps.validar_que_no_exista_btn_aprobar(driver, UIAprobacion,
                     		contador, Config, Escenario, Navegador);
+                    aprobacionSteps.cerrarVentana(driver, UIAprobacion,
+                    		contador, Config, Escenario, Navegador);
+                    
                     Resultado = "Exitoso";
                     
             }catch(NoSuchElementException s){

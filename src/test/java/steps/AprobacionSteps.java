@@ -100,22 +100,21 @@ public class AprobacionSteps extends genericGrid {
     	dormirSeg(3);
         String locator = sobreEscribirLocator(Elementos.getProperty("noti"), numeroAcuerdo);
     	clickJS(driver, "xpath", locator);
+    	dormirSeg(6);
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
     public void validar_que_no_exista_btn_aprobar(RemoteWebDriver driver, Properties Elementos, 
     		int contador, Properties Config, String Escenario, String navegador)
     				throws InterruptedException, Exception{
-    	dormirSeg(3);
+    	dormirSeg(5);
     	try{
     		boolean btn_exist = genericSteps.AssertExistElement(driver, "xpath", Elementos.getProperty("btn_aprobar"));
         	assertFalse(btn_exist, "El boton aprobar existe");
         } catch(AssertionError e){
             System.out.println("El elemento existe"+e);
             
-        } catch(Exception ex){
-            System.out.println("El elemento existe"+ex);            
-        }
+        } 
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
 
@@ -130,13 +129,13 @@ public class AprobacionSteps extends genericGrid {
      * @param navegador Es el navegador a usar en la prueba.
      * @throws InterruptedException 
      */
-    public void clickBtnAprobar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException, Exception{
-      
-        	dormirSeg(2);
+    public void clickBtnAprobar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, 
+    		String navegador) throws InterruptedException, Exception{
+    		dormirSeg(2);
         	click(driver, "xpath", Elementos.getProperty("btn_aprobar"));
+        	genericSteps.switchWindowByIndex(driver, 0); 
         	dormirSeg(5);
-            this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
-       
+        	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
     /**
@@ -459,6 +458,14 @@ public class AprobacionSteps extends genericGrid {
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
+    public void cerrarVentana(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException, Exception{
+    	driver.close();
+        //clickJS(driver, "xpath", Elementos.getProperty("btn_crerra_V1"));
+        genericSteps.switchWindowByIndex(driver, 0);
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
     /**
      * Este método valida que se muestra mensaje de Error al rechazar sin motivo.
      * @param driver Elemento WebDriver de la prueba.
@@ -495,5 +502,8 @@ public class AprobacionSteps extends genericGrid {
         Properties dato = new generic.genericGrid().getPropetiesFile("C:\\ambiente\\precondiciones\\"+tipoAcuerdo+".properties");      
         return dato.getProperty(empresa);
     }
+    
+
+    
     
 }
