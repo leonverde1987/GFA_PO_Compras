@@ -194,5 +194,28 @@ public class MenusNavegadorSteps extends genericGrid{
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
 
-
+    /**
+     * Este método valida que se haya eliminado la Orden.
+     * @param driver Elemento WebDriver de la prueba.
+     * @param texto Es la leyenda a validar en la notificación.
+     * @param Elementos Es el archivo properties de los elementos.
+     * @param contador Es el contador.
+     * @param Config Es la configuración de la prueba.
+     * @param Escenario Es el escenario de la prueba.
+     * @param navegador Es el navegador a usar en la prueba.
+     * @throws InterruptedException 
+     */
+    public String validarInexistenciaMenu(RemoteWebDriver driver, String texto, Properties Config, Properties Elementos, int contador, String Escenario, String navegador) throws InterruptedException{
+        dormirSeg(3);
+        String elem = Elementos.getProperty("div_menu_navegador");
+        String text = this.buscarTextoTabla(driver, texto, "a", elem);
+        String msj = "";
+        try{
+            msj = this.AssertComparaMensajes(text, "Fallido");
+        }catch(ComparisonFailure e){
+            msj = "Exitoso, Resultado Esperado: "+e;
+        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+        return msj;
+    }
 }

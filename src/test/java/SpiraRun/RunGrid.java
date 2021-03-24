@@ -31,7 +31,7 @@ public class RunGrid {
         
         String ruta = new generic.evidenceGrid().creaCarpetaRepeticion();
         Config.setProperty("rutaEvidencia",ruta);
-        //Prueba
+        
         Config.store(new FileWriter("configuracion\\configuracion.properties"),"Actualización de versión");
         
     }
