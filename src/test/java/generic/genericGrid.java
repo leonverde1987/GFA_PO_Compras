@@ -492,7 +492,7 @@ public class genericGrid extends evidenceGrid {
      * @param Elemento Es el selector selenium al que le vamos agregar texto.
      */
     public WebElement driverWait(WebDriver driver, String findby, String Elemento){
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, 60);
         WebElement el = null;
         switch(findby) {
             case "id":
@@ -515,7 +515,7 @@ public class genericGrid extends evidenceGrid {
      * @param Elemento Es el selector selenium al que le vamos agregar texto.
      */
     public WebElement waitUIElementPresent(WebDriver driver, String findby, String Elemento){
-        WebDriverWait wait = new WebDriverWait(driver, 5000);
+        WebDriverWait wait = new WebDriverWait(driver, 60);
         WebElement el = null;
         switch(findby) {
             case "id":
