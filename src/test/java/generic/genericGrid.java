@@ -116,6 +116,7 @@ public class genericGrid extends evidenceGrid {
             }
             if("firefox".equals(navegador)){
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
+                firefoxOptions.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe");
                 //capabilities.setBrowserName(navegador);
                 //capabilities = DesiredCapabilities.firefox();
                 url = new URL("http://localhost:5556/wd/hub");
