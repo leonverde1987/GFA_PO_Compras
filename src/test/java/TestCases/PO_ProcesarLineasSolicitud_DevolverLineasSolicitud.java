@@ -173,9 +173,6 @@ public class PO_ProcesarLineasSolicitud_DevolverLineasSolicitud{
             }
             Repeticion++;
         }
-        if(!"Exitoso".equals(ResultadoGlobal.substring(0, 7))){
-            throw new Exception("Navegador: "+Navegador + "\n Resultado: \n" + ResultadoGlobal);
-        }
     }
 
     @After

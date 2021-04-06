@@ -124,9 +124,6 @@ public class PO_AprobarSolicitud_ValidarNotificaciónAutoaprobaciónHasta1999Com
             }
             Repeticion++;
         }
-        if(!"Exitoso".equals(ResultadoGlobal.substring(0, 7))){
-            throw new Exception("Navegador: "+Navegador + "\n Resultado: \n" + ResultadoGlobal);
-        }
     }
 
     @After

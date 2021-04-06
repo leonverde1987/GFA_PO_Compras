@@ -143,9 +143,6 @@ public class PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00
             }
             Repeticion++;
         }
-        if(!"Exitoso".equals(ResultadoGlobal.substring(0, 7))){
-            throw new Exception("Navegador: "+Navegador + "\n Resultado: \n" + ResultadoGlobal);
-        }
     }
 
     @After
