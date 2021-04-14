@@ -47,6 +47,7 @@ import org.junit.runners.Suite;
     TestCases.PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor.class,
     TestCases.PO_AcuerdosProveedor_CancelarAcuerdoConsignacion.class,
     TestCases.PO_AcuerdosProveedor_EliminarAcuerdoConsignacion.class,
+    TestCases.PO_AcuerdosProveedor_ValidarPrivilegioSinAsignarCrearAcuerdoProveedor.class,
     TestCases.AP_DarAltaAcuerdosDiesel.class,
     TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00DueñoCentroCostos.class,
     TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00LiderTecnico.class,
