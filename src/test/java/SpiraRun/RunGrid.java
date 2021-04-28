@@ -21,7 +21,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     SpiraRun.RunGridChrome.class,
-    SpiraRun.RunGridFirefox.class
+    //SpiraRun.RunGridFirefox.class
 })
 public class RunGrid {
     
@@ -31,8 +31,10 @@ public class RunGrid {
         
         String ruta = new generic.evidenceGrid().creaCarpetaRepeticion();
         Config.setProperty("rutaEvidencia",ruta);
-        
-        Config.store(new FileWriter("configuracion\\configuracion.properties"),"Actualización de versión");
+        Config.store(new FileWriter("configuracion\\configuracion.properties"),"Actualiza evidencia");
+        new generic.genericGrid().leventarNodosGrid();
+       
+        Config.store(new FileWriter("configuracion\\configuracion.properties"),"Actualizar ruta de evidencias");
         
     }
 }
