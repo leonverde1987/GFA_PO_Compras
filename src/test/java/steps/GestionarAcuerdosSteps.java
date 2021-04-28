@@ -82,7 +82,7 @@ public class GestionarAcuerdosSteps extends genericGrid {
      * @throws InterruptedException 
      */
     public void buscarAcuerdo(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, String Escenario, String navegador) throws InterruptedException{
-        clickJS(driver, "xpath", Elementos.getProperty("btn_buscar"));
+        click(driver, "xpath", Elementos.getProperty("btn_buscar"));
         dormirSeg(3);
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }

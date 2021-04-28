@@ -20,6 +20,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	TestCases.GCVOC_ActualizarEdoCongelacion.class,
+	/*
     TestCases.AP_DarAltaAcuerdoConsignacion.class,
     TestCases.AP_ModificarAcuerdoConsignacion.class,
     TestCases.AP_EnviarAcuerdoProveedorImportado.class,
@@ -76,6 +78,7 @@ import org.junit.runners.Suite;
     TestCases.GCVS_SeguimientoCicloVidaSol.class,
     TestCases.CS_CrearBorradorMedianteSolicitudQueNoSeanCatalogoAP.class,
     TestCases.CS_DarAltaSolicitudCompraUrgenteAP.class
+    */
 })
 public class RunGridChrome {
     
