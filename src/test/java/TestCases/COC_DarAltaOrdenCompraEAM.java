@@ -201,13 +201,20 @@ public class COC_DarAltaOrdenCompraEAM{
                     generadorDocumentos.llenarFormGeneradorDoc(driver, UIGeneradorDocumentos,
                     		contador, Config, Escenario, Navegador, tipo, acuerdoOrigen, estilo, proveedor, sitioProveedor, moneda);
                     
-                    //Paso 12
+                                        
+                   //Paso 12
+                    contador++;
+                    Pasos.add(contador+".-Presionar el boton Aceptar");
+                    generadorDocumentos.clickBtnAceptar(driver, UIGeneradorDocumentos, 
+                    		contador, Config, Escenario, Navegador);
+                    
+                  //Paso 13
                     contador++;
                     Pasos.add(contador+".-Presionar el boton Aceptar");
                     generadorDocumentos.clickBtnEditar(driver, UIGeneradorDocumentos, 
                     		contador, Config, Escenario, Navegador);
               
-                    //Paso13
+                    //Paso14
                     contador++;
                     Pasos.add(contador+".-Presionar el boton Agregar mas lineas");
                    cabeceraSteps.clickBtnAddLineas(driver, UICabecera,
@@ -228,7 +235,7 @@ public class COC_DarAltaOrdenCompraEAM{
                  //Paso 16
                    contador++;
                    Pasos.add(contador+".-Presionar sobre el boton crear");
-                   procesarSolicitudesSteps.clickBtnCrear(driver, UIProcesarSolicitudes,
+                   cabeceraSteps.clickBtnListo(driver, UICabecera,
                 		   contador, Config, Escenario, Navegador);
                    
                    //Paso 17
@@ -284,7 +291,7 @@ public class COC_DarAltaOrdenCompraEAM{
                    Pasos.add("Aceptar mensaje");
                    cabeceraSteps.clickBtnAceptarmsj(driver, UICabecera,
                 		   contador, Config, Escenario, Navegador);
-             
+                   Resultado = "Exitoso";
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;

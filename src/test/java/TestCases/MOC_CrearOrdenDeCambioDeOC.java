@@ -191,10 +191,10 @@ public class MOC_CrearOrdenDeCambioDeOC{
                     		contador, Config, Escenario, Navegador);
                     
                     //Paso 11
-                    contador++;
-                    Pasos.add(contador+".-seleccionar si");
-                    lineasSteps.clickSiAdvertencia(driver, UILineas,
-                    		contador, Config, Escenario, Navegador);
+                    //contador++;
+                    //Pasos.add(contador+".-seleccionar si");
+                    //lineasSteps.clickSiAdvertencia(driver, UILineas,
+                    //		contador, Config, Escenario, Navegador);
                     
                     //Paso 12
                     contador++;
@@ -224,7 +224,7 @@ public class MOC_CrearOrdenDeCambioDeOC{
                     //Paso 16
                     contador++;
                     Pasos.add(contador+"Verifico que se haya guardado la solicitud"); 
-                    cabeceraSteps.clickBtnAceptar(driver, UICabecera, contador, Config, Escenario, Navegador);
+                    cabeceraSteps.clickBtnAceptarConfirmacion(driver, UICabecera, contador, Config, Escenario, Navegador);
                     Resultado = "Exitoso";
 
            

@@ -14,7 +14,9 @@ public class RecibirArticulosSteps extends genericGrid{
     public void llenarRecibirArticulos(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador, String introducidaPor, String solicitud)
     				throws InterruptedException{
-    	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("tipo_linea"), introducidaPor);
+    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("solicitante"));
+    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("orden_compra"));
+    	//seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("introducida_por"), introducidaPor);
     	ingresarTexto(driver, "xpath", Elementos.getProperty("solicitud"), solicitud);
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }

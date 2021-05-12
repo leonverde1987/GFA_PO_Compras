@@ -20,7 +20,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	TestCases.GCVOC_ActualizarEdoCongelacion.class,
+	TestCases.AC_ModificarAgenteCompras.class,
 	/*
     TestCases.AP_DarAltaAcuerdoConsignacion.class,
     TestCases.AP_ModificarAcuerdoConsignacion.class,

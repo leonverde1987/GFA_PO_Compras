@@ -15,17 +15,23 @@ public class GeneradorDocumentos extends genericGrid{
     		String Escenario, String navegador, String tipo, String acuerdoOrigen, String estilo, String proveedor,
     		String sitioProveedor, String moneda)
     				throws InterruptedException{
+    	dormirSeg(2);
     	seleccionarComboByText(driver, "xpath", Elementos.getProperty("tipo"), tipo);
+    	
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("acuerdo_origen"));
     	ingresarTexto(driver, "xpath", Elementos.getProperty("acuerdo_origen"), acuerdoOrigen);
+    	
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("estilo"));
-    	seleccionarComboByValue(driver, "xpath", Elementos.getProperty("estilo"), estilo);
+    	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("estilo"), estilo);
+    	
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("proveedor"));
     	ingresarTexto(driver, "xpath", Elementos.getProperty("proveedor"), proveedor);
-    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("sitio_proveedor"));
-    	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("sitio_proveedor"), sitioProveedor);
-    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("moneda"));
-    	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("moneda"), moneda);
+    	
+    	//borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("sitio_proveedor"));
+    	//seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("sitio_proveedor"), sitioProveedor);
+    	
+    	//borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("moneda"));
+    	//seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("moneda"), moneda);
     	
       	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }

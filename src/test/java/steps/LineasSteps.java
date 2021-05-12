@@ -141,6 +141,8 @@ public class LineasSteps extends genericGrid{
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
+
+    
     /**
      * Método para ingresar motivo de retencion
      */
@@ -203,6 +205,7 @@ public class LineasSteps extends genericGrid{
     public void clickAddLinea(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador) throws InterruptedException{
     	clickJS(driver, "xpath", Elementos.getProperty("menu_add_fila"));
+    	dormirSeg(5);
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     
@@ -216,7 +219,7 @@ public class LineasSteps extends genericGrid{
     	dormirSeg(3);
     	ingresarTexto(driver, "xpath", Elementos.getProperty("articulo"), lineaArticulo);
     	ingresarTexto(driver, "xpath", Elementos.getProperty("cantidad"), lineaCantidad);
-    	dormirSeg(3);
+    	//dormirSeg(3);
     	ingresarTexto(driver, "xpath", Elementos.getProperty("cantidad"), lineaCantidad);
     	dormirSeg(1);
     	JSscrollToElement(driver, waitUIElementPresent(driver, "xpath", 
