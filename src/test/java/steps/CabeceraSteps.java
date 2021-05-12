@@ -150,6 +150,14 @@ public class CabeceraSteps extends genericGrid{
     	click(driver, "xpath", Elementos.getProperty("btn_listo"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
+    /**
+     * Método para seleccionar el boton Aceptar
+     */
+    public void clickBtnAceptar2(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException{
+    	click(driver, "xpath", Elementos.getProperty("btn_aceptar_2"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
     
     
     /**
@@ -213,6 +221,12 @@ public class CabeceraSteps extends genericGrid{
     public void selectBtnGuardarCabecera(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador) throws InterruptedException{
         clickJS(driver, "xpath", Elementos.getProperty("btn_guardar_cabecera"));
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
+    }
+    
+    public void selectBtnGuar(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
+    		String Escenario, String navegador) throws InterruptedException{
+        clickJS(driver, "xpath", Elementos.getProperty("btn_guardar_cerrar"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     

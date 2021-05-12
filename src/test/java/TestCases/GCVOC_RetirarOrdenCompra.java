@@ -184,7 +184,7 @@ public class GCVOC_RetirarOrdenCompra{
                     
                     //Paso 10
                     contador++;
-                    Pasos.add(contador+".-Seleccionar menu retener");
+                    Pasos.add(contador+".-Seleccionar menu retirar");
                     lineasSteps.menuAccionesRetirar(driver, UILineas, contador, Config, Escenario, Navegador);
                     
                   

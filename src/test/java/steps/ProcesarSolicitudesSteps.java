@@ -275,7 +275,7 @@ public class ProcesarSolicitudesSteps extends genericGrid {
     				throws InterruptedException{
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("comprador"));
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("solicitud"));
-    	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("solicitud"), solicitud);
+    	ingresarTexto(driver, "xpath", Elementos.getProperty("solicitud"), solicitud);
       	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
     

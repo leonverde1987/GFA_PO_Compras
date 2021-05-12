@@ -43,11 +43,25 @@ public class AgenteCompras extends genericGrid{
     		int contador, Properties Config, String Escenario, String navegador,
     		String gestionarSolicitudes, String gestionarOrdenesCompra, String gestionarAcuerdosCompra,
     		String gestionarNegociaciones, String gestionarProgramas) throws InterruptedException{
-        seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_solicitudes"), gestionarSolicitudes);
-        seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_ordenes_compra"), gestionarOrdenesCompra);
-        seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_acuerdos_compra"), gestionarAcuerdosCompra);
-        seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_negociaciones"), gestionarNegociaciones);
-        seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_programas_abastecimientos"), gestionarProgramas);
+        clickJS(driver, "xpath", Elementos.getProperty("casilla_gestionar_solicitudes"));
+        dormirSeg(1);
+    	seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_solicitudes"), gestionarSolicitudes);
+        
+    	clickJS(driver, "xpath", Elementos.getProperty("casilla_gestionar_ordenes_compra"));
+    	dormirSeg(1);
+    	seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_ordenes_compra"), gestionarOrdenesCompra);
+        
+    	clickJS(driver, "xpath", Elementos.getProperty("casilla_gestionar_acuerdos_compra"));
+    	dormirSeg(1);
+    	seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_acuerdos_compra"), gestionarAcuerdosCompra);
+        
+    	clickJS(driver, "xpath", Elementos.getProperty("casilla_gestionar_negociaciones"));
+    	dormirSeg(1);
+    	seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_negociaciones"), gestionarNegociaciones);
+        
+    	clickJS(driver, "xpath", Elementos.getProperty("casilla_gestionar_programas_abastecimientos"));
+    	dormirSeg(1);
+    	seleccionarComboByText(driver, "xpath", Elementos.getProperty("gestionar_programas_abastecimientos"), gestionarProgramas);
         
         
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);

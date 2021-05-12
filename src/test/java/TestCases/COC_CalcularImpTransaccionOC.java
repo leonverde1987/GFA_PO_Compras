@@ -201,8 +201,15 @@ public class COC_CalcularImpTransaccionOC{
                     //Paso 12
                     contador++;
                     Pasos.add(contador+".-seleccionar importe de impuesto");
-                    editarDocumentoOC.clickBtnListo(driver, UIEditarDocumentoOC, 
+                    cabeceraSteps.clickBtnEnviar(driver, UICabecera,
                     		contador, Config, Escenario, Navegador);
+                    
+                    //Paso 13
+                    contador++;
+                    Pasos.add(contador+".-Aceptar mensaje de confirmación");
+                    cabeceraSteps.clickBtnAceptarConfirmacion(driver, UICabecera,
+                    		contador, Config, Escenario, Navegador);
+                                 
                     Resultado = "Exitoso";
                     
                     

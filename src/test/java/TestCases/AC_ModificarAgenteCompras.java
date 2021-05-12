@@ -188,13 +188,13 @@ public class AC_ModificarAgenteCompras{
                     //Paso 12
                     contador++;
                     Pasos.add(contador+".-Seleccionar guardar y cerrar");
-                    cabeceraSteps.clickBtnGuardarCerrarG(driver, UICabecera, 
+                    cabeceraSteps.selectBtnGuar(driver, UICabecera, 
                     		contador, Config, Escenario, Navegador);
                     
                     //Paso 13
                     contador++;
-                    Pasos.add(contador+".-Seleccionar guardar y cerrar");
-                    cabeceraSteps.clickBtnAceptarConfirmacion(driver, UICabecera,
+                    Pasos.add(contador+".-Seleccionar Listo");
+                    cabeceraSteps.clickBtnListo(driver, UICabecera,
                     		contador, Config, Escenario, Navegador);
                     Resultado = "Exitoso";
                     

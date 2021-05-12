@@ -228,16 +228,23 @@ public class CS_CrearOrdenCompraDesdeINV{
                  //Paso 16
                    contador++;
                    Pasos.add(contador+".-Presionar el boton Aceptar");
-                   cabeceraSteps.clickBtnListo(driver, UICabecera, 
+                   cabeceraSteps.clickBtnAceptar2(driver, UICabecera, 
                 		   contador, Config, Escenario, Navegador);
                    
                  //Paso 17
                    contador++;
                    Pasos.add(contador+".-Presionar el boton Aceptar");
-                   cabeceraSteps.clickBtnSiMsj(driver, UICabecera,
+                   cabeceraSteps.clickBtnListo(driver, UICabecera, 
                 		   contador, Config, Escenario, Navegador);
                    Resultado = "Exitoso";
                    
+                 /*Paso 17
+                   contador++;
+                   Pasos.add(contador+".-Presionar el boton Aceptar");
+                   cabeceraSteps.clickBtnSiMsj(driver, UICabecera,
+                		   contador, Config, Escenario, Navegador);
+                   Resultado = "Exitoso";
+                   */
                    
                     
              

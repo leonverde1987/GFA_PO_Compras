@@ -26,6 +26,7 @@ public class CrearOrdenSteps extends genericGrid{
         //borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("ud_negocio_solicitante"));
         //seleccionarComboByText(driver, "xpath", Elementos.getProperty("ud_negocio_solicitante"), udNegocioSolicitante);
         ingresarTexto(driver, "xpath", Elementos.getProperty("proveedor"), proveedor);
+        dormirSeg(2);
         ingresarTexto(driver, "xpath", Elementos.getProperty("ubicacion"), ubicacion);
         //borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("moneda"));
         //seleccionarComboByValue(driver, "xpath", Elementos.getProperty("moneda"), moneda);

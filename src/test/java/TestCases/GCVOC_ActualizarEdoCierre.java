@@ -125,9 +125,7 @@ public class GCVOC_ActualizarEdoCierre{
             String idioma = filaDatos[2];
             String mensaje = filaDatos[3];
             String noOrden = filaDatos[4];
-            String editDocDescripcion = filaDatos[5];
-            String editDocGfaSupervisor = filaDatos[6];
-            String editDocGfaLiderCatego = filaDatos[7];
+           
             
              try{
 
@@ -161,7 +159,7 @@ public class GCVOC_ActualizarEdoCierre{
                     
                     //Paso 6
                     contador++;
-                    Pasos.add(contador+".-seleccionar la opcion procesar solicitudes ");
+                    Pasos.add(contador+".-seleccionar la opcion Gestionar órdenes");
                     menuTareasSteps.clickBtnGestionarOrdenes(driver, UIMenuTareas, contador, 
                     		Config, Escenario, Navegador); 
                     
@@ -184,19 +182,19 @@ public class GCVOC_ActualizarEdoCierre{
                     
                     //Paso 10
                     contador++;
-                    Pasos.add(contador+".-Seleccionar menu retener");
+                    Pasos.add(contador+".-Seleccionar menu cerrar");
                     lineasSteps.menuAccionesCerrar(driver, UILineas, contador, Config, Escenario, Navegador);
                     
                   
                     //Paso 11
                     contador++;
-                    Pasos.add(contador+".-Ingresar motivo de retencion");
+                    Pasos.add(contador+".-Ingresar motivo de cerrar documento");
                     lineasSteps.motivoRetencion(driver, UILineas, contador, Config, Escenario, Navegador);
                     
                     //Paso 12
                     contador++;
                     Pasos.add(contador+".-Seleccionar boton aceptar");
-                    lineasSteps.motivoRetencion(driver, UILineas, contador, Config, Escenario, Navegador);
+                    lineasSteps.aceptarMotivoRetencion(driver, UILineas, contador, Config, Escenario, Navegador);
                     
                     //Paso 13
                     contador++;

@@ -196,7 +196,7 @@ public class AC_ModificarAccesoAgenteCompras{
                     
                     //Paso 13
                     contador++;
-                    Pasos.add(contador+".-Seleccionar guardar y cerrar");
+                    Pasos.add(contador+".-Seleccionar Aceptar");
                     cabeceraSteps.clickBtnAceptarConfirmacion(driver, UICabecera,
                     		contador, Config, Escenario, Navegador);
                     Resultado = "Exitoso";
