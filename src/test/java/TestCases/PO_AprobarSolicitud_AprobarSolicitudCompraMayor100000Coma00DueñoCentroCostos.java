@@ -145,9 +145,6 @@ public class PO_AprobarSolicitud_AprobarSolicitudCompraMayor100000Coma00DueñoCe
             }
             Repeticion++;
         }
-        if(!"Exitoso".equals(ResultadoGlobal.substring(0, 7))){
-            throw new Exception("Navegador: "+Navegador + "\n Resultado: \n" + ResultadoGlobal);
-        }
     }
 
     @After

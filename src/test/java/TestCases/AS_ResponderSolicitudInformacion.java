@@ -176,9 +176,6 @@ public class AS_ResponderSolicitudInformacion{
             }
             Repeticion++;
         }
-        if(!"Exitoso".equals(ResultadoGlobal.substring(0, 7))){
-            throw new Exception("Navegador: "+Navegador + "\n Resultado: \n" + ResultadoGlobal);
-        }
     }
 
     @After

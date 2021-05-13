@@ -214,11 +214,7 @@ public class GR_RecepcionParcialArticulos{
                    cabeceraSteps.clickBtnAceptarmsj(driver, UICabecera,
                 		   contador, Config, Escenario, Navegador);
                    Resultado = "Exitoso";
-                    
-                    
-                    
-                    
-                   
+  
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
@@ -234,9 +230,6 @@ public class GR_RecepcionParcialArticulos{
                 contador=0;
             }
             Repeticion++;
-        }
-        if(!"Exitoso".equals(ResultadoGlobal.substring(0, 7))){
-            throw new Exception("Navegador: "+Navegador + "\n Resultado: \n" + ResultadoGlobal);
         }
     }
 

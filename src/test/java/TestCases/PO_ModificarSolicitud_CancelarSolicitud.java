@@ -161,9 +161,6 @@ public class PO_ModificarSolicitud_CancelarSolicitud{
             }
             Repeticion++;
         }
-        if(!"Exitoso".equals(ResultadoGlobal.substring(0, 7))){
-            throw new Exception("Navegador: "+Navegador + "\n Resultado: \n" + ResultadoGlobal);
-        }
     }
 
     @After
