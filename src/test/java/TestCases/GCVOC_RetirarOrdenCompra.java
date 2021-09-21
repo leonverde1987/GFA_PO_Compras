@@ -207,20 +207,25 @@ public class GCVOC_RetirarOrdenCompra{
                     
                     
              }catch(NoSuchElementException s){
-                Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
-                genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
-            }catch(InterruptedException e){
-                Resultado = "Ejecución Fallida: "+e;
-                genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
-            }finally{
-                genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
-                if(!"Exitoso".equals(Resultado.substring(0, 7))){
-                    ResultadoGlobal = Resultado;
-                }
-                Resultado="Fallido";
-                contador=0;
-            }
-            Repeticion++;
+                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
+                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
+             }catch(InterruptedException e){
+                 Resultado = "Ejecución Fallida: "+e;
+                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
+             }catch(Exception ex){
+                 Resultado = "Ejecución Fallida: "+ex;
+                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
+             }finally{
+                 genericSteps.logoutOracle(driver, UILogin);
+                 genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
+                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
+                     ResultadoGlobal = Resultado;
+                 }
+                 Resultado="Fallido";
+                 contador=1;
+                 Pasos.clear();
+             }
+             Repeticion++;
         }
     }
 

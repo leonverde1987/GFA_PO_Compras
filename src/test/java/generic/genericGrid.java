@@ -2,6 +2,8 @@ package generic;
 
 
 import com.opencsv.CSVReader;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.text.StyledEditorKit.BoldAction;
 
@@ -23,7 +26,9 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.interactions.Actions;
@@ -49,16 +54,29 @@ public class genericGrid extends evidenceGrid {
      * @return El archivo de propiedades con la configuración.
      * @throws FileNotFoundException si no encuentra el archivo en la ruta.
      */
-    public Properties getPropetiesFile(String Archivo) throws FileNotFoundException{
+    public Properties getPropetiesFile(String Archivo){
         Properties prop = new Properties();
         try{
+        	//CREAR ARCHIVO SI NO EXISTE
+    		File f = new File(Archivo);
+    		if(!f.exists()){
+    			f.getParentFile().mkdirs();
+    			f.createNewFile();
+    		}else{
+    			System.out.println("File already exists");
+    		}
+    		
+    		//LEER DATO
             Reader reader = new InputStreamReader((new FileInputStream(Archivo)), "UTF-8"); 
             prop.load(reader);
-        }catch(IOException e){
-            System.out.println("Mensaje Properties: "+ e);
+        } catch(IOException e) {
+            System.out.println("Error IO Al crear Properties: " + e.getMessage());
+            e.printStackTrace();
+        } catch(Exception ex) {
+            System.out.println("Error Al crear Properties: " + ex.getMessage());
+            ex.printStackTrace();
         }
         return prop;
-        
     }
     
     /**
@@ -69,9 +87,14 @@ public class genericGrid extends evidenceGrid {
     public CSVReader ObtenerDatos(String ruta){
         CSVReader datos = null;
         try{    
-            datos = new CSVReader(new FileReader(ruta),SEPARATOR,QUOTE);
+            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(ruta), "UTF-8");
+            //datos = new CSVReader(new FileReader(ruta), SEPARATOR, QUOTE);
+            datos = new CSVReader(inputStreamReader, SEPARATOR, QUOTE);
+            
         }catch(IOException e){
             System.out.println("No se puede abrir el archivo de Datos verifique la ruta: "+ e);
+        }catch(Exception ex){
+            System.out.println("No se puede abrir el archivo de Datos verifique la ruta: "+ ex);
         }
         return datos;
     }
@@ -87,6 +110,7 @@ public class genericGrid extends evidenceGrid {
     public RemoteWebDriver openGridBrowser(String navegador, Properties config) throws MalformedURLException, InterruptedException{
         RemoteWebDriver driver = null;
         URL url=null;
+        String driverPath = "C:/ambiente/selenium_drivers";
         try{
         
             DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -96,7 +120,11 @@ public class genericGrid extends evidenceGrid {
                 capabilities.setBrowserName(navegador);
                 capabilities = DesiredCapabilities.chrome();
                 url = new URL("http://localhost:5557/wd/hub");
-                driver = new RemoteWebDriver(url, capabilities);
+                //driver = new RemoteWebDriver(url, capabilities);
+                
+        		System.setProperty("webdriver.chrome.driver", driverPath + "/chromedriver.exe");
+        		driver = new ChromeDriver();
+        		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
             }
             if("ie".equals(navegador)){
                 InternetExplorerOptions ieOptions = new InternetExplorerOptions();
@@ -120,7 +148,11 @@ public class genericGrid extends evidenceGrid {
                 //capabilities.setBrowserName(navegador);
                 //capabilities = DesiredCapabilities.firefox();
                 url = new URL("http://localhost:5556/wd/hub");
-                driver = new RemoteWebDriver(url, firefoxOptions);
+                //driver = new RemoteWebDriver(url, firefoxOptions);
+
+        		System.setProperty("webdriver.gecko.driver", driverPath + "/geckodriver.exe");
+        		driver = new FirefoxDriver();
+        		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
             }
             if("motorolaOneVision".equals(navegador)){
                 DesiredCapabilities capabilitie =new DesiredCapabilities();
@@ -140,6 +172,7 @@ public class genericGrid extends evidenceGrid {
             driver.manage().window().maximize();
             return driver;
         }
+    
     
     
     /**
@@ -213,20 +246,18 @@ public class genericGrid extends evidenceGrid {
     public void GenerarEvidencias(RemoteWebDriver driver, String Escenario, String Resultado, int contador, List<String> Pasos, String RutaEvidencia, String Modulo, String Version, String navegador){
         try{
             System.out.println("Lista: "+Pasos);
-            if(Resultado.length()>10){
-                if("Ejecución Fallida".equals(Resultado.substring(0, 17))){
-                    this.capturaDriver(driver, RutaEvidencia, contador, Escenario, navegador);
-                }
-            }
+            
+            Escenario = this.remplazarCaracteresEspeciales(Escenario);
+
             //Generamos PDF
             this.crearPDF(Escenario, Resultado, contador, Pasos, RutaEvidencia, Modulo, Version, navegador);
-            //Generamos PDF
-            //this.crearXML(Escenario, Resultado, contador, Pasos, RutaEvidencia, navegador);
             //Generamos HTML
             this.crearHTML(Escenario, Resultado, contador, Pasos, RutaEvidencia, Modulo, Version, navegador);
+            //
+            this.crearCSVResultados(Escenario, Resultado, RutaEvidencia, Modulo, navegador, Pasos.toString());
 
         }catch(Exception e){
-            System.out.println("MEnsaje Evidencia: "+e);
+            System.out.println("Error al crear Evidencia: " + e);
         }
     }
     
@@ -492,18 +523,18 @@ public class genericGrid extends evidenceGrid {
      * @param findby Es el tipo de selector selenium id, name o XPATH.
      * @param Elemento Es el selector selenium al que le vamos agregar texto.
      */
-    public WebElement driverWait(WebDriver driver, String findby, String Elemento){
+    public WebElement driverWait(RemoteWebDriver driver, String findby, String Elemento){
         WebDriverWait wait = new WebDriverWait(driver, 60);
         WebElement el = null;
         switch(findby) {
             case "id":
-                el = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.id(Elemento))));
+                el = wait.until(ExpectedConditions.elementToBeClickable(By.id(Elemento)));
                 break;
             case "name":
-            	el = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.name(Elemento))));
+            	el = wait.until(ExpectedConditions.elementToBeClickable(By.name(Elemento)));
                 break;
             case "xpath":
-            	el = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath(Elemento))));
+            	el = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(Elemento)));
                 break;
         }
         return el;
@@ -515,18 +546,18 @@ public class genericGrid extends evidenceGrid {
      * @param findby Es el tipo de selector selenium id, name o XPATH.
      * @param Elemento Es el selector selenium al que le vamos agregar texto.
      */
-    public WebElement waitUIElementPresent(WebDriver driver, String findby, String Elemento){
+    public WebElement waitUIElementPresent(RemoteWebDriver driver, String findby, String Elemento){
         WebDriverWait wait = new WebDriverWait(driver, 60);
         WebElement el = null;
         switch(findby) {
             case "id":
-                el = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(Elemento)));
+                el = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(Elemento)));
                 break;
             case "name":
-                el = wait.until(ExpectedConditions.presenceOfElementLocated(By.name(Elemento)));
+                el = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name(Elemento)));
                 break;
             case "xpath":
-                el = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(Elemento)));
+                el = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(Elemento)));
                 break;
         }
         return el;

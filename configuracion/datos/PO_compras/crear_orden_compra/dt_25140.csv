@@ -1,2 +1,2 @@
 nombre,contrasena,idioma,libro,estilo,udNegocioCompras,udNegocioSolicitante,proveedor,ubicacion,moneda,comprador,editDocDescripcion,editDocGfaSupervisor,editDocGfaLiderCatego,lineaArticulo,lineaCantidad,fechaSolicitada,fechaPrometida,acuerdo
-teresa.rangel@gfauat.com,Oracle123,es-es,API,Orden de compra,CD UN API,CD UN API,TESTING IT CONSULTING SA DE CV,MEXICO NTE PLANTAS,MXN,"GONZALEZ, GUSTAVO",test,GONZALEZ SALAZAR GUSTAVO,01 REFACCIONES P/AUTOBUSES,1701XDIE0001X,"110,000",23/03/21,24/03/21,XPA-API-10
+teresa.rangel@gfauat.com,GFA2468AC,es-es,API,Orden de compra,CD UN API,CD UN API,TESTING IT CONSULTING SA DE CV,MEXICO NTE PLANTAS,MXN,"GONZALEZ, GUSTAVO",test,GONZALEZ SALAZAR GUSTAVO,01 REFACCIONES P/AUTOBUSES,1701XDIE0001X,"110,000",23/03/21,24/03/21,XPA-API-10
