@@ -36,7 +36,7 @@ import org.junit.runners.Suite;
     TestCases.PO_AprobarOrdenCompra_AprobarOrdenCompraMayor100000Coma00DirectorAdministracionFinanzas.class,        
     TestCases.GR_RecepcionParcialArticulos.class,
     TestCases.COC_DarAltaOrdenCompraEAM.class,
-    TestCases.PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999Coma99.class,       
+    TestCases.PO_AprobarOrdenCompra_ValidarNotificacionAutoaprobacionHasta1999Coma99.class,       
     TestCases.GR_RecibirArticulo.class,
     TestCases.GCVOC_ActualizarEdoCierre.class,         
     TestCases.COC_DarAltaOrdenCompraDisel.class,
