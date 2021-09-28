@@ -124,12 +124,7 @@ public class AP_DarAltaAcuerdoCompraAbierto{
             String articulo = filaDatos[19];
             String unidadMedida = filaDatos[20];
             String precio = filaDatos[21];
-            //String udNegocioSolicitante = filaDatos[22];
-            //String sitioCompras = filaDatos[23];
-            //String ubicacionEnvio = filaDatos[24];
-            //String udNegocioFactura = filaDatos[25];
-            //String ubicacionFactura = filaDatos[26];
-         
+                   
            
             try{
 
@@ -199,52 +194,40 @@ public class AP_DarAltaAcuerdoCompraAbierto{
                     
                     //paso 12
                     contador++;
-                    Pasos.add(contador+".- Seleccionar la linea del articulo ");
-                    crearAcuerdosSteps.selectLineaArt(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador);
-                    
-                    //paso 13
-                    contador++;
                     Pasos.add(contador+".- Seleccionar boton editar linea ");
                     lineasSteps.selectBtnEditar(driver, UILineas, contador, Config, Escenario, Navegador);
                     
-                    //paso 14
+                    //paso 13
                     contador++;
                     Pasos.add(contador+".- LLenar formulario editar linea");
                     editarLineaSteps.llenarFormEditarLinea(driver, UIEditarLinea, contador, Config, Escenario, Navegador, 
                     		tipoLinea, articulo, unidadMedida, precio);
                     
-                    //paso 15
+                    //paso 14
                     contador++;
                     Pasos.add(contador+".- Seleccionar boton aceptar de la cabecera");
                     cabeceraSteps.clickBtnAceptar(driver, UICabecera, contador, Config, Escenario, Navegador);
                     
-                    //PASO 16
+                    //PASO 15
                     Pasos.add(contador+".- Ingresar gfa supervisor y gfa lider categoria");
                     crearAcuerdosSteps.llenarFormGfaSupervisorCategoria(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador, 
                     		 gfaSupervisor, gfaLiderCategoria);
                     
-                    //Paso 17 
+                    //Paso 16
                     contador++;
                     Pasos.add(contador+".- Seleccionar el menu tab controles");
                     editarLineaSteps.selectMenuTabControles(driver, UIEditarLinea, contador, Config, Escenario, Navegador);
                     
-                    //Paso 18
-                   // contador++;
-                   // Pasos.add(contador+".- LLenar formulario de controles");
-                   // crearAcuerdosSteps.LlenarFormControles(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador, 
-                   // 		udNegocioSolicitante, sitioCompras, ubicacionEnvio, udNegocioFactura, ubicacionFactura);
-                    
-                    //Paso 19
+                    //Paso 17
                     contador++;
                     Pasos.add(contador+".- Presionar sobre el boton enviar de la cabecera");
                     cabeceraSteps.clickBtnEnviar(driver, UICabecera, contador, Config, Escenario, Navegador);
                     
-                    //Paso 20
+                    //Paso 18
                     contador++;
                     Pasos.add(contador+"Validar mensaje de confirmación"); 
                     crearAcuerdosSteps.clickBtnAceptarConfirmacion(driver, UICrearAcuerdos, contador, Config, Escenario, Navegador);
                     Resultado = "Exitoso";
-                    
                    
                     
             }catch(NoSuchElementException s){

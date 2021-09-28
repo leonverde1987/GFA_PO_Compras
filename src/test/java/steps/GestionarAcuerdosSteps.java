@@ -403,6 +403,7 @@ public class GestionarAcuerdosSteps extends genericGrid {
     public void ingresarAcuerdo(RemoteWebDriver driver, Properties Elementos, int contador, Properties Config, 
     		String Escenario, String navegador, String acuerdo)
     				throws InterruptedException{
+    	driverWait(driver, "xpath", Elementos.getProperty("txt_comprador"));
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("txt_comprador"));
     	dormirSeg(1);
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("txt_acuerdo"));

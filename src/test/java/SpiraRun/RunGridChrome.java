@@ -20,7 +20,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	TestCases.AC_ModificarAgenteCompras.class,
+	TestCases.AP_DarAltaAcuerdoCompraAbierto.class,
 	/*
     TestCases.AP_DarAltaAcuerdoConsignacion.class,
     TestCases.AP_ModificarAcuerdoConsignacion.class,

@@ -45,6 +45,7 @@ public class CrearAcuerdoSteps extends genericGrid{
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
         //return this.obtenerAcuerdoCompra(driver, Elementos, empresa);
     	dormirSeg(6);
+    	waitUIElementPresent(driver, "xpath", Elementos.getProperty("var_retorno_acuerdo_compra_abierto"));
         this.obtenerDatoyGuradarArchivo(driver, Elementos, libro, tipoAcuerdo);
     } 
     
@@ -151,15 +152,19 @@ public class CrearAcuerdoSteps extends genericGrid{
     public void llenarFormLinea(RemoteWebDriver driver, Properties Elementos,
     		int contador, Properties Config, String Escenario, String navegador, String lineaArticulo, String lineaArticuloProveedor,
     		String lineaPrecio, String lineaFechaCaducidad) throws InterruptedException, FileNotFoundException{
+    	
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("linea_articulo"));
     	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("linea_articulo"), lineaArticulo);
+    	
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("linea_articulo_proveedor"));
     	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("linea_articulo_proveedor"), lineaArticuloProveedor);
-    	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("linea_precio"));
-    	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("linea_precio"), lineaPrecio);
+    	
+    	//borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("linea_precio"));
+    	//ingresarTexto(driver, "xpath", Elementos.getProperty("linea_precio"), lineaPrecio);
+    	
     	JSscrollToElement(driver, waitUIElementPresent(driver, "xpath",Elementos.getProperty("linea_fecha_caducidad")));
     	borrarTextoPrecargado(driver, "xpath", Elementos.getProperty("linea_fecha_caducidad"));
-    	seleccionarComboInputByValue(driver, "xpath", Elementos.getProperty("linea_fecha_caducidad"), lineaFechaCaducidad);  
+    	ingresarTexto(driver, "xpath", Elementos.getProperty("linea_fecha_caducidad"), lineaFechaCaducidad);
     	this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     } 
     

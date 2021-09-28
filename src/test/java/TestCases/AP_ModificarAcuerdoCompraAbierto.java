@@ -120,8 +120,6 @@ public class AP_ModificarAcuerdoCompraAbierto{
             String editDocGfaSupervisor = filaDatos[5];
             String editDocGfaLiderCatego = filaDatos[6];
             acuerdoCompra = crearAcuerdosSteps.getDato(libro);
-         
-         
            
             try{
 
@@ -154,7 +152,7 @@ public class AP_ModificarAcuerdoCompraAbierto{
                     
                     //Paso 6
                     contador++;
-                    Pasos.add(contador+".- Seleccionar Crear acuerdo del menú tareas");
+                    Pasos.add(contador+".- Seleccionar Gestionar acuerdo del menú tareas");
                     menuTareasSteps.clickBtnGestionarAcuerdos(driver, UIMenusTareas, 
                     		contador, Config, Escenario, Navegador);
                  
