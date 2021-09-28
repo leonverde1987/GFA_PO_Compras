@@ -159,14 +159,17 @@ public class PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor{
             }catch(InterruptedException e){
                 Resultado = "Ejecución Fallida: "+e;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
+            }catch(Exception ex){
+                Resultado = "Ejecución Fallida: "+ex;
+                genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }finally{
-                genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
+                genericSteps.logoutOracle(driver, UILogin);
                 genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
                     ResultadoGlobal = Resultado;
                 }
                 Resultado="Fallido";
-                contador=0;
+                contador=1;
                 Pasos.clear();
             }
             Repeticion++;

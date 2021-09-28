@@ -19,7 +19,11 @@ import com.lowagie.text.Table;
 import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Color;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
+import java.text.Normalizer.Form;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -58,10 +62,19 @@ public class evidenceGrid {
     
     public File crea_Carpeta(String rutaEvidencia, String cp, int contador, String navegador){
         File directorio = null;
+        cp = this.remplazarCaracteresEspeciales(cp);
+
+		//NOMBRE DE EVIDENCIA DEL TEST RECORTADO PARA CARPETA Y ARCHIVO DE EVIDENCIA
+		String evidenciaNombreTest;
+		if(cp.length() > 90) {
+			evidenciaNombreTest = cp.substring(0, 88) + cp.substring(cp.length() - 2, cp.length());
+		}else {
+			evidenciaNombreTest = cp;
+		}
         if(contador == 1){
-            directorio = new File(rutaEvidencia+"\\"+navegador+"\\"+cp.substring(0, 3)+"\\"+cp+"\\"+this.totalArchivosMasUno(new File(rutaEvidencia+"//"+fechaFormato()+"//"+navegador+"//"+cp.substring(0, 3)+"//"+cp)));
+            directorio = new File(rutaEvidencia+"\\"+navegador+"\\"+cp.substring(0, 3)+"\\"+evidenciaNombreTest+"\\"+this.totalArchivosMasUno(new File(rutaEvidencia+"//"+fechaFormato()+"//"+navegador+"//"+cp.substring(0, 3)+"//"+evidenciaNombreTest)));
         }else{
-            directorio = new File(rutaEvidencia+"\\"+navegador+"\\"+cp.substring(0, 3)+"\\"+cp+"\\"+this.totalArchivos(new File(rutaEvidencia+"//"+fechaFormato()+"//"+navegador+"//"+cp.substring(0, 3)+"//"+cp)));
+            directorio = new File(rutaEvidencia+"\\"+navegador+"\\"+cp.substring(0, 3)+"\\"+evidenciaNombreTest+"\\"+this.totalArchivos(new File(rutaEvidencia+"//"+fechaFormato()+"//"+navegador+"//"+cp.substring(0, 3)+"//"+evidenciaNombreTest)));
         }
         if (!directorio.exists()) {
             if (directorio.mkdirs()) {
@@ -78,7 +91,7 @@ public class evidenceGrid {
     }
     
     public String creaCarpetaRepeticion(){
-        File carpeta = new File("C://Evidencia\\PO\\"+this.fechaFormato()+"\\"+this.totalArchivosMasUno(new File("C://Evidencia//PO//"+fechaFormato())));
+        File carpeta = new File("C://Evidencia//PO//"+this.fechaFormato()+"//"+this.totalArchivosMasUno(new File("C://Evidencia//PO//"+fechaFormato())));
         if (!carpeta.exists()) {
             if (carpeta.mkdirs()) {
                 System.out.println("Directorio creado");
@@ -128,175 +141,196 @@ public class evidenceGrid {
     
     public void crearPDF(String CasoPrueba, String Resultado, int contador, List<String> Pasos, String rutaEvidencia, String modulo, String version, String navegador) throws FileNotFoundException, DocumentException, BadElementException, IOException{
 
-        // Se crea el documento
-        Document documento = new Document(PageSize.A4);
-        // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
-        FileOutputStream ficheroPdf = new FileOutputStream(rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\"+CasoPrueba+".pdf");
-        // Se asocia el documento al OutputStream y se indica que el espaciado entre
-        // lineas sera de 20. Esta llamada debe hacerse antes de abrir el documento
-        PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
-        // Se abre el documento.
-        documento.open();
-        
-        Font fuenteEncabezado= new Font();
-        fuenteEncabezado.setColor(Color.BLACK);
-        fuenteEncabezado.setStyle(Font.BOLD);
-        fuenteEncabezado.setSize(12);
-        
-        Font fuenteBlanco= new Font();
-        fuenteBlanco.setColor(Color.WHITE);
-        fuenteBlanco.setStyle(Font.BOLD);
-        fuenteBlanco.setSize(8);
-        
-        Font fuenteVerde= new Font();
-        fuenteVerde.setColor(Color.GREEN);
-        fuenteVerde.setStyle(Font.BOLD);
-        fuenteVerde.setSize(12);
-        
-        Font fuenteRojo= new Font();
-        fuenteRojo.setColor(Color.RED);
-        fuenteRojo.setStyle(Font.BOLD);
-        fuenteRojo.setSize(12);
-        
-        Font fuenteAzul= new Font();
-        fuenteAzul.setColor(Color.ORANGE);
-        fuenteAzul.setStyle(Font.BOLD);
-        fuenteAzul.setSize(12);
-        
-        Table encabezado = new Table(3);
-        
-        Image ima = Image.getInstance("GFA.png"); 
-        ima.scaleToFit(90, 90);
-        
-        Cell celdaImagen = new Cell();
-        celdaImagen.setBorder(0);
-        celdaImagen.add(ima);
-        encabezado.addCell(celdaImagen);
-        
-        Paragraph parrafo = new Paragraph("Reporte de Evidencia Pruebas Automatizadas", fuenteEncabezado); 
-        Cell celda = new Cell();
-        celda.setBorder(0);
-        celda.add(parrafo);
-        celda.setHorizontalAlignment(Element.ALIGN_CENTER);
-        
-        encabezado.addCell(celda);
-        
-        ima = Image.getInstance("TestingIT.png"); 
-        ima.scaleToFit(90, 90);
-        celdaImagen = new Cell();
-        celdaImagen.setBorder(0);
-        celdaImagen.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        celdaImagen.add(ima);
-        encabezado.addCell(celdaImagen);
-        
-        encabezado.setBorder(0);
-        documento.add(encabezado);
-        
-        Table DatosEjec = new Table(3);
-        
-        Paragraph parrafo1 = new Paragraph(modulo+" "+version, fuenteBlanco); 
-        parrafo1.add(Chunk.NEWLINE);
-        parrafo1.add(Chunk.NEWLINE);
-        Cell celda1 = new Cell();
-        celda1.setBorder(0);
-        celda1.setBackgroundColor(Color.BLUE);
-        celda1.add(parrafo1);
-        celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
-        celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        DatosEjec.addCell(celda1);
-        
-        Paragraph parrafo2 = new Paragraph(navegador, fuenteBlanco);
-        parrafo2.add(Chunk.NEWLINE);
-        parrafo2.add(Chunk.NEWLINE);
-        Cell celda2 = new Cell();
-        celda2.setBorder(0);
-        celda2.setBackgroundColor(Color.BLUE);
-        celda2.add(parrafo2);
-        celda2.setHorizontalAlignment(Element.ALIGN_CENTER);
-        DatosEjec.addCell(celda2);
-        
-        Paragraph parrafo3 = new Paragraph(this.fechaFormato(), fuenteBlanco); 
-        parrafo3.add(Chunk.NEWLINE);
-        parrafo3.add(Chunk.NEWLINE);
-        Cell celda3 = new Cell();
-        celda3.setBorderColor(Color.BLUE);
-        celda3.setBackgroundColor(Color.BLUE);
-        celda3.add(parrafo3);
-        celda3.setHorizontalAlignment(Element.ALIGN_CENTER);
-        DatosEjec.addCell(celda3);
-        
-        
-        Paragraph parrafo4 = new Paragraph(CasoPrueba, fuenteBlanco); 
-        parrafo4.add(Chunk.NEWLINE);
-        parrafo4.add(Chunk.NEWLINE);
-        Cell celda4 = new Cell();
-        celda4.setBorderColor(Color.GRAY);
-        celda4.setBackgroundColor(Color.GRAY);
-        celda4.setColspan(3);
-        celda4.add(parrafo4);
-        celda4.setHorizontalAlignment(Element.ALIGN_CENTER);
-        DatosEjec.addCell(celda4);
-        
-        
-        Paragraph parrafo5 = new Paragraph(); 
-        if("Exitoso".equals(Resultado)){
-            parrafo5 = new Paragraph(Resultado, fuenteVerde);
-        }
-        if("Fallido".equals(Resultado.substring(0, 7))){
-            parrafo5 = new Paragraph(Resultado, fuenteRojo);
-        }
-        if(Resultado.length()>10){
-            if("Ejecución Fallida".equals(Resultado.substring(0, 17))){
-                parrafo5 = new Paragraph(Resultado, fuenteAzul);
-            }
-        }
-        parrafo5.add(Chunk.NEWLINE);
-        parrafo5.add(Chunk.NEWLINE);
-        Cell celda5 = new Cell();
-        celda5.setColspan(3);
-        celda5.add(parrafo5);
-        celda5.setHorizontalAlignment(Element.ALIGN_CENTER);
-        DatosEjec.addCell(celda5);
-        DatosEjec.setBorder(0);
-        documento.add(DatosEjec);
-        
-        
-        for(int a=0; a<contador; a++){
-            Table PasosEvidencia = new Table(1);
-            Paragraph parrafo6 = null;
-            try{
-                parrafo6 = new Paragraph("Paso: "+Pasos.get(a));
-            }catch(Exception e){
-                parrafo6 = new Paragraph("Paso: Sin Registro");
-            }
-            Cell celda6 = new Cell();
-            celda6.setBorder(0);
-            celda6.add(parrafo6);
-            celda6.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
-            PasosEvidencia.addCell(celda6);
-            PasosEvidencia.setBorder(0);
-            documento.add(PasosEvidencia);
+    	try {
+    		//NOMBRE DE EVIDENCIA DEL TEST RECORTADO PARA CARPETA Y ARCHIVO DE EVIDENCIA
+    		String evidenciaNombreTest;
+    		if(CasoPrueba.length() > 90) {
+    			evidenciaNombreTest = CasoPrueba.substring(0, 88) + CasoPrueba.substring(CasoPrueba.length() - 2, CasoPrueba.length());
+    		}else {
+    			evidenciaNombreTest = CasoPrueba;
+    		}
+
+            // Se crea el documento
+            Document documento = new Document(PageSize.A4);
+            // Se crea el OutputStream para el fichero donde queremos dejar el pdf.
+            FileOutputStream ficheroPdf = new FileOutputStream(rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+evidenciaNombreTest
+            		+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"
+            				+CasoPrueba.substring(0, 3)+"\\"+evidenciaNombreTest))+"\\"+evidenciaNombreTest+".pdf");
+            // Se asocia el documento al OutputStream y se indica que el espaciado entre
+            // lineas sera de 20. Esta llamada debe hacerse antes de abrir el documento
+            PdfWriter.getInstance(documento,ficheroPdf).setInitialLeading(20);
+            // Se abre el documento.
+            documento.open();
             
-            Table DatosEvidencia = new Table(1);
-            Image imaEvi = null;
-            Cell celdaImagenEvi = new Cell();
-            try{
-                imaEvi = Image.getInstance(rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)))+"\\evidencia"+(a+1)+".png"); 
-                celdaImagenEvi.setBorder(0);
-                celdaImagenEvi.setHorizontalAlignment(Element.ALIGN_CENTER);
-                celdaImagenEvi.add(imaEvi);
-            }catch(Exception e){
+            Font fuenteEncabezado= new Font();
+            fuenteEncabezado.setColor(Color.BLACK);
+            fuenteEncabezado.setStyle(Font.BOLD);
+            fuenteEncabezado.setSize(12);
+            
+            Font fuenteBlanco= new Font();
+            fuenteBlanco.setColor(Color.WHITE);
+            fuenteBlanco.setStyle(Font.BOLD);
+            fuenteBlanco.setSize(8);
+            
+            Font fuenteVerde= new Font();
+            fuenteVerde.setColor(Color.GREEN);
+            fuenteVerde.setStyle(Font.BOLD);
+            fuenteVerde.setSize(12);
+            
+            Font fuenteRojo= new Font();
+            fuenteRojo.setColor(Color.RED);
+            fuenteRojo.setStyle(Font.BOLD);
+            fuenteRojo.setSize(12);
+            
+            Font fuenteAzul= new Font();
+            fuenteAzul.setColor(Color.ORANGE);
+            fuenteAzul.setStyle(Font.BOLD);
+            fuenteAzul.setSize(12);
+            
+            Table encabezado = new Table(3);
+            
+            Image ima = Image.getInstance("GFA.png"); 
+            ima.scaleToFit(90, 90);
+            
+            Cell celdaImagen = new Cell();
+            celdaImagen.setBorder(0);
+            celdaImagen.add(ima);
+            encabezado.addCell(celdaImagen);
+            
+            Paragraph parrafo = new Paragraph("Reporte de Evidencia Pruebas Automatizadas", fuenteEncabezado); 
+            Cell celda = new Cell();
+            celda.setBorder(0);
+            celda.add(parrafo);
+            celda.setHorizontalAlignment(Element.ALIGN_CENTER);
+            
+            encabezado.addCell(celda);
+            
+            ima = Image.getInstance("TestingIT.png"); 
+            ima.scaleToFit(90, 90);
+            celdaImagen = new Cell();
+            celdaImagen.setBorder(0);
+            celdaImagen.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            celdaImagen.add(ima);
+            encabezado.addCell(celdaImagen);
+            
+            encabezado.setBorder(0);
+            documento.add(encabezado);
+            
+            Table DatosEjec = new Table(3);
+            
+            Paragraph parrafo1 = new Paragraph(modulo+" "+version, fuenteBlanco); 
+            parrafo1.add(Chunk.NEWLINE);
+            parrafo1.add(Chunk.NEWLINE);
+            Cell celda1 = new Cell();
+            celda1.setBorder(0);
+            celda1.setBackgroundColor(Color.BLUE);
+            celda1.add(parrafo1);
+            celda1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            celda1.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            DatosEjec.addCell(celda1);
+            
+            Paragraph parrafo2 = new Paragraph(navegador, fuenteBlanco);
+            parrafo2.add(Chunk.NEWLINE);
+            parrafo2.add(Chunk.NEWLINE);
+            Cell celda2 = new Cell();
+            celda2.setBorder(0);
+            celda2.setBackgroundColor(Color.BLUE);
+            celda2.add(parrafo2);
+            celda2.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosEjec.addCell(celda2);
+            
+            Paragraph parrafo3 = new Paragraph(this.fechaFormato(), fuenteBlanco); 
+            parrafo3.add(Chunk.NEWLINE);
+            parrafo3.add(Chunk.NEWLINE);
+            Cell celda3 = new Cell();
+            celda3.setBorderColor(Color.BLUE);
+            celda3.setBackgroundColor(Color.BLUE);
+            celda3.add(parrafo3);
+            celda3.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosEjec.addCell(celda3);
+            
+            
+            Paragraph parrafo4 = new Paragraph(CasoPrueba, fuenteBlanco); 
+            parrafo4.add(Chunk.NEWLINE);
+            parrafo4.add(Chunk.NEWLINE);
+            Cell celda4 = new Cell();
+            celda4.setBorderColor(Color.GRAY);
+            celda4.setBackgroundColor(Color.GRAY);
+            celda4.setColspan(3);
+            celda4.add(parrafo4);
+            celda4.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosEjec.addCell(celda4);
+            
+            
+            Paragraph parrafo5 = new Paragraph(); 
+            if("Exitoso".equals(Resultado)){
+                parrafo5 = new Paragraph(Resultado, fuenteVerde);
+            }
+            if("Fallido".equals(Resultado.substring(0, 7))){
+                parrafo5 = new Paragraph(Resultado, fuenteRojo);
+            }
+            if(Resultado.length()>10){
+                if("Ejecución Fallida".equals(Resultado.substring(0, 17))){
+                    parrafo5 = new Paragraph(Resultado, fuenteAzul);
+                }
+            }
+            parrafo5.add(Chunk.NEWLINE);
+            parrafo5.add(Chunk.NEWLINE);
+            Cell celda5 = new Cell();
+            celda5.setColspan(3);
+            celda5.add(parrafo5);
+            celda5.setHorizontalAlignment(Element.ALIGN_CENTER);
+            DatosEjec.addCell(celda5);
+            DatosEjec.setBorder(0);
+            documento.add(DatosEjec);
+            
+            
+            for(int a=0; a<contador; a++){
+                Table PasosEvidencia = new Table(1);
+                Paragraph parrafo6 = null;
+                try{
+                    parrafo6 = new Paragraph("Paso: "+Pasos.get(a));
+                }catch(Exception e){
+                    parrafo6 = new Paragraph("Paso: Sin Registro");
+                }
+                Cell celda6 = new Cell();
+                celda6.setBorder(0);
+                celda6.add(parrafo6);
+                celda6.setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
+                PasosEvidencia.addCell(celda6);
+                PasosEvidencia.setBorder(0);
+                documento.add(PasosEvidencia);
                 
+                Table DatosEvidencia = new Table(1);
+                Image imaEvi = null;
+                Cell celdaImagenEvi = new Cell();
+                try{
+                    imaEvi = Image.getInstance(rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)
+                    			+"\\"+evidenciaNombreTest+"\\"
+                    				+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador
+                    						+"\\"+CasoPrueba.substring(0, 3)))+"\\evidencia"+(a+1)+".png"); 
+                    celdaImagenEvi.setBorder(0);
+                    celdaImagenEvi.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    celdaImagenEvi.add(imaEvi);
+                }catch(Exception e){
+                    
+                }
+                
+                
+                DatosEvidencia.addCell(celdaImagenEvi);
+                DatosEvidencia.setBorder(0);
+                documento.add(DatosEvidencia);
             }
             
+            documento.close();
             
-            DatosEvidencia.addCell(celdaImagenEvi);
-            DatosEvidencia.setBorder(0);
-            documento.add(DatosEvidencia);
+    	} catch(IOException e){
+            System.out.println("Error: " + e);
+            e.printStackTrace();
+        } catch(Exception ex){
+            System.out.println("Error: " + ex);
+            ex.printStackTrace();
         }
-        
-        
-        documento.close();
     }
     
     public void crearXML(String CasoPrueba, String Resultado, int contador, List<String> Pasos, String rutaEvidencia, String navegador){
@@ -360,13 +394,31 @@ public class evidenceGrid {
         }
     }
     
+  
     public void crearHTML(String CasoPrueba, String Resultado, int contador, List<String> Pasos, String rutaEvidencia, String modulo, String version, String navegador) throws IOException{
         FileWriter filewriter = null;
         PrintWriter printw = null;
+
+		//NOMBRE DE EVIDENCIA DEL TEST RECORTADO PARA CARPETA Y ARCHIVO DE EVIDENCIA
+		String evidenciaNombreTest;
+		if(CasoPrueba.length() > 90) {
+			evidenciaNombreTest = CasoPrueba.substring(0, 88) + CasoPrueba.substring(CasoPrueba.length() - 2, CasoPrueba.length());
+		}else {
+			evidenciaNombreTest = CasoPrueba;
+		}
+//        String urlAbsoluta = rutaEvidencia+"//"+navegador+"//"+CasoPrueba.substring(0, 3)+"//"+CasoPrueba+"//"
+//        						+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"
+//        								+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"//"+CasoPrueba;
+        String urlAbsoluta = rutaEvidencia+"//"+navegador+"//"+CasoPrueba.substring(0, 3)+"//"+evidenciaNombreTest+"//"
+				+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"
+						+CasoPrueba.substring(0, 3)+"\\"+evidenciaNombreTest))+"//"+evidenciaNombreTest;
+        String archivoPath = rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+evidenciaNombreTest
+        					+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"
+    								+CasoPrueba.substring(0, 3)+"\\"+evidenciaNombreTest));
         
-        String urlAbsoluta = rutaEvidencia+"//"+navegador+"//"+CasoPrueba.substring(0, 3)+"//"+CasoPrueba+"//"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"//"+CasoPrueba;
         try{
-            filewriter = new FileWriter(rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\"+CasoPrueba+".html");//declarar el archivo
+            //filewriter = new FileWriter(rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\"+CasoPrueba+".html");//declarar el archivo
+            filewriter = new FileWriter(archivoPath + "\\" + evidenciaNombreTest + ".html");//declarar el archivo
             printw = new PrintWriter(filewriter);//declarar un impresor
 
             printw.println("<html>");
@@ -513,12 +565,12 @@ public class evidenceGrid {
             printw.println("<table id=\"encabezado\">");
             printw.println("<tr>");
             printw.println("<td>");
-            printw.println("<img src=C:\\ambiente\\imagenes\\GFA.png\" width=\"115\" height=\"30\">");
+            printw.println("<img src=\"C:\\ambiente\\imagenes\\gfa.png\" width=\"115\" height=\"30\">");
             printw.println("</td>");
             printw.println("<td>");
             printw.println("</td>");
             printw.println("<td>");
-            printw.println("<p align=\"right\"><img src=C:\\ambiente\\imagenes\\TestingIT.png\" width=\"115\" height=\"30\"></p>");
+            printw.println("<p align=\"right\"><img src=\"C:\\ambiente\\imagenes\\testingit.png\" width=\"115\" height=\"30\"></p>");
             printw.println("</td>");
             printw.println("</tr>");
             
@@ -627,10 +679,11 @@ public class evidenceGrid {
                     printw.println("<div class=\"panel\">");
                     try{
                         if(navegador.equals("firefox") || navegador.equals("chrome") || navegador.equals("edge") || navegador.equals("ie")){
-                            printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
+                            printw.println("<p><center><img src=\""+archivoPath+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
                         }else{
-                            printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
-                        }
+                            //printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
+                            printw.println("<p><center><img src=\""+archivoPath+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
+                                       }
                     }catch(Exception e){
                     }
                     printw.println("</div>");
@@ -645,9 +698,11 @@ public class evidenceGrid {
                         printw.println("<div class=\"panel\">");
                         try{
                             if(navegador.equals("firefox") || navegador.equals("chrome") || navegador.equals("edge") || navegador.equals("ie")){
-                                printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
+                                //printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
+                            	printw.println("<p><center><img src=\""+archivoPath+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
                             }else{
-                                printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
+                                //printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
+                                printw.println("<p><center><img src=\""+archivoPath+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
                             }
                         }catch(Exception e){
                         }
@@ -662,9 +717,11 @@ public class evidenceGrid {
                         printw.println("<div class=\"panel\">");
                         try{
                             if(navegador.equals("firefox") || navegador.equals("chrome") || navegador.equals("edge") || navegador.equals("ie")){
-                                printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
+                                //printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
+                                printw.println("<p><center><img src=\""+archivoPath+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
                             }else{
-                                printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
+                                //printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
+                                printw.println("<p><center><img src=\""+archivoPath+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
                             }
                         }catch(Exception e){
                         }
@@ -680,10 +737,12 @@ public class evidenceGrid {
                             printw.println("<div class=\"panel\">");
                             try{
                                 if(navegador.equals("firefox") || navegador.equals("chrome") || navegador.equals("edge") || navegador.equals("ie")){
-                                    printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
-                                }
+                                    printw.println("<p><center><img src=\""+archivoPath+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
+                                    //printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"100%\" height=\"100%\"></center></p>");
+                                         }
                                 else{
-                                    printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
+                                    //printw.println("<p><center><img src=\""+rutaEvidencia+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba+"\\"+this.totalArchivos(new File(rutaEvidencia+"\\"+fechaFormato()+"\\"+navegador+"\\"+CasoPrueba.substring(0, 3)+"\\"+CasoPrueba))+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
+                                    printw.println("<p><center><img src=\""+archivoPath+"\\evidencia"+(cont+1)+".png\" width=\"50%\"></center></p>");
                                 }
                             }catch(Exception e){
                             }
@@ -753,13 +812,70 @@ public class evidenceGrid {
             //no devemos olvidar cerrar el archivo para que su lectura sea correcta
             printw.close();//cerramos el archivo
 
-            System.out.println("Generado exitosamente");//si todo sale bien mostramos un mensaje de guardado exitoso
+            System.out.println("HTML Generado exitosamente");//si todo sale bien mostramos un mensaje de guardado exitoso
             
             this.archivoTexto(CasoPrueba, Resultado, rutaEvidencia, modulo, version, navegador, urlAbsoluta);
             this.reporteGeneral(rutaEvidencia, navegador, modulo);
-           }catch(IOException e){
-               System.out.println("Error: "+e);
+           } catch(IOException e){
+               System.out.println("Error al crear evidencia HTML: " + e);
+               e.printStackTrace();
+           } catch(Exception ex){
+               System.out.println("Error al crear evidencia HTML: " + ex);
+               ex.printStackTrace();
            }
+    }
+
+    public void crearCSVResultados(String casoPrueba, String resultado, 
+    		String rutaEvidencia, String modulo, String navegador, String pasos){
+
+        FileWriter filewriter = null;
+        PrintWriter printw = null;
+        String columnas = "MODULO,NAVEGADOR,TEST_CASE,ESTATUS_TEST,PASOS,ERROR";
+        String fila = "";
+        String estatusTest = "";
+        resultado = this.remplazarAcentos(resultado);
+        modulo = this.remplazarCaracteresEspeciales(modulo);
+        pasos = this.remplazarCaracteresEspeciales(pasos);
+        String archivo = rutaEvidencia+"//ejecucion"+navegador+fechaFormato()+".csv";
+        long lineasArchivo;
+
+        try{
+            filewriter = new FileWriter(archivo, true);
+            printw = new PrintWriter(filewriter);//declarar un impresor       
+            
+            //VALIDAR SI EL ARCHIVO ESTA VACIO SE AGREGAN COLUMNAS
+            lineasArchivo = contarLineasArchivo(archivo);
+
+            if(lineasArchivo == 0) {
+                printw.println(columnas);
+            }
+
+            if(resultado.toLowerCase().contains("fallido")){
+            	estatusTest = "FALLIDO";
+            }
+            if(resultado.toLowerCase().contains("exitoso")){
+            	estatusTest = "EXITOSO";
+            }
+            if(resultado.toLowerCase().contains("ejecucion fallida")){
+            	estatusTest = "EJECUCION FALLIDA";
+            }
+            
+            //AGREGAR FILA DE DATOS
+            fila = "\"" + modulo.trim() + "\"," + "\"" + navegador.trim() + "\"," + "\"" + casoPrueba.trim() + "\"," + 
+        			"\"" + estatusTest.trim() + "\"," + "\"" + pasos.trim() + "\"," + "\"" + resultado.trim() + "\"";
+            printw.println(fila);
+
+            printw.flush();
+            printw.close();
+            System.out.println("CSV RESULTADOS CREADO EN: " + rutaEvidencia);
+            
+    	} catch(IOException e){
+            System.out.println("Error al crear ARCHIVO DE TEXTO: " + e);
+            e.printStackTrace();
+        } catch(Exception ex){
+            System.out.println("Error al crear ARCHIVO DE TEXTO: " + ex);
+            ex.printStackTrace();
+        }
     }
     
     
@@ -785,9 +901,14 @@ public class evidenceGrid {
             printw.println(this.horaMinSeg());
             printw.println(EvidenciaAbsoluta);
             printw.close();
-        }catch(IOException e){
+            
+    	} catch(IOException e){
+            System.out.println("Error al crear ARCHIVO DE TEXTO: " + e);
             e.printStackTrace();
-        } 
+        } catch(Exception ex){
+            System.out.println("Error al crear ARCHIVO DE TEXTO: " + ex);
+            ex.printStackTrace();
+        }
     }
     
     public void reporteGeneral(String rutaEvidencia, String navegador, String modulo) throws FileNotFoundException{
@@ -1059,4 +1180,46 @@ public class evidenceGrid {
         }catch(IOException e){
         }
     }
+    
+	public String remplazarCaracteresEspeciales(String texto) {
+		texto = Normalizer.normalize(texto, Form.NFD);
+		texto = texto.replaceAll("\\p{M}", "");
+		texto = texto.replaceAll("[^a-zA-Z0-9]", "_");
+		texto = texto.replaceAll("__________", "_");
+		texto = texto.replaceAll("_________", "_");
+		texto = texto.replaceAll("________", "_");
+		texto = texto.replaceAll("_______", "_");
+		texto = texto.replaceAll("______", "_");
+		texto = texto.replaceAll("_____", "_");
+		texto = texto.replaceAll("____", "_");
+		texto = texto.replaceAll("___", "_");
+		texto = texto.replaceAll("__", "_");
+
+		if(texto.startsWith("_")) {
+			texto = texto.substring(1, texto.length());
+		}
+		if(texto.endsWith("_")) {
+			texto = texto.substring(0, texto.length() - 1);
+		}
+
+		return texto;
+	}
+	
+	public String remplazarAcentos(String texto) {
+		texto = Normalizer.normalize(texto, Form.NFD);
+		texto = texto.replaceAll("\\p{M}", "");
+		return texto;
+	}
+	
+	public long contarLineasArchivo(String archivo) {     
+	      long lines = 0;
+	      try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+	          while (reader.readLine() != null) lines++;
+	          reader.close();
+	      } catch (IOException e) {
+	          e.printStackTrace();
+	      }
+	      return lines;
+	}
+	
 }

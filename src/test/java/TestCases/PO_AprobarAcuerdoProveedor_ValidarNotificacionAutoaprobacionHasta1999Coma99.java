@@ -19,7 +19,6 @@ import steps.GenericSteps;
 import steps.LoginSteps;
 import steps.MenusNavegadorSteps;
 import steps.AprobacionSteps;
-import steps.GestionarSolicitudesSteps;
 
 @SpiraTestConfiguration(
 	    url="https://testing-it.spiraservice.net",
@@ -29,21 +28,20 @@ import steps.GestionarSolicitudesSteps;
 	    testSetId=2668
 	)
 
-public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroArtículosServicios{
+public class PO_AprobarAcuerdoProveedor_ValidarNotificacionAutoaprobacionHasta1999Coma99{
     
     //STEPS
     public GenericSteps genericSteps = new GenericSteps();
     public LoginSteps loginSteps = new LoginSteps();
     public MenusNavegadorSteps menusNavegadorSteps = new MenusNavegadorSteps();
     public AprobacionSteps aprobacionSteps = new AprobacionSteps();
-    public GestionarSolicitudesSteps gestionarSolicitudesSteps = new GestionarSolicitudesSteps();
 
 
     //UIELEMENTS
     public Properties UILogin = null;
     public Properties UIMenusNavegador = null;
     public Properties UIConfigMantenimiento = null;
-    public Properties UIGestionarSolicitudes = null;
+    public Properties UIAprobacionAcuerdo = null;
     
     
     public Properties Config = null;
@@ -63,9 +61,8 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
     
         Config = genericSteps.getPropetiesFile("configuracion\\configuracion.properties");
         UILogin = genericSteps.getPropetiesFile("configuracion\\uielements\\loginPage.properties");
-        UIMenusNavegador = genericSteps.getPropetiesFile("configuracion\\uielements\\menusNavegador.properties");
-        UIGestionarSolicitudes = genericSteps.getPropetiesFile("configuracion\\uielements\\gestionarSolicitudes.properties");
-        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\crear_solicitud\\dt_15337.csv");
+        UIAprobacionAcuerdo = genericSteps.getPropetiesFile("configuracion\\uielements\\autoaprobacion.properties");
+        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\aprobar_acuerdo_proveedor\\dt_25637.csv");
         contador = 1;
         RutaEvidencia = Config.getProperty("rutaEvidencia");
         Resultado = "Fallido";
@@ -76,8 +73,8 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
     }
     
     @Test
-    @SpiraTestCase(testCaseId=15337)
-    public void Test_PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroArtículosServicios() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
+    @SpiraTestCase(testCaseId=25637)
+    public void Test_PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
         
@@ -85,11 +82,11 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String numeroSolicitud = filaDatos[3];
-            String mensajeAdvertencia = filaDatos[4];
+            String tipoAcuerdo = filaDatos[3];
+            String numeroAcuerdo = filaDatos[4];
             try{
 
-                    Escenario = "PO_Crear Solicitud_Eliminar solicitud de agregar líneas en catálogo maestro de artículos y servicios "+Repeticion;
+                    Escenario = "PO_Aprobar Acuerdo de Proveedor_Validar notificación de autoaprobación por hasta 1999 coma 99 "+Repeticion;
 
                     //Paso 1
                     Pasos.add(contador+".- Ingresar a la URL: "+Config.getProperty("urlOracle"));
@@ -102,34 +99,9 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
                     
                     //Paso 3
                     contador++;
-                    Pasos.add(contador+".- Ir al menú Navegador: Compras - Solicitudes de compra.");
-                    menusNavegadorSteps.clickMenuHamburguesa(driver, UIMenusNavegador);
-                    menusNavegadorSteps.abrirMenuComprasSolicitudesCompra(driver, contador, Config, Escenario, Navegador, UIMenusNavegador);
-                    
-                    //Paso 4
-                    contador++;
-                    Pasos.add(contador+".- Presionar sobre la opción Gestionar Solicitudes.");
-                    gestionarSolicitudesSteps.menuGestionarSolicitudes(driver, UIGestionarSolicitudes, contador, Config, Escenario, Navegador);
-                    
-                    //Paso 5
-                    contador++;
-                    Pasos.add(contador+".- Seleccionar el registro de la Solicitud: "+numeroSolicitud);
-                    gestionarSolicitudesSteps.seleccionarRegistroSolicitud(driver, UIGestionarSolicitudes, numeroSolicitud, contador, Config, Escenario, Navegador);
-                    
-                    //Paso 6
-                    contador++;
-                    Pasos.add(contador+".- Presionar sobre la opción Acciones - Suprimir.");
-                    gestionarSolicitudesSteps.presionarSuprimirSolicitud(driver, mensajeAdvertencia, UIGestionarSolicitudes, contador, Config, Escenario, Navegador);
-                    
-                    //Paso 7
-                    contador++;
-                    Pasos.add(contador+".- Presionar sobre el botón Sí.");
-                    gestionarSolicitudesSteps.confirmarSuprimirSolicitud(driver, Config, UIGestionarSolicitudes, contador, Escenario, Navegador);
-                    
-                    //Paso 8
-                    contador++;
-                    Pasos.add(contador+".- Validar que ya no exista la Solicitud.");
-                    Resultado = gestionarSolicitudesSteps.validarSolicitudEliminada(driver, numeroSolicitud, Config, UIGestionarSolicitudes, contador, Escenario, Navegador);
+                    Pasos.add(contador+".- Presionar sobre la campana de Notificaciones.");
+                    aprobacionSteps.clickCampanaNotificaciones(driver, UIAprobacionAcuerdo, contador, Config, Escenario, Navegador);
+                    Resultado = aprobacionSteps.validarFacturaAutoaprobada(driver, "Mensaje Informativo: Documento ("+tipoAcuerdo+") "+numeroAcuerdo+" implantado", Config, UIAprobacionAcuerdo, contador, Escenario, Navegador);
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
@@ -137,14 +109,17 @@ public class PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroAr
             }catch(InterruptedException e){
                 Resultado = "Ejecución Fallida: "+e;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
+            }catch(Exception ex){
+                Resultado = "Ejecución Fallida: "+ex;
+                genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }finally{
-                genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
+                genericSteps.logoutOracle(driver, UILogin);
                 genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
                     ResultadoGlobal = Resultado;
                 }
                 Resultado="Fallido";
-                contador=0;
+                contador=1;
                 Pasos.clear();
             }
             Repeticion++;

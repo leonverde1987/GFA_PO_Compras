@@ -14,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+
 /**
  *
  * @author TestingIT
@@ -21,7 +22,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     SpiraRun.RunGridChrome.class,
-    //SpiraRun.RunGridFirefox.class
+    SpiraRun.RunGridFirefox.class
 })
 public class RunGrid {
     

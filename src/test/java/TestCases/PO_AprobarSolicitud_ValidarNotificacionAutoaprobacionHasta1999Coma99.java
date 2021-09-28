@@ -28,7 +28,7 @@ import steps.AprobacionSteps;
 	    testSetId=2668
 	)
 
-public class PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999Coma99{
+public class PO_AprobarSolicitud_ValidarNotificacionAutoaprobacionHasta1999Coma99{
     
     //STEPS
     public GenericSteps genericSteps = new GenericSteps();
@@ -62,7 +62,7 @@ public class PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999C
         Config = genericSteps.getPropetiesFile("configuracion\\configuracion.properties");
         UILogin = genericSteps.getPropetiesFile("configuracion\\uielements\\loginPage.properties");
         UIAutoaprobacion = genericSteps.getPropetiesFile("configuracion\\uielements\\autoaprobacion.properties");
-        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\aprobar_orden_compra\\dt_19612.csv");
+        DataDriven = genericSteps.ObtenerDatos("configuracion\\datos\\PO_compras\\aprobar_solicitud\\dt_20648.csv");
         contador = 1;
         RutaEvidencia = Config.getProperty("rutaEvidencia");
         Resultado = "Fallido";
@@ -73,8 +73,8 @@ public class PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999C
     }
     
     @Test
-    @SpiraTestCase(testCaseId=19612)
-    public void Test_PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999Coma99() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
+    @SpiraTestCase(testCaseId=20648)
+    public void Test_PO_AprobarSolicitud_ValidarNotificaciónAutoaprobaciónHasta1999Coma99() throws InterruptedException, DocumentException, BadElementException, IOException, Exception {
         DataDriven.readNext();
         int Repeticion = 1;
         
@@ -82,11 +82,10 @@ public class PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999C
             String usuario = filaDatos[0];
             String pass = filaDatos[1];
             String idioma = filaDatos[2];
-            String tipoOrden = filaDatos[3];
-            String numeroOrden = filaDatos[4];
+            String numeroSolicitud = filaDatos[3];
             try{
 
-                    Escenario = "PO_Aprobar Orden de Compra_Validar notificación de autoaprobación hasta 1999 coma 99 "+Repeticion;
+                    Escenario = "PO_Aprobar Solicitud_Validar notificación autoaprobación hasta 1999 coma 99 "+Repeticion;
 
                     //Paso 1
                     Pasos.add(contador+".- Ingresar a la URL: "+Config.getProperty("urlOracle"));
@@ -104,8 +103,8 @@ public class PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999C
                     
                     //Paso 4
                     contador++;
-                    Pasos.add(contador+".- Validar notificación de autoaprobación de la Orden de Compra: "+numeroOrden);
-                    Resultado = aprobacionSteps.validarFacturaAutoaprobada(driver, "Mensaje Informativo: Documento ("+tipoOrden+") "+numeroOrden+" implantado", Config, UIAutoaprobacion, contador, Escenario, Navegador);
+                    Pasos.add(contador+".- Validar que esté autoaprobada la solicitud: "+numeroSolicitud);
+                    Resultado = aprobacionSteps.validarFacturaAutoaprobada(driver, "Mensaje Informativo: Solicitud "+numeroSolicitud+" aprobada", Config, UIAutoaprobacion, contador, Escenario, Navegador);
                     
             }catch(NoSuchElementException s){
                 Resultado = "Ejecución Fallida, No se encontró elemento: "+s;
@@ -113,14 +112,17 @@ public class PO_AprobarOrdenCompra_ValidarNotificaciónAutoaprobaciónHasta1999C
             }catch(InterruptedException e){
                 Resultado = "Ejecución Fallida: "+e;
                 genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
+            }catch(Exception ex){
+                Resultado = "Ejecución Fallida: "+ex;
+                genericSteps.capturarEvidencia(driver, Config, contador, Escenario, Navegador);
             }finally{
-                genericSteps.cerrarSesion(driver, contador, Config, UILogin, Escenario, Navegador);
+                genericSteps.logoutOracle(driver, UILogin);
                 genericSteps.finalizarTestCase(driver, Escenario, Resultado, contador, Pasos, RutaEvidencia, Config.getProperty("Modulo"), Config.getProperty("Version"), Navegador);
                 if(!"Exitoso".equals(Resultado.substring(0, 7))){
                     ResultadoGlobal = Resultado;
                 }
                 Resultado="Fallido";
-                contador=0;
+                contador=1;
                 Pasos.clear();
             }
             Repeticion++;

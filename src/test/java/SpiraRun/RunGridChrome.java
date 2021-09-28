@@ -21,21 +21,19 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	TestCases.AP_DarAltaAcuerdoCompraAbierto.class,
-	/*
     TestCases.AP_DarAltaAcuerdoConsignacion.class,
     TestCases.AP_ModificarAcuerdoConsignacion.class,
     TestCases.AP_EnviarAcuerdoProveedorImportado.class,
     TestCases.PO_AprobarAcuerdoProveedor_RechazarAcuerdoProveedor.class,
     TestCases.PO_AcuerdosProveedor_CancelarAcuerdoConsignacion.class,
     TestCases.AP_DarAltaAcuerdosDiesel.class,
-//Validados
     TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00DueñoCentroCostos.class,
     TestCases.PO_AprobarAcuerdoProveedor_AprobarAcuerdoProveedorMayor100000Coma00LiderTecnico.class,
     TestCases.MAS_CrearArticuloDiesel.class,
     TestCases.MAS_CopiarArticuloTipoProductosLimpieza.class,
     TestCases.AP_DarAltaAcuerdoCompraAbierto.class,
     TestCases.AP_ModificarAcuerdoCompraAbierto.class,      
-    TestCases.PO_AprobarAcuerdoProveedor_ValidarNotificaciónAutoaprobaciónHasta1999Coma99.class,
+    TestCases.PO_AprobarAcuerdoProveedor_ValidarNotificacionAutoaprobacionHasta1999Coma99.class,
     TestCases.PO_GestionarCicloVidaAcuerdoProveedor_ActualizarEstadoCongelacionAcuerdoProveedor.class,        
     TestCases.AP_DarAltaAcuerdoCompraContrato.class,
     TestCases.AP_ModificarAcuerdoCompraContrato.class,
@@ -65,10 +63,10 @@ import org.junit.runners.Suite;
     TestCases.PO_CrearSolicitud_CancelarSolicitudSinOrdenBotonCancelar.class,
     TestCases.AS_SolicitarInformacionAdicional.class,
     TestCases.AS_ResponderSolicitudInformacion.class,
-    TestCases.PO_CrearSolicitud_EliminarSolicitudAgregarLíneasCatálogoMaestroArtículosServicios.class,        
+    TestCases.PO_CrearSolicitud_EliminarSolicitudAgregarLineasCatalogoMaestroArticulosServicios.class,        
     TestCases.CS_CrearBorradorDuplicidadSolicitudExistente.class,
     TestCases.MS_RetirarActualizarVerificarFondos.class,
-    TestCases.PO_AprobarSolicitud_ValidarNotificaciónAutoaprobaciónHasta1999Coma99.class,
+    TestCases.PO_AprobarSolicitud_ValidarNotificacionAutoaprobacionHasta1999Coma99.class,
     TestCases.CS_CrearBorradorIngresandoLineasDeSolicitudAP.class,
     TestCases.MS_RetirarActualizarEnviarSolicitud.class,
     TestCases.GCVS_ReasignarSolicitud.class,
@@ -78,7 +76,7 @@ import org.junit.runners.Suite;
     TestCases.GCVS_SeguimientoCicloVidaSol.class,
     TestCases.CS_CrearBorradorMedianteSolicitudQueNoSeanCatalogoAP.class,
     TestCases.CS_DarAltaSolicitudCompraUrgenteAP.class
-    */
+    
 })
 public class RunGridChrome {
     

@@ -60,7 +60,7 @@ public class GenericSteps extends genericGrid{
         this.cerrarDriver(driver);
     }
     
-    /**
+	/**
      * Captura una evidencia cuando el Test Falla.
      * @param driver Elemento WebDriver de la prueba.
      * @param Config Es el archivo config de la prueba.
@@ -70,12 +70,7 @@ public class GenericSteps extends genericGrid{
      * @throws InterruptedException Cacha cualquier excepción.
      */
     public void capturarEvidencia(RemoteWebDriver driver, Properties Config, int error, String Escenario, String navegador) throws InterruptedException{
-        
-        switch(error) {
-            case 1:
-                this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), error, Escenario, navegador);
-                break;
-        }
+        this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), error, Escenario, navegador);
     }
     
     /**
@@ -357,5 +352,21 @@ public class GenericSteps extends genericGrid{
         clickJS(driver, "xpath", Elementos.getProperty("btn_guardar_cabecera"));
         this.capturaDriver(driver, Config.getProperty("rutaEvidencia"), contador, Escenario, navegador);
     }
-
+    
+    public void logoutOracle(RemoteWebDriver driver, Properties Elementos) throws InterruptedException{
+    	try {
+            this.clickJS(driver, "xpath", Elementos.getProperty("lg_img_sesion"));
+            this.dormirSeg(1);
+            this.clickJS(driver, "xpath", Elementos.getProperty("lg_lnk_cerrar_sesion"));
+            this.dormirSeg(3);
+            this.click(driver, "xpath", Elementos.getProperty("lg_btn_confirma_logOut"));    		
+    	} catch (Exception e) {
+			// TODO: handle exception
+    		System.out.println("Error Al hacer logout. Exception: " + e.getMessage());
+		}
+    }
 }
+
+
+
+
