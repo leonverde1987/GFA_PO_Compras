@@ -1,6 +1,7 @@
 package TestCases;
 
 import com.inflectra.spiratest.addons.junitextension.*;
+
 import org.junit.Test;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocumentException;
